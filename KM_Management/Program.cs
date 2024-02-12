@@ -1,8 +1,8 @@
 using FluentValidation;
 using KM_Management.Commons.Connection;
 using KM_Management.Commons.Json;
-using KM_Management.EndPoint.Content;
 using Microsoft.AspNetCore.Authentication.Negotiate;
+using NetCore.AutoRegisterDi;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -50,8 +50,9 @@ builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(assemb
 builder.Services.AddValidatorsFromAssembly(assembly);
 
 builder.Services.AddScoped<ISQLConnectionFactory, SQLConnectionFactory>();
-builder.Services.AddScoped<IContentRepository, ContentRepository>();
-
+builder.Services.RegisterAssemblyPublicNonGenericClasses()
+    .Where(repo => repo.Name.EndsWith("Repository"))
+    .AsPublicImplementedInterfaces();
 
 var app = builder.Build();
 

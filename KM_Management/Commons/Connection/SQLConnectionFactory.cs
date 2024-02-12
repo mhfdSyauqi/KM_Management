@@ -16,4 +16,10 @@ public class SQLConnectionFactory : ISQLConnectionFactory
         var connection = new SqlConnection(_configuration.GetConnectionString("DevDB"));
         return await Task.FromResult(connection);
     }
+
+    public SqlConnection CreateConnecton()
+    {
+        var connection = new SqlConnection(_configuration.GetConnectionString("DevDB"));
+        return connection;
+    }
 }

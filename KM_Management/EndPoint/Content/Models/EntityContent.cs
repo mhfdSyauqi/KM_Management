@@ -1,4 +1,4 @@
-﻿namespace KM_Management.EndPoint.Content.Moldels;
+﻿namespace KM_Management.EndPoint.Content.Models;
 
 public class EntityContent
 {

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using KM_Management.Commons.Mediator;
-using KM_Management.EndPoint.Content.Moldels;
+using KM_Management.EndPoint.Content.Models;
 using KM_Management.Shared;
 
 namespace KM_Management.EndPoint.Content.Query;
