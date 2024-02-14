@@ -25,6 +25,20 @@ public class ContentRepository : IContentRepository
         return result;
     }
 
+    public async Task<EntityDetailContent?> GetContentByIdAsync(Guid contentId, CancellationToken cancellationToken)
+    {
+        await using var connection = await _connection.CreateConnectionAsync();
+
+        var storeProcedureName = "[dbo].[Get_Content_By_Identity]";
+        var filterContent = new
+        {
+            Content_Id = contentId
+        };
+        var command = new CommandDefinition(storeProcedureName, filterContent, commandType: System.Data.CommandType.StoredProcedure, cancellationToken: cancellationToken);
+        var result = await connection.QueryFirstOrDefaultAsync<EntityDetailContent?>(command);
+        return result;
+    }
+
     public async Task<int> PatchContentAsync(EntityPatchContent patchContent, CancellationToken cancellationToken)
     {
         await using var connection = await _connection.CreateConnectionAsync();
@@ -52,12 +66,26 @@ public class ContentRepository : IContentRepository
         var query = @"
              SELECT [title] FROM [dbo].[Bot_Content] WHERE [title] = @title
         ";
+
         var command = new CommandDefinition(query, new { Title = title });
         var result = connection.QueryFirstOrDefault<string>(command);
 
         return result == null;
     }
 
+    public bool VerifyAvailableTitle(string title, Guid contentId)
+    {
+        using var connection = _connection.CreateConnecton();
+
+        var query = @"
+             SELECT [title] FROM [dbo].[Bot_Content] WHERE [title] = @title AND [uid] <> @Content_Id
+        ";
+
+        var command = new CommandDefinition(query, new { Title = title, Content_Id = contentId });
+        var result = connection.QueryFirstOrDefault<string>(command);
+
+        return result == null;
+    }
 }
 
 public interface IContentRepository
@@ -69,6 +97,9 @@ public interface IContentRepository
 
     Task<int> PatchContentAsync(EntityPatchContent patchContent, CancellationToken cancellationToken);
 
+    Task<EntityDetailContent?> GetContentByIdAsync(Guid contentId, CancellationToken cancellationToken);
+
     // Sync Fn
     bool VerifyAvailableTitle(string title);
+    bool VerifyAvailableTitle(string title, Guid contentId);
 }

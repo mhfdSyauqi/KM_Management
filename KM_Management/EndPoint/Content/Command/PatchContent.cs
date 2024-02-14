@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using KM_Management.Commons.FluentExtention;
 using KM_Management.Commons.Mediator;
 using KM_Management.EndPoint.Category;
 using KM_Management.EndPoint.Content.Models;
@@ -20,7 +21,8 @@ public class PatchContentValidator : AbstractValidator<PatchContentCommand>
         _contentRepository = contentRepository;
         _categoryRepository = categoryRepository;
 
-        RuleFor(key => key.Argument.Title).NotEmpty().WithMessage("Title is required.").Must(UniqueTitle).WithMessage("Title already used.");
+        RuleFor(key => key.Argument.Id).BeValidGuid();
+        RuleFor(key => key.Argument).Must((content) => UniqueTitle(content.Title, content.Id));
         RuleFor(key => key.Argument.Description).NotEmpty().WithMessage("Description is required");
         RuleFor(key => key.Argument.Article).NotEmpty().WithMessage("Article is required");
 
@@ -30,9 +32,11 @@ public class PatchContentValidator : AbstractValidator<PatchContentCommand>
         });
     }
 
-    private bool UniqueTitle(string title)
+    private bool UniqueTitle(string title, string id)
     {
-        return _contentRepository.VerifyAvailableTitle(title);
+        bool isValidId = Guid.TryParse(id, out Guid result);
+        if (!isValidId) return false;
+        return _contentRepository.VerifyAvailableTitle(title, result);
     }
 
     private bool ValidCategory(string? categoryId)

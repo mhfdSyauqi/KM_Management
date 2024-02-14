@@ -16,7 +16,10 @@ public class ContentController : MyAPIController
     [HttpGet("{ContentId}")]
     public async Task<IActionResult> GetContentById(string ContentId, CancellationToken cancellationToken)
     {
-        return Ok();
+        var query = new GetDetailContentQuery(ContentId);
+        var result = await _Mediator.Send(query, cancellationToken);
+
+        return result.MapResponse();
     }
 
 

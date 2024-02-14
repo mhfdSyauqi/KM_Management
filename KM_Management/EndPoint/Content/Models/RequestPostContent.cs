@@ -7,5 +7,5 @@ public class RequestPostContent
     public string Article { get; set; }
     public string? Additional_Link { get; set; }
     public string? Category_Id { get; set; }
-    public string Create_By { get; set; }
+    public string? Create_By { get; set; }
 }

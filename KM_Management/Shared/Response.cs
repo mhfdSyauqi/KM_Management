@@ -1,4 +1,4 @@
-﻿using KM_Management.EndPoint.Content.Moldels;
+﻿using KM_Management.EndPoint.Content.Models;
 using System.Text.Json.Serialization;
 
 namespace KM_Management.Shared;
@@ -17,5 +17,8 @@ public class CustomOkResponse
 public class CustomOkResponseData
 {
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public ResponseContent? Content { get; set; }
+    public ResponseContent? Contents { get; set; }
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public ResponseDetailContent? Content { get; set; }
 }
