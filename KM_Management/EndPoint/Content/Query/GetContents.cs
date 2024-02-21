@@ -34,7 +34,7 @@ public class GetContentsHandler : IQueryHandler<GetContentsQuery, ResponseConten
         {
             Title_Or_Category = request.Argument.Searched_Title_Or_Category,
             Article_Status = request.Argument.Searched_Article_Status?.Count > 1 ? null : request.Argument.Searched_Article_Status?.First(),
-            Category_Status = request.Argument.Inactive_Category ? null : true,
+            Category_Status = request.Argument.Inactive_Category.HasValue ? false : null,
             Current_Page = request.Argument.Searched_Page,
         };
 
@@ -54,6 +54,7 @@ public class GetContentsHandler : IQueryHandler<GetContentsQuery, ResponseConten
             Curr_Page = contents.FirstOrDefault()?.Curr_Page,
             Next_Page = contents.FirstOrDefault()?.Next_Page,
             Prev_Page = contents.FirstOrDefault()?.Prev_Page,
+            Max_Page = contents.FirstOrDefault()?.Max_Page,
         };
 
         return Result.Success(response);

@@ -11,4 +11,5 @@ public class EntityContent
     public int? Prev_Page { get; set; }
     public int? Curr_Page { get; set; }
     public int? Next_Page { get; set; }
+    public int? Max_Page { get; set; }
 }
