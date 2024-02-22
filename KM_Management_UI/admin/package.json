@@ -12,8 +12,10 @@
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.19",
+    "@vueup/vue-quill": "^1.2.0",
     "@vueuse/core": "^10.7.2",
     "pinia": "^2.1.7",
+    "quill-blot-formatter": "^1.0.5",
     "vue": "^3.4.15",
     "vue-router": "^4.2.5"
   },

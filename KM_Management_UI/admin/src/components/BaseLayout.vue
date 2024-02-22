@@ -14,7 +14,7 @@ import { RouterView } from 'vue-router'
     >
       <h4 class="font-bold">Hi, Admin</h4>
     </section>
-    <section class="bg-gray-100 basis-[92svh] w-[83svw] p-5">
+    <section class="bg-gray-100 basis-[92svh] w-[83svw] p-5 max-h-[92svh]">
       <RouterView />
     </section>
   </main>

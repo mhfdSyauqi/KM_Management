@@ -80,7 +80,9 @@ async function onCheck(e) {
           </label>
         </template>
       </OptionButton>
-      <PrimaryButton>Create</PrimaryButton>
+      <RouterLink :to="{ name: 'create-content' }">
+        <PrimaryButton>Create</PrimaryButton>
+      </RouterLink>
     </div>
 
     <br />
@@ -124,7 +126,9 @@ async function onCheck(e) {
         >
           <td class="py-2.5 text-center">
             <button>
-              <IconEdit class="w-5 h-5 hover:fill-green-800" />
+              <RouterLink :to="{ name: 'edit-content', params: { id: content.id } }">
+                <IconEdit class="w-5 h-5 hover:fill-green-800" />
+              </RouterLink>
             </button>
           </td>
           <td>

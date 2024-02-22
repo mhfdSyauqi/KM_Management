@@ -10,8 +10,23 @@ const router = createRouter({
     },
     {
       path: '/content',
-      name: 'content',
-      component: () => import('../views/content/BaseContent.vue')
+      children: [
+        {
+          path: '',
+          name: 'content',
+          component: () => import('@/views/content/BaseContent.vue')
+        },
+        {
+          path: 'create',
+          name: 'create-content',
+          component: () => import('@/views/content/CreateContent.vue')
+        },
+        {
+          path: ':id',
+          name: 'edit-content',
+          component: () => import('@/views/content/EditContent.vue')
+        }
+      ]
     }
   ]
 })
