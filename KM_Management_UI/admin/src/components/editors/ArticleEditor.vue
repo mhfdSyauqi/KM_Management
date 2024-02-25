@@ -44,13 +44,23 @@ const articleOption = {
     }
   }
 }
+
+const model = defineModel('modelValue')
+const prop = defineProps({
+  error: Object
+})
 </script>
 
 <template>
   <div class="flex flex-col w-full gap-1">
-    <label class="text-gray-400">Article<sup class="text-red-500">*</sup></label>
+    <label class="text-gray-400">
+      Article
+      <sup class="text-red-500"> * {{ prop.error?.isError ? prop.error?.message : null }} </sup>
+    </label>
     <div>
-      <QuillEditor :options="articleOption" :style="{ minHeight: '240px' }" />
+      <QuillEditor v-model:content="model" :options="articleOption" class="min-h-56" />
     </div>
   </div>
 </template>
+
+<style scoped></style>

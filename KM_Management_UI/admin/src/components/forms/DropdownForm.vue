@@ -3,7 +3,8 @@ const model = defineModel()
 const props = defineProps({
   required: Boolean,
   name: String,
-  items: Array
+  items: Array,
+  error: Object
 })
 </script>
 
@@ -11,8 +12,11 @@ const props = defineProps({
   <div class="flex flex-col w-full gap-1">
     <label for="dropdown" class="text-gray-400">
       {{ props.name }}
-      <sup class="text-red-500" v-show="required">*</sup>
+      <sup class="text-red-500" v-show="required">
+        * {{ error?.isError ? error?.message : null }}
+      </sup>
     </label>
+
     <select
       class="p-2 border border-gray-300 rounded-xl focus:outline focus:outline-green-500"
       v-model="model"

@@ -10,6 +10,7 @@ public class ResponseDetailContent
     public string Status { get; init; }
     public bool? Is_Active { get; init; }
     public string? Category_Id { get; init; }
+    public string? Category_Name { get; init; }
     public string Create_By { get; init; }
     public DateTime Create_At { get; set; }
     public string? Modified_By { get; init; }

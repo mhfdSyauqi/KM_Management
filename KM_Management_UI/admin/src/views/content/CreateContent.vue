@@ -5,6 +5,30 @@ import TextForm from '@/components/forms/TextForm.vue'
 import DropdownForm from '@/components/forms/DropdownForm.vue'
 import ArticleEditor from '@/components/editors/ArticleEditor.vue'
 import DescriptionEditor from '@/components/editors/DescriptionEditor.vue'
+
+import {
+  categoryRef,
+  newArticle,
+  errorInput,
+  GetCategoryReference,
+  HandlePublish
+} from '@/components/pages/content/postContents.js'
+
+import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+
+onMounted(async () => {
+  await GetCategoryReference()
+})
+const router = useRouter()
+
+async function onPublish() {
+  const isSuccess = await HandlePublish()
+
+  if (isSuccess) {
+    await router.push('/content')
+  }
+}
 </script>
 
 <template>
@@ -23,19 +47,30 @@ import DescriptionEditor from '@/components/editors/DescriptionEditor.vue'
       <RouterLink :to="{ name: 'content' }">
         <AbortButton>Cancel</AbortButton>
       </RouterLink>
-      <PrimaryButton>Publish</PrimaryButton>
+      <PrimaryButton @click.prevent="onPublish">Publish</PrimaryButton>
     </div>
 
     <div class="overflow-y-auto max-h-[80%]">
       <form class="w-full p-8 flex flex-col align-baseline gap-5">
-        <TextForm :name="'Title'" :required="true" />
+        <TextForm
+          :name="'Title'"
+          :required="true"
+          :error="errorInput.title"
+          v-model="newArticle.title"
+        />
 
-        <DropdownForm :required="true" :name="'Category'" />
+        <DropdownForm
+          :required="true"
+          :name="'Category'"
+          :items="categoryRef"
+          :error="errorInput.categoryId"
+          v-model="newArticle.categoryId"
+        />
 
-        <DescriptionEditor />
-        <ArticleEditor />
+        <DescriptionEditor v-model="newArticle.description" :error="errorInput.description" />
+        <ArticleEditor v-model="newArticle.article" :error="errorInput.article" />
 
-        <TextForm :name="'Additional Link'" :required="false" />
+        <TextForm :name="'Additional Link'" :required="false" v-model="newArticle.addtionalLink" />
       </form>
     </div>
   </div>

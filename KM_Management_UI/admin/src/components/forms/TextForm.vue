@@ -2,6 +2,7 @@
 const model = defineModel()
 const props = defineProps({
   required: Boolean,
+  error: Object,
   name: String
 })
 </script>
@@ -10,7 +11,9 @@ const props = defineProps({
   <div class="flex flex-col w-full gap-1">
     <label :for="props.name" class="text-gray-400">
       {{ props.name }}
-      <sup class="text-red-500" v-show="required">*</sup>
+      <sup class="text-red-500" v-show="required">
+        * {{ error?.isError ? error?.message : null }}
+      </sup>
     </label>
     <input
       v-model="model"

@@ -19,3 +19,20 @@ export async function GetGeneralContentsAsync(title_or_category = null, status, 
     error: error?.value
   }
 }
+
+export async function PostContentAsync(title, categoryId, desc, article, addtional) {
+  const Payload = {
+    Title: title,
+    Category_Id: categoryId,
+    Description: desc,
+    Article: article,
+    Additonal_Link: addtional === '' ? null : addtional
+  }
+
+  const { statusCode, error } = await useRequest('content/action').post(Payload).json()
+
+  return {
+    is_success: statusCode.value === 200,
+    error: error?.value
+  }
+}

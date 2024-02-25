@@ -1,4 +1,5 @@
-﻿using KM_Management.EndPoint.Content.Models;
+﻿using KM_Management.EndPoint.Category.Models;
+using KM_Management.EndPoint.Content.Models;
 using System.Text.Json.Serialization;
 
 namespace KM_Management.Shared;
@@ -21,4 +22,6 @@ public class CustomOkResponseData
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public ResponseDetailContent? Content { get; set; }
+
+    public List<ResponseCategoriesReference>? Category_Reference { get; set; }
 }
