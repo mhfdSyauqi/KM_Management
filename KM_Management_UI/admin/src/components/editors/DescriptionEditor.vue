@@ -1,10 +1,15 @@
 <script setup>
+import { onBeforeUnmount, ref, watchEffect } from 'vue'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
-import { ref } from 'vue'
-const model = defineModel('modelValue')
+
+const model = defineModel()
+const htmlModel = defineModel('html')
 const prop = defineProps({
-  error: Object
+  error: Object,
+  oldInput: {
+    required: false
+  }
 })
 const editor = ref(null)
 
@@ -15,8 +20,28 @@ const descOption = {
     toolbar: false
   }
 }
-function onInput() {
-  model.value = editor.value.getHTML()
+
+let isOutdated = ref(true)
+onBeforeUnmount(() => {
+  isOutdated.value = true
+})
+
+function onReady(quill) {
+  watchEffect(() => {
+    if (prop.oldInput && isOutdated.value) {
+      quill.setContents(prop.oldInput, 'api')
+      htmlModel.value = editor.value.getHTML()
+      isOutdated.value = false
+    }
+  })
+}
+
+function onInput(delta) {
+  if (delta.ops.length === 1 && delta.ops[0].insert.trim() === '') {
+    htmlModel.value = ''
+    model.value = ''
+  }
+  htmlModel.value = editor.value.getHTML()
 }
 </script>
 
@@ -29,6 +54,8 @@ function onInput() {
     <div>
       <QuillEditor
         ref="editor"
+        @ready="onReady"
+        v-model:content="model"
         @update:content="onInput"
         :options="descOption"
         :style="{ minHeight: '160px', 'border-radius': '15px' }"

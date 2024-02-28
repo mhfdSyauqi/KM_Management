@@ -23,5 +23,6 @@ public class CustomOkResponseData
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public ResponseDetailContent? Content { get; set; }
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<ResponseCategoriesReference>? Category_Reference { get; set; }
 }

@@ -12,7 +12,7 @@ const props = defineProps({
     <label :for="props.name" class="text-gray-400">
       {{ props.name }}
       <sup class="text-red-500" v-show="required">
-        * {{ error?.isError ? error?.message : null }}
+        * {{ error?.isError ? error?.message : '' }}
       </sup>
     </label>
     <input

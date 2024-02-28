@@ -22,7 +22,8 @@ public class PatchContentValidator : AbstractValidator<PatchContentCommand>
         _categoryRepository = categoryRepository;
 
         RuleFor(key => key.Argument.Id).BeValidGuid();
-        RuleFor(key => key.Argument).Must((content) => UniqueTitle(content.Title, content.Id));
+        RuleFor(key => key.Argument.Title).NotEmpty().WithMessage("Title is required");
+        RuleFor(key => key.Argument).Must((content) => UniqueTitle(content.Title, content.Id)).WithMessage("Title already used");
         RuleFor(key => key.Argument.Description).NotEmpty().WithMessage("Description is required");
         RuleFor(key => key.Argument.Article).NotEmpty().WithMessage("Article is required");
 
@@ -72,6 +73,7 @@ public class PatchContentHandler : ICommandHandler<PatchContentCommand>
         {
             Id = Guid.Parse(request.Argument.Id),
             Title = request.Argument.Title,
+            Description_Html = request.Argument.Description_Html,
             Description = request.Argument.Description,
             Article = request.Argument.Article,
             Additional_Link = request.Argument.Additional_Link,

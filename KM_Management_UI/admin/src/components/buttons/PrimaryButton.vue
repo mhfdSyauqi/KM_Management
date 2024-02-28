@@ -1,6 +1,6 @@
 <template>
   <button
-    class="min-w-24 font-semibold rounded-3xl border border-green-800 text-white bg-green-800 p-2"
+    class="min-w-24 font-semibold rounded-3xl border text-white bg-green-800 p-2 hover:bg-teal-700 active:scale-95"
   >
     <slot></slot>
   </button>

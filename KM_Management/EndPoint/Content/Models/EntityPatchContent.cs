@@ -4,6 +4,7 @@ public class EntityPatchContent
 {
     public Guid Id { get; set; }
     public string Title { get; set; }
+    public string Description_Html { get; set; }
     public string Description { get; set; }
     public string Article { get; set; }
     public string? Additional_Link { get; set; }
