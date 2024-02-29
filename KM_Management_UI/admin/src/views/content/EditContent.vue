@@ -21,6 +21,7 @@ import { useNotificationStore } from '@/stores/useNotification.js'
 
 import { onMounted, onUnmounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useDateFormat } from '@vueuse/core'
 
 const route = useRoute()
 const router = useRouter()
@@ -58,6 +59,14 @@ async function onRePublish() {
   }
 
   return await ErrorSwal.fire({ text: 'fail connect to server, try again!!' })
+}
+
+function FormatDate(dateStr) {
+  if (dateStr) {
+    const formatedDate = useDateFormat(dateStr, 'DD-MM-YYYY HH:mm')
+    return formatedDate.value
+  }
+  return ''
 }
 </script>
 
@@ -130,13 +139,25 @@ async function onRePublish() {
           v-model="editArticle.additional_link"
         />
 
-        <div class="grid grid-cols-6 grid-rows-3 w-full gap-y-2.5 mt-2">
-          <p class="font-medium">Create By</p>
-          <p class="col-span-5">{{ editArticle.create_by }} {{ editArticle.create_at }}</p>
-          <p class="font-medium">Last Modified By</p>
-          <p class="col-span-5">{{ editArticle.modified_by }} {{ editArticle.modified_at }}</p>
-          <p class="font-medium">Publish By</p>
-          <p class="col-span-5">{{ editArticle.published_by }} {{ editArticle.published_at }}</p>
+        <div class="flex flex-nowrap">
+          <p class="font-medium basis-[15%]">Create By</p>
+          <p class="basis-auto">
+            {{ editArticle.create_by }} {{ FormatDate(editArticle.create_at) }}
+          </p>
+        </div>
+
+        <div class="flex flex-nowrap" v-if="editArticle.modified_by">
+          <p class="font-medium basis-[15%]">Last Modified By</p>
+          <p class="basis-auto">
+            {{ editArticle.modified_by }} {{ FormatDate(editArticle.modified_at) }}
+          </p>
+        </div>
+
+        <div class="flex flex-nowrap" v-if="editArticle.published_by">
+          <p class="font-medium basis-[15%]">Publish By</p>
+          <p class="basis-auto">
+            {{ editArticle.published_by }} {{ FormatDate(editArticle.published_at) }}
+          </p>
         </div>
       </form>
     </div>
