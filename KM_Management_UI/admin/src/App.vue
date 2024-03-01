@@ -1,9 +1,7 @@
-<script setup>
-import BaseLayout from '@/components/BaseLayout.vue'
-</script>
+<script setup></script>
 
 <template>
-  <BaseLayout />
+  <RouterView></RouterView>
 </template>
 
 <style scoped></style>

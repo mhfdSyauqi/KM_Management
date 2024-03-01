@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import BaseLayout from '@/components/BaseLayout.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -10,6 +11,7 @@ const router = createRouter({
     },
     {
       path: '/content',
+      component: BaseLayout,
       children: [
         {
           path: '',
@@ -27,6 +29,11 @@ const router = createRouter({
           component: () => import('@/views/content/EditContent.vue')
         }
       ]
+    },
+    {
+      path: '/article/:id',
+      name: 'article',
+      component: () => import('@/views/article/BaseArticle.vue')
     }
   ]
 })
