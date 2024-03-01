@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KM_Management.EndPoint.Category;
 
-public class CategoryController : MyAPIController
+public class AssistantProfileController : MyAPIController
 {
-    public CategoryController(IMediator Mediator) : base(Mediator)
+    public AssistantProfileController(IMediator Mediator) : base(Mediator)
     {
     }
 

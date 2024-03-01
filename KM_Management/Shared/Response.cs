@@ -1,4 +1,5 @@
-﻿using KM_Management.EndPoint.Category.Models;
+﻿using KM_Management.EndPoint.AssistantProfile.Models;
+using KM_Management.EndPoint.Category.Models;
 using KM_Management.EndPoint.Content.Models;
 using System.Text.Json.Serialization;
 
@@ -23,5 +24,9 @@ public class CustomOkResponseData
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public ResponseDetailContent? Content { get; set; }
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public ResponseAssistantProfile? Assistant_Profile { get; set; }
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<ResponseCategoriesReference>? Category_Reference { get; set; }
 }
