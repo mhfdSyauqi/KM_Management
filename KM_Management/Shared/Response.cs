@@ -1,6 +1,7 @@
 ﻿using KM_Management.EndPoint.AssistantProfile.Models;
 using KM_Management.EndPoint.Category.Models;
 using KM_Management.EndPoint.Content.Models;
+using KM_Management.EndPoint.Message.Models;
 using System.Text.Json.Serialization;
 
 namespace KM_Management.Shared;
@@ -26,6 +27,9 @@ public class CustomOkResponseData
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public ResponseAssistantProfile? Assistant_Profile { get; set; }
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public List<ResponseActiveMessage>? Active_Message { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<ResponseCategoriesReference>? Category_Reference { get; set; }
