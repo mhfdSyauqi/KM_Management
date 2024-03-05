@@ -28,6 +28,22 @@ public class CategoryRepository : ICategoryRepository
         return result;
     }
 
+    public async Task<IEnumerable<EntityCategoriesList?>> GetCategoriesListAsync(Guid? uid_reference, int layer, bool? is_active, CancellationToken cancellationToken)
+    {
+        await using var connection = await _connection.CreateConnectionAsync();
+
+        var storeProcedureName = "[dbo].[Get_Categories_List]";
+        var filterCategories = new
+        {
+            Uid_Reference = uid_reference,
+            Layer = layer,  
+            Is_Active = is_active,
+        };
+        var command = new CommandDefinition(storeProcedureName, filterCategories, commandType: System.Data.CommandType.StoredProcedure, cancellationToken: cancellationToken);
+        var result = await connection.QueryAsync<EntityCategoriesList?>(command);
+        return result;
+    }
+
     public bool VerifyValidCategory(Guid categoryId)
     {
         using var connection = _connection.CreateConnecton();
@@ -46,6 +62,7 @@ public interface ICategoryRepository
 {
     // Async Fn
     Task<IEnumerable<EntityCategoriesReference>> GetCategoryReferenceAsync(CancellationToken cancellationToken);
+    Task<IEnumerable<EntityCategoriesList?>> GetCategoriesListAsync(Guid? uidReference, int layer, bool? is_Active, CancellationToken cancellationToken);
     // Sync Fn
     bool VerifyValidCategory(Guid categoryId);
 }
