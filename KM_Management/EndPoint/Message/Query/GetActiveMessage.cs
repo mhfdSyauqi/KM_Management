@@ -50,30 +50,4 @@ public class GetActiveMessageHandler : IQueryHandler<GetActiveMessageQuery, List
         }).ToList();
         return Result.Success(response);
     }
-
-    //public async Task<Result<ResponseActiveMessage>> Handle(GetActiveMessageQuery request, CancellationToken cancellationToken)
-    //{
-    //    await _validator.ValidateAndThrowAsync(request, cancellationToken);
-
-    //    var filter = new FilterActiveMessage()
-    //    {
-    //        Type = request.Argument.Type,
-    //    };
-
-    //    var messages = await _messageRepository.GetActiveMessageAsync(filter.Type, cancellationToken);
-
-    //    var response = new ResponseActiveMessage()
-    //    {
-    //        Message = messages.Select(col => new Contents()
-    //        {
-    //            Id = col.Uid.ToString("N"),
-    //            Title = col.Title,
-    //            Category = col.Category,
-    //            Article_Status = col.Article_Status,
-    //            Category_Status = col.Category_Status
-    //        }).ToList()
-    //    };
-
-    //    return Result.Success(response);
-    //}
 }

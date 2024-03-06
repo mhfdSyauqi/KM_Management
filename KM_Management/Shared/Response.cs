@@ -32,8 +32,8 @@ public class CustomOkResponseData
     public List<ResponseActiveMessage>? Active_Message { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<ResponseCategoriesList>? Categories_List { get; set; }
+    public List<ResponseCategoryList>? Category_List { get; set; }
 
-    //[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    //public List<ResponseCategoriesReference>? Category_Reference { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public List<ResponseCategoriesReference>? Category_Reference { get; set; }
 }

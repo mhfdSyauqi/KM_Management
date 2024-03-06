@@ -1,6 +1,6 @@
 ﻿namespace KM_Management.EndPoint.Category.Models
 {
-    public class EntityCategoriesList
+    public class EntityCategoryList
     {
         public Guid Uid { get; set; }
         public string? Name { get; set; }

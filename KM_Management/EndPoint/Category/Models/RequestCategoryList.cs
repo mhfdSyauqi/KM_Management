@@ -1,6 +1,6 @@
 ﻿namespace KM_Management.EndPoint.Category.Models
 {
-    public class RequestCategoriesList
+    public class RequestCategoryList
     {
         public Guid? Uid_Reference { get; set; }
         public int Layer { get; set; }
