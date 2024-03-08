@@ -35,5 +35,11 @@ public class CustomOkResponseData
     public List<ResponseCategoryList>? Category_List { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public List<ResponseCategoryTopIssueSelected>? Category_Top_Issue_Selected { get; set; }
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public List<ResponseCategoryTopIssueAvailable>? Category_Top_Issue_Available { get; set; }
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<ResponseCategoriesReference>? Category_Reference { get; set; }
 }
