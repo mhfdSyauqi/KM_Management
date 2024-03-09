@@ -85,9 +85,7 @@ public class PostMessageHandler : ICommandHandler<PostMessageCommand>
         var PostMessage = new EntityPostMessage()
         {
             Type = request.Argument.Type,
-            Sequence = request.Argument.Sequence,
             Contents = request.Argument.Contents,
-            Is_Active = request.Argument.Is_Active,
             Create_By = request.Argument.Create_By,
             Create_At = request.Argument.Create_At,
         };
