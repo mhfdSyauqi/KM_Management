@@ -17,39 +17,25 @@ public class PostAssistantProfileValidator : AbstractValidator<PostAssistantProf
     {
         _assistantProfileRepository = assistantProfileRepository;
 
-        //RuleFor(key => key.Argument.AppName).NotEmpty().WithMessage("Title is required.").Must(UniqueTitle).WithMessage("Title already used.");
-        RuleFor(key => key.Argument.AppName).NotEmpty().WithMessage("App Name Required");
-        RuleFor(key => key.Argument.AppName)
+        RuleFor(x => x.Argument.AppName)
+            .NotEmpty().WithMessage("App Name is required.")
             .Length(5, 150).WithMessage("App Name must be between 5 and 150 characters");
 
-        RuleFor(key => key.Argument.Files).NotNull().NotEmpty();
+        RuleFor(x => x.Argument.Files)
+            .NotEmpty().NotNull().WithMessage("Files are required.")
+            .Must(files => files != null).WithMessage("Files cannot be empty");
 
-        RuleFor(key => key.Argument.Files.Length)
-        .LessThanOrEqualTo(2 * 1024 * 1024)
-        .WithMessage("File size must be less than or equal to 2MB")
-        .When(key => key.Argument.Files != null);
+        RuleFor(x => x.Argument.Files)
+            .Must(files => files.All(file => file.Length <= 2 * 1024 * 1024)).WithMessage("File size must be less than or equal to 2MB");
 
-        RuleFor(key => key.Argument.Files.ContentType).Must(x => x.Equals("image/jpeg") || x.Equals("image/jpg") || x.Equals("image/png"))
-        .WithMessage("Type of file must be a valid image (PNG or JPG or IMG)")
-        .When(key => key.Argument.Files != null && key.Argument.Files.ContentType != null);
+        RuleFor(x => x.Argument.Files)
+            .Must(files => files.All(file => file.ContentType == "image/jpeg" || file.ContentType == "image/jpg" || file.ContentType == "image/png"))
+            .WithMessage("Files must be valid images (PNG or JPG)");
 
-        //When(prop => !string.IsNullOrEmpty(prop.Argument.Category_Id), () =>
-        //{
-        //    RuleFor(key => key.Argument.Category_Id).Must(ValidCategory).WithMessage("Category is not valid");
-        //});
+        
     }
 
-    //private bool UniqueTitle(string title)
-    //{
-    //    return _contentRepository.VerifyAvailableTitle(title);
-    //}
-
-    //private bool ValidCategory(string? categoryId)
-    //{
-    //    bool isValidId = Guid.TryParse(categoryId, out Guid result);
-    //    if (!isValidId) return false;
-    //    return _categoryRepository.VerifyValidCategory(result);
-    //}
+    
 }
 
 public class PostAssistantProfileHandler : ICommandHandler<PostAssistantProfileCommand>
@@ -73,11 +59,11 @@ public class PostAssistantProfileHandler : ICommandHandler<PostAssistantProfileC
             return Result.Failure(new(HttpStatusCode.BadRequest, errorMsg));
         }
 
-        var postAssistantProfile= new EntityPostAssistantProfile()
+        var postAssistantProfile = new EntityPostAssistantProfile()
         {
             AppImage = request.Argument.AppImage,
             AppName = request.Argument.AppName,
-            Files = new List<IFormFile> { request.Argument.Files }
+            Files = request.Argument.Files.ToList() 
         };
 
         await _assistantProfileRepository.PostAssistantProfileAsync(postAssistantProfile, cancellationToken);

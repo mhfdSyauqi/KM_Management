@@ -4,6 +4,6 @@
     {
         public string? AppName { get; set; }
         public string? AppImage { get; set; }
-        public IFormFile? Files { get; set; }
+        public IList<IFormFile> Files { get; set; }
     }
 }

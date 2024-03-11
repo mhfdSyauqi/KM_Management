@@ -187,7 +187,7 @@ public interface ICategoryRepository
 {
     // Async Fn
     Task<IEnumerable<EntityCategoriesReference>> GetCategoryReferenceAsync(CancellationToken cancellationToken);
-    Task<IEnumerable<EntityCategoryList?>> GetCategoryListAsync(Guid? uidReference, int layer, bool? is_Active, CancellationToken cancellationToken);
+    Task<IEnumerable<EntityCategoryList?>> GetCategoryListAsync(Guid? uid_reference, int layer, bool? is_active, CancellationToken cancellationToken);
     Task<int> PatchCategoryListAsync(EntityPatchCategoryList patchCategoryList, CancellationToken cancellationToken);
     Task<int> PostCategoryListAsync(EntityPostCategoryList postCategory, CancellationToken cancellationToken);
     Task<IEnumerable<EntityCategoryTopIssueSelected?>> GetCategoryTopIssueSelectedAsync(bool? is_active, CancellationToken cancellationToken);
