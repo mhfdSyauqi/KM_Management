@@ -17,6 +17,8 @@ public class PostAssistantProfileValidator : AbstractValidator<PostAssistantProf
     {
         _assistantProfileRepository = assistantProfileRepository;
 
+        RuleFor(key => key.Argument.AppName).Must(UniqueName).WithMessage("Name already used.");
+
         RuleFor(x => x.Argument.AppName)
             .NotEmpty().WithMessage("App Name is required.")
             .Length(5, 150).WithMessage("App Name must be between 5 and 150 characters");
@@ -35,7 +37,13 @@ public class PostAssistantProfileValidator : AbstractValidator<PostAssistantProf
         
     }
 
-    
+    private bool UniqueName(string name)
+    {
+        
+        return _assistantProfileRepository.VerifyAvailableName(name);
+    }
+
+
 }
 
 public class PostAssistantProfileHandler : ICommandHandler<PostAssistantProfileCommand>

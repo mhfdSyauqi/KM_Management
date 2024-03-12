@@ -68,6 +68,20 @@ public class AssistantProfileRepository : IAssistantProfileRepository
         return result;
     }
 
+    public bool VerifyAvailableName(string app_name)
+    {
+        using var connection = _connection.CreateConnecton();
+
+        var query = @"
+             SELECT [APP_NAME] FROM [dbo].[View_Assistant_Profile] WHERE [APP_NAME] = @app_name
+        ";
+
+        var command = new CommandDefinition(query, new { APP_NAME = app_name });
+        var result = connection.QueryFirstOrDefault<string>(command);
+
+        return result == null;
+    }
+
 
 
 }
@@ -78,6 +92,6 @@ public interface IAssistantProfileRepository
     Task<EntityAssistantProfile?> GetAssistantProfileAsync(CancellationToken cancellationToken);
     Task<int> PostAssistantProfileAsync(EntityPostAssistantProfile postAssistantProfile, CancellationToken cancellationToken);
     // Sync Fn
-
+    public bool VerifyAvailableName(string name);
 }
 
