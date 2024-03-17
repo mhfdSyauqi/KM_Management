@@ -1,6 +1,8 @@
 <script setup>
 import IconArticle from '../icons/IconArticle.vue'
-import IconDocumentation from '../icons/IconDocumentation.vue'
+import IconList from '@/components/icons/IconList.vue'
+import IconSettings from '@/components/icons/IconSettings.vue'
+import IconDashboard from '@/components/icons/IconDashboard.vue'
 
 defineProps({
   icon: {
@@ -11,9 +13,13 @@ defineProps({
 </script>
 
 <template>
-  <IconArticle v-if="icon === 'article'" class="fill-white" />
+  <IconArticle v-if="icon === 'article'" />
 
-  <IconDocumentation v-else class="fill-white" />
+  <IconList v-else-if="icon === 'list'" />
+
+  <IconSettings v-else-if="icon === 'settings'" />
+
+  <IconDashboard v-else />
 </template>
 
 <style scoped></style>

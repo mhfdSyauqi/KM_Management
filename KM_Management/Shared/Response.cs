@@ -1,28 +1,32 @@
 ﻿using KM_Management.EndPoint.Category.Models;
 using KM_Management.EndPoint.Content.Models;
+using KM_Management.EndPoint.Roles.Models;
 using System.Text.Json.Serialization;
 
 namespace KM_Management.Shared;
 
 public class CustomOkResponse
 {
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public CustomOkResponseData? Data { get; }
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+	public CustomOkResponseData? Data { get; }
 
-    public CustomOkResponse(CustomOkResponseData? responseData)
-    {
-        Data = responseData;
-    }
+	public CustomOkResponse(CustomOkResponseData? responseData)
+	{
+		Data = responseData;
+	}
 }
 
 public class CustomOkResponseData
 {
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public ResponseContent? Contents { get; set; }
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+	public ResponseContent? Contents { get; set; }
 
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public ResponseDetailContent? Content { get; set; }
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+	public ResponseDetailContent? Content { get; set; }
 
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<ResponseCategoriesReference>? Category_Reference { get; set; }
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+	public List<ResponseCategoriesReference>? Category_Reference { get; set; }
+
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+	public ResponseUserRole? User_Information { get; set; }
 }

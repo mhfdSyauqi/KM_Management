@@ -23,30 +23,6 @@ const menus = ref([
     ],
     active: true,
     expand: true
-  },
-  {
-    name: 'Categories',
-    icon: 'list',
-    sub: [
-      {
-        name: 'List',
-        url: '/categories',
-        active: false
-      },
-      {
-        name: 'Top Issue',
-        url: '/categories/top',
-        active: false
-      }
-    ],
-    active: false,
-    expand: false
-  },
-  {
-    name: 'Content',
-    url: '/content',
-    icon: 'article',
-    active: false
   }
 ])
 

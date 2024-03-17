@@ -25,6 +25,35 @@ const menus = ref([
     expand: true
   },
   {
+    name: 'Setup',
+    icon: 'settings',
+    sub: [
+      {
+        name: 'Assistant Profile',
+        url: '/setup/profile',
+        active: false
+      },
+      {
+        name: 'User Role',
+        url: '/setup/role',
+        active: false
+      },
+      {
+        name: 'Message',
+        url: '/setup/message',
+        active: false
+      },
+      {
+        name: 'General',
+        url: '/setup/general',
+        active: false
+      }
+    ],
+    active: false,
+    expand: false
+  },
+
+  {
     name: 'Categories',
     icon: 'list',
     sub: [

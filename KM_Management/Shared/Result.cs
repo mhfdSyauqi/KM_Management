@@ -75,9 +75,9 @@ public class Result<TResponse> : Result
         }
         var responseData = new CustomOkResponseData();
 
-        var sourcePropertiesType = Value.GetType().Name;
+        var sourcePropertiesType = Value.GetType().FullName;
         var destinationProperties = responseData.GetType().GetProperties().ToList();
-        var destinationProperty = destinationProperties.Find(prop => prop.PropertyType.Name == sourcePropertiesType);
+        var destinationProperty = destinationProperties.Find(prop => prop.PropertyType.FullName == sourcePropertiesType);
         destinationProperty?.SetValue(responseData, Value, null);
 
         var responseObj = new CustomOkResponse(responseData);
