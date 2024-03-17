@@ -2,6 +2,7 @@
 using KM_Management.EndPoint.Category.Models;
 using KM_Management.EndPoint.Content.Models;
 using KM_Management.EndPoint.Message.Models;
+using KM_Management.EndPoint.RateAndFeedback.Models;
 using System.Text.Json.Serialization;
 
 namespace KM_Management.Shared;
@@ -42,4 +43,7 @@ public class CustomOkResponseData
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<ResponseCategoriesReference>? Category_Reference { get; set; }
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public ResponseRateAndFeedback? Rate_And_Feedback { get; set; }
 }

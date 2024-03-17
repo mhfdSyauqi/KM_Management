@@ -3,6 +3,7 @@ using KM_Management.Commons.Connection;
 using KM_Management.Commons.Json;
 using Microsoft.AspNetCore.Authentication.Negotiate;
 using NetCore.AutoRegisterDi;
+using OfficeOpenXml;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -67,6 +68,8 @@ else
 {
     app.UseCors("local");
 }
+
+ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
 app.UseSerilogRequestLogging();
 
