@@ -49,8 +49,5 @@ public class CustomOkResponseData
     public ResponseRateAndFeedback? Rate_And_Feedback { get; set; }
 
 	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-	public List<ResponseCategoriesReference>? Category_Reference { get; set; }
-
-	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
 	public ResponseUserRole? User_Information { get; set; }
 }
