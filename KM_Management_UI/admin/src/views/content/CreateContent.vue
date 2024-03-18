@@ -11,18 +11,22 @@ import {
   newArticle,
   errorInput,
   GetCategoryReference,
-  HandlePublish,
+  HandleSave,
   ResetInput
 } from '@/components/pages/content/postContents.js'
 
 import { onMounted, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 import { ConfirmSwal, ToastSwal } from '@/extension/SwalExt.js'
 import { useNotificationStore } from '@/stores/useNotification.js'
+import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 
 const router = useRouter()
+const route = useRoute()
 const notificationStore = useNotificationStore()
+
+const userRole = route?.meta.userInfo.role
 
 onMounted(async () => {
   await GetCategoryReference()
@@ -32,11 +36,11 @@ onUnmounted(() => {
   ResetInput()
 })
 
-async function onPublish() {
-  const { isConfirmed } = await ConfirmSwal.fire({ text: 'your article will be published' })
+async function onSave(action) {
+  const { isConfirmed } = await ConfirmSwal.fire({ text: `your article will be ${action}` })
   if (!isConfirmed) return
 
-  const result = await HandlePublish()
+  const result = await HandleSave(action)
   if (result === 400 || result === false) {
     return await ToastSwal.fire({ icon: 'warning', text: 'Please re-check your input!!' })
   }
@@ -64,7 +68,10 @@ async function onPublish() {
       <RouterLink :to="{ name: 'content' }">
         <AbortButton>Cancel</AbortButton>
       </RouterLink>
-      <PrimaryButton @click.prevent="onPublish">Publish</PrimaryButton>
+      <SecondaryButton @click.prevent="onSave('Draft')"> Save as Draft </SecondaryButton>
+      <PrimaryButton @click.prevent="onSave('Publish')" v-if="userRole === 'super'">
+        Publish
+      </PrimaryButton>
     </div>
 
     <div class="overflow-y-auto max-h-[80%]">

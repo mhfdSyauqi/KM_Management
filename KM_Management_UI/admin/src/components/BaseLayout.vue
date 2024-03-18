@@ -19,7 +19,7 @@ const userInfo = route.meta.userInfo
     <section
       class="bg-head-bar basis-[8svh] w-[83%] px-10 flex items-center justify-end justify-items-end drop-shadow-lg shadow-sm"
     >
-      <h4 class="font-bold">Hi, Admin</h4>
+      <h4 class="font-bold">Hi, {{ userInfo.userName }}</h4>
     </section>
     <section class="bg-gray-100 basis-[92svh] w-[83%] p-5 max-h-[92svh] overflow-y-auto">
       <RouterView />

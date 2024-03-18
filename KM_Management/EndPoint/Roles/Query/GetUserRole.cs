@@ -13,7 +13,7 @@ public class GetUserRoleHandler : IQueryHandler<GetUserRoleQuery, ResponseUserRo
 		var response = new ResponseUserRole()
 		{
 			User_Name = request.UserName,
-			Role = "Admin"
+			Role = "Super"
 		};
 
 		return Result.Success(response);

@@ -49,8 +49,17 @@ export async function GetDetailContentAsync(id) {
 
   return result
 }
-export async function PostContentAsync(title, categoryId, descHtml, desc, article, additional) {
+export async function PostContentAsync(
+  action,
+  title,
+  categoryId,
+  descHtml,
+  desc,
+  article,
+  additional
+) {
   const Payload = JSON.stringify({
+    Action: action,
     Title: title,
     Category_Id: categoryId,
     Description_Html: descHtml,
@@ -73,6 +82,7 @@ export async function PostContentAsync(title, categoryId, descHtml, desc, articl
 }
 
 export async function PatchContentAsync(
+  action,
   id,
   newTitle,
   newCategoryId,
@@ -82,6 +92,7 @@ export async function PatchContentAsync(
   newAdditional
 ) {
   const Payload = JSON.stringify({
+    Action: action,
     Id: id,
     Title: newTitle,
     Category_Id: newCategoryId,

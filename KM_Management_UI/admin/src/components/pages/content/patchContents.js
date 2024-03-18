@@ -47,11 +47,12 @@ async function GetCategoryReference() {
   }
 }
 
-async function HandleRePublish() {
+async function HandleEdit(action) {
   const isValid = ValidateEmptyInput()
   if (!isValid) return false
 
   const patchArticle = await PatchContentAsync(
+    action,
     editArticle.value.id,
     editArticle.value.title,
     editArticle.value.category_id,
@@ -108,6 +109,6 @@ export {
   errorEdit,
   GetArticleById,
   GetCategoryReference,
-  HandleRePublish,
+  HandleEdit,
   ResetInput
 }

@@ -11,7 +11,7 @@ import {
   categoryRef,
   GetArticleById,
   GetCategoryReference,
-  HandleRePublish,
+  HandleEdit,
   errorEdit,
   ResetInput
 } from '@/components/pages/content/patchContents.js'
@@ -22,6 +22,7 @@ import { useNotificationStore } from '@/stores/useNotification.js'
 import { onMounted, onUnmounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useDateFormat } from '@vueuse/core'
+import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -44,11 +45,11 @@ onUnmounted(() => {
   ResetInput()
 })
 
-async function onRePublish() {
-  const { isConfirmed } = await ConfirmSwal.fire({ text: 'your article will be published' })
+async function onEdit(action) {
+  const { isConfirmed } = await ConfirmSwal.fire({ text: `your article will be ${action}` })
   if (!isConfirmed) return
 
-  const result = await HandleRePublish()
+  const result = await HandleEdit(action)
   if (result === 400 || result === false) {
     return await ToastSwal.fire({ icon: 'warning', text: 'Please re-check your input!!' })
   }
@@ -90,7 +91,13 @@ function FormatDate(dateStr) {
           Inactive Category
         </span>
         <span
-          v-show="editArticle.status !== 'Draft' && !onLoad"
+          v-show="editArticle.status === 'DRAFT' && !onLoad"
+          class="rounded-xl px-2.5 py-1 bg-gray-200 text-gray-600 text-xs"
+        >
+          Draft
+        </span>
+        <span
+          v-show="editArticle.status !== 'DRAFT' && !onLoad"
           class="rounded-xl px-2.5 py-1 bg-green-200 text-green-600 text-xs"
         >
           Published
@@ -100,7 +107,8 @@ function FormatDate(dateStr) {
       <RouterLink :to="{ name: 'content' }">
         <AbortButton>Cancel</AbortButton>
       </RouterLink>
-      <PrimaryButton class="w-28" @click="onRePublish">Re-Publish</PrimaryButton>
+      <SecondaryButton @click="onEdit('Draft')"> Save as Draft </SecondaryButton>
+      <PrimaryButton @click="onEdit('Publish')"> Publish </PrimaryButton>
     </div>
 
     <div class="overflow-y-auto max-h-[80%]">
