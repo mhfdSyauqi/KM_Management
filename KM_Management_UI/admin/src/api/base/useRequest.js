@@ -1,14 +1,9 @@
-import { createFetch } from '@vueuse/core'
+import axios from 'axios'
 
-const useRequest = createFetch({
-  baseUrl: 'https://localhost:44362/api',
-  combination: 'overwrite',
-  fetchOptions: {
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }
+const useRequest = axios.create({
+  baseURL: 'https://localhost:44362/api',
+  withCredentials: true,
+  headers: { 'Content-Type': 'application/json' }
 })
 
 export { useRequest }

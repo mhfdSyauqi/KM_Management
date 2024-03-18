@@ -17,9 +17,23 @@ import {
 } from '@/components/pages/content/useContents.js'
 
 import { onMounted, ref } from 'vue'
+import { ToastSwal } from '@/extension/SwalExt.js'
+import { useNotificationStore } from '@/stores/useNotification.js'
+
+const notificationStore = useNotificationStore()
 
 onMounted(async () => {
   await GetContentsByFilter()
+
+  if (notificationStore.status === 'add') {
+    await ToastSwal.fire({ icon: 'success', text: 'Success add new article' })
+    notificationStore.reset()
+  }
+
+  if (notificationStore.status === 'edit') {
+    await ToastSwal.fire({ icon: 'success', text: 'Success edit article' })
+    notificationStore.reset()
+  }
 })
 
 const statusModel = ref({

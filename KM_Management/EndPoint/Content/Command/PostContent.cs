@@ -66,6 +66,7 @@ public class PostContentHandler : ICommandHandler<PostContentCommand>
         var postContent = new EntityPostContent()
         {
             Title = request.Argument.Title,
+            Description_Html = request.Argument.Description_Html,
             Description = request.Argument.Description,
             Article = request.Argument.Article,
             Additional_Link = request.Argument.Additional_Link,

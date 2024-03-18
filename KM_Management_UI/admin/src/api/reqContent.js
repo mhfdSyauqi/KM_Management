@@ -4,35 +4,102 @@ export async function GetGeneralContentsAsync(title_or_category = null, status, 
   const articleStatus = status.filter((item) => item !== 'Inactive')
   const isInactive = status.includes('Inactive')
 
-  const Payload = {
+  const Payload = JSON.stringify({
     Searched_Title_Or_Category: title_or_category,
     Searched_Article_Status: articleStatus.length === 0 ? null : articleStatus,
     Inactive_Category: !isInactive ? null : isInactive,
     Searched_Page: page
+  })
+
+  const result = {
+    is_success: true,
+    contents: [],
+    error: null
   }
 
-  const { data, statusCode, error } = await useRequest('content').post(Payload).json()
+  await useRequest
+    .post('content', Payload)
+    .then((res) => {
+      result.contents = res.data.data.contents
+    })
+    .catch((err) => {
+      result.is_success = false
+      result.error = err.response.data
+    })
 
-  return {
-    is_success: statusCode.value === 200,
-    contents: data.value?.data.contents,
-    error: error?.value
-  }
+  return result
 }
 
-export async function PostContentAsync(title, categoryId, desc, article, addtional) {
-  const Payload = {
+export async function GetDetailContentAsync(id) {
+  const result = {
+    is_success: true,
+    content: null,
+    error: null
+  }
+
+  await useRequest
+    .get(`content/${id}`)
+    .then((res) => {
+      result.content = res.data.data.content
+    })
+    .catch((err) => {
+      result.is_success = false
+      result.error = err.response.data
+    })
+
+  return result
+}
+export async function PostContentAsync(title, categoryId, descHtml, desc, article, additional) {
+  const Payload = JSON.stringify({
     Title: title,
     Category_Id: categoryId,
+    Description_Html: descHtml,
     Description: desc,
     Article: article,
-    Additonal_Link: addtional === '' ? null : addtional
+    Additional_Link: additional === '' ? null : additional
+  })
+
+  const result = {
+    is_success: true,
+    error: null
   }
 
-  const { statusCode, error } = await useRequest('content/action').post(Payload).json()
+  await useRequest.post('content/action', Payload).catch((err) => {
+    result.is_success = false
+    result.error = err.response.data
+  })
 
-  return {
-    is_success: statusCode.value === 200,
-    error: error?.value
+  return result
+}
+
+export async function PatchContentAsync(
+  id,
+  newTitle,
+  newCategoryId,
+  newDescHtml,
+  newDesc,
+  newArticle,
+  newAdditional
+) {
+  const Payload = JSON.stringify({
+    Id: id,
+    Title: newTitle,
+    Category_Id: newCategoryId,
+    Description_Html: newDescHtml,
+    Description: newDesc,
+    Article: newArticle,
+    Additional_Link: newAdditional === '' ? null : newAdditional
+  })
+
+  const result = {
+    is_success: true,
+    error: null
   }
+
+  await useRequest.patch('content/action', Payload).catch((err) => {
+    result.is_success = false
+    result.error = err.response.data
+  })
+
+  return result
 }

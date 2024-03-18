@@ -14,8 +14,10 @@
     "@headlessui/vue": "^1.7.19",
     "@vueup/vue-quill": "^1.2.0",
     "@vueuse/core": "^10.7.2",
+    "axios": "^1.6.7",
     "pinia": "^2.1.7",
     "quill-blot-formatter": "^1.0.5",
+    "sweetalert2": "^11.6.13",
     "vue": "^3.4.15",
     "vue-router": "^4.2.5"
   },

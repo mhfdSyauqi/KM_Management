@@ -7,8 +7,35 @@ import BlotFormatter, {
   ImageSpec
 } from 'quill-blot-formatter'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
+import { onBeforeUnmount, ref, watchEffect } from 'vue'
 
 Quill.register('modules/blotFormatter', BlotFormatter)
+
+const BaseImageFormat = Quill.import('formats/image')
+const ImageFormatAttributesList = ['alt', 'height', 'width', 'style']
+
+class ImageFormat extends BaseImageFormat {
+  static formats(domNode) {
+    return ImageFormatAttributesList.reduce(function (formats, attribute) {
+      if (domNode.hasAttribute(attribute)) {
+        formats[attribute] = domNode.getAttribute(attribute)
+      }
+      return formats
+    }, {})
+  }
+  format(name, value) {
+    if (ImageFormatAttributesList.indexOf(name) > -1) {
+      if (value) {
+        this.domNode.setAttribute(name, value)
+      } else {
+        this.domNode.removeAttribute(name)
+      }
+    } else {
+      super.format(name, value)
+    }
+  }
+}
+Quill.register(ImageFormat, true)
 
 class CustomImageSpec extends ImageSpec {
   getActions() {
@@ -45,10 +72,33 @@ const articleOption = {
   }
 }
 
-const model = defineModel('modelValue')
+const model = defineModel()
 const prop = defineProps({
-  error: Object
+  error: Object,
+  oldInput: {
+    required: false
+  }
 })
+
+let isOutdated = ref(true)
+onBeforeUnmount(() => {
+  isOutdated.value = true
+})
+
+function onReady(quill) {
+  watchEffect(() => {
+    if (prop.oldInput && isOutdated.value) {
+      quill.setContents(prop.oldInput, 'api')
+      isOutdated.value = false
+    }
+  })
+}
+
+function onInput(delta) {
+  if (delta.ops.length === 1 && delta.ops[0].insert.trim() === '') {
+    model.value = ''
+  }
+}
 </script>
 
 <template>
@@ -58,7 +108,13 @@ const prop = defineProps({
       <sup class="text-red-500"> * {{ prop.error?.isError ? prop.error?.message : null }} </sup>
     </label>
     <div>
-      <QuillEditor v-model:content="model" :options="articleOption" class="min-h-56" />
+      <QuillEditor
+        @ready="onReady"
+        v-model:content="model"
+        @update:content="onInput"
+        :options="articleOption"
+        class="min-h-56"
+      />
     </div>
   </div>
 </template>

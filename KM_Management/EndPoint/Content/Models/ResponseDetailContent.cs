@@ -6,7 +6,7 @@ public class ResponseDetailContent
     public string Title { get; init; }
     public string Description { get; init; }
     public string Article { get; init; }
-    public string? Additonal_Link { get; init; }
+    public string? Additional_Link { get; init; }
     public string Status { get; init; }
     public bool? Is_Active { get; init; }
     public string? Category_Id { get; init; }

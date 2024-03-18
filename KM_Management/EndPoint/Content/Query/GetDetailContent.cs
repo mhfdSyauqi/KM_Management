@@ -52,7 +52,7 @@ public class GetDetailContentHandler : IQueryHandler<GetDetailContentQuery, Resp
             Title = detailContent.Title,
             Description = detailContent.Description,
             Article = detailContent.Article,
-            Additonal_Link = detailContent.Additonal_Link,
+            Additional_Link = detailContent.Additional_Link,
             Status = detailContent.Status,
             Is_Active = detailContent.Is_Active,
             Category_Id = detailContent.Uid_Bot_Category?.ToString("N"),

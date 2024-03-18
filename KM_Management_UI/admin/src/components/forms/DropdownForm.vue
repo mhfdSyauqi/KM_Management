@@ -22,6 +22,7 @@ const props = defineProps({
       v-model="model"
     >
       <option value="" disabled>None</option>
+      <slot></slot>
       <option v-for="item in items" :key="item.id" :value="item.id">
         {{ item.name }}
       </option>

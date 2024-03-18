@@ -7,9 +7,10 @@ const categoryRef = ref([])
 const newArticle = ref({
   title: '',
   categoryId: '',
+  descriptionHtml: '',
   description: '',
   article: '',
-  addtionalLink: ''
+  additionalLink: ''
 })
 
 const errorInput = ref({
@@ -32,42 +33,56 @@ async function GetCategoryReference() {
 }
 
 async function HandlePublish() {
-  // TODO: Add Confirmation Dialog
   const isValid = ValidateEmptyInput()
-  if (!isValid) return
+  if (!isValid) return false
 
   const postArticle = await PostContentAsync(
     newArticle.value.title,
     newArticle.value.categoryId,
+    newArticle.value.descriptionHtml,
     JSON.stringify(newArticle.value.description),
     JSON.stringify(newArticle.value.article),
-    newArticle.value.addtionalLink
+    newArticle.value.additionalLink
   )
 
-  ResetModel()
+  if (!postArticle.is_success) {
+    if (postArticle.error.statuscode === 400) {
+      errorInput.value.title.isError = true
+      errorInput.value.title.message = postArticle.error.message
+    }
+    return postArticle.error.statuscode
+  }
 
-  return postArticle.is_success
-  // TODO: Add Success Or Error Notification
+  ResetInput()
+  return true
 }
 
 function ValidateEmptyInput() {
   let valid = true
   for (const key in newArticle.value) {
-    if (key !== 'addtionalLink' && newArticle.value[key] === '') {
-      errorInput.value[key].isError = true
-      errorInput.value[key].message = 'Required'
-      valid = false
+    if (key !== 'additionalLink' && key !== 'descriptionHtml') {
+      if (newArticle.value[key] === '') {
+        errorInput.value[key].isError = true
+        errorInput.value[key].message = 'Required'
+        valid = false
+      } else {
+        errorInput.value[key].isError = false
+        errorInput.value[key].message = ''
+      }
     }
   }
   return valid
 }
 
-function ResetModel() {
-  newArticle.value.title = ''
-  newArticle.value.categoryId = ''
-  newArticle.value.description = ''
-  newArticle.value.article = ''
-  newArticle.value.addtionalLink = ''
+function ResetInput() {
+  for (const key in newArticle.value) {
+    newArticle.value[key] = ''
+  }
+
+  for (const key in errorInput.value) {
+    errorInput.value[key].isError = false
+    errorInput.value[key].message = ''
+  }
 }
 
-export { categoryRef, newArticle, errorInput, GetCategoryReference, HandlePublish }
+export { categoryRef, newArticle, errorInput, GetCategoryReference, HandlePublish, ResetInput }

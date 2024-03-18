@@ -11,28 +11,45 @@ import {
   newArticle,
   errorInput,
   GetCategoryReference,
-  HandlePublish
+  HandlePublish,
+  ResetInput
 } from '@/components/pages/content/postContents.js'
 
-import { onMounted } from 'vue'
+import { onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
+
+import { ConfirmSwal, ToastSwal } from '@/extension/SwalExt.js'
+import { useNotificationStore } from '@/stores/useNotification.js'
+
+const router = useRouter()
+const notificationStore = useNotificationStore()
 
 onMounted(async () => {
   await GetCategoryReference()
 })
-const router = useRouter()
+
+onUnmounted(() => {
+  ResetInput()
+})
 
 async function onPublish() {
-  const isSuccess = await HandlePublish()
+  const { isConfirmed } = await ConfirmSwal.fire({ text: 'your article will be published' })
+  if (!isConfirmed) return
 
-  if (isSuccess) {
-    await router.push('/content')
+  const result = await HandlePublish()
+  if (result === 400 || result === false) {
+    return await ToastSwal.fire({ icon: 'warning', text: 'Please re-check your input!!' })
+  }
+
+  if (result === true) {
+    notificationStore.set('add')
+    return await router.push('/content')
   }
 }
 </script>
 
 <template>
-  <div class="flex items-center align-middle gap-3 mb-3">
+  <div class="flex items-center align-middle gap-3 mb-3 bg-tea">
     <RouterLink :to="{ name: 'content' }">
       <p class="text-sm">Content List</p>
     </RouterLink>
@@ -67,10 +84,15 @@ async function onPublish() {
           v-model="newArticle.categoryId"
         />
 
-        <DescriptionEditor v-model="newArticle.description" :error="errorInput.description" />
+        <DescriptionEditor
+          v-model="newArticle.description"
+          v-model:html="newArticle.descriptionHtml"
+          :error="errorInput.description"
+        />
+
         <ArticleEditor v-model="newArticle.article" :error="errorInput.article" />
 
-        <TextForm :name="'Additional Link'" :required="false" v-model="newArticle.addtionalLink" />
+        <TextForm :name="'Additional Link'" :required="false" v-model="newArticle.additionalLink" />
       </form>
     </div>
   </div>
