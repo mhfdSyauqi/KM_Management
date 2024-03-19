@@ -7,7 +7,7 @@ using System.Net;
 
 namespace KM_Management.EndPoint.AssistantProfile.Command;
 
-public record PostAssistantProfileCommand(RequestPostAssistantProfile Argument) : ICommand;
+public record PostAssistantProfileCommand(RequestPostAssistantProfile Argument, string Host) : ICommand;
 
 public class PostAssistantProfileValidator : AbstractValidator<PostAssistantProfileCommand>
 {
@@ -17,23 +17,20 @@ public class PostAssistantProfileValidator : AbstractValidator<PostAssistantProf
     {
         _assistantProfileRepository = assistantProfileRepository;
 
-        RuleFor(key => key.Argument.AppName).Must(UniqueName).WithMessage("Name already used.");
-
         RuleFor(x => x.Argument.AppName)
             .NotEmpty().WithMessage("App Name is required.")
-            .Length(5, 150).WithMessage("App Name must be between 5 and 150 characters");
+            .MinimumLength(5).WithMessage("App Name must be at least 5 characters.")
+            .MaximumLength(150).WithMessage("App Name cannot exceed 150 characters.");
 
-        RuleFor(x => x.Argument.Files)
-            .NotEmpty().NotNull().WithMessage("Files are required.")
-            .Must(files => files != null).WithMessage("Files cannot be empty");
+        When(key => key.Argument.Files?.Count > 0, () =>
+        {
+            RuleFor(x => x.Argument.Files)
+                .Must(files => files.All(file => file.Length <= 2 * 1024 * 1024)).WithMessage("File size must be less than or equal to 2MB");
 
-        RuleFor(x => x.Argument.Files)
-            .Must(files => files.All(file => file.Length <= 2 * 1024 * 1024)).WithMessage("File size must be less than or equal to 2MB");
-
-        RuleFor(x => x.Argument.Files)
-            .Must(files => files.All(file => file.ContentType == "image/jpeg" || file.ContentType == "image/jpg" || file.ContentType == "image/png"))
-            .WithMessage("Files must be valid images (PNG or JPG)");
-
+            RuleFor(x => x.Argument.Files)
+                .Must(files => files.All(file => file.ContentType == "image/jpeg" || file.ContentType == "image/jpg" || file.ContentType == "image/png"))
+                .WithMessage("Files must be valid images (PNG or JPG)");
+        });
         
     }
 
@@ -74,7 +71,7 @@ public class PostAssistantProfileHandler : ICommandHandler<PostAssistantProfileC
             Files = request.Argument.Files.ToList() 
         };
 
-        await _assistantProfileRepository.PostAssistantProfileAsync(postAssistantProfile, cancellationToken);
+        await _assistantProfileRepository.PostAssistantProfileAsync(postAssistantProfile, request.Host, cancellationToken);
         return Result.Success();
     }
 }

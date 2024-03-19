@@ -19,7 +19,7 @@ public class AssistantProfileRepository : IAssistantProfileRepository
     {
         _connection = connnection;
         _uploadFolderPath = Path.Combine(webHostEnvironment.WebRootPath, "upload");
-        _uploadPathUrl = $"{webHostEnvironment.WebRootPath}/upload";
+        _uploadPathUrl = $"{""}/upload";
     }
 
     public async Task<EntityAssistantProfile?> GetAssistantProfileAsync(CancellationToken cancellationToken)
@@ -35,7 +35,7 @@ public class AssistantProfileRepository : IAssistantProfileRepository
         return result;
     }
 
-    public async Task<int> PostAssistantProfileAsync(EntityPostAssistantProfile postAssistantProfile, CancellationToken cancellationToken)
+    public async Task<int> PostAssistantProfileAsync(EntityPostAssistantProfile postAssistantProfile, string host, CancellationToken cancellationToken)
     {
         await using var connection = await _connection.CreateConnectionAsync();
 
@@ -58,7 +58,7 @@ public class AssistantProfileRepository : IAssistantProfileRepository
             var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(postAssistantProfile.Files[0].FileName);
             var fileNameWithTimestamp = $"{fileNameWithoutExtension}_{DateTime.Now:dd-MM-yyyy-HH-mm-ss}";
             var fileNameFullFormat = $"{fileNameWithTimestamp}{Path.GetExtension(postAssistantProfile.Files[0].FileName)}";
-            postAssistantProfile.AppImage = $"{_uploadPathUrl}/{fileNameFullFormat}";
+            postAssistantProfile.AppImage = $"{host}/Upload/{fileNameFullFormat}";
         }
 
         var storeProcedureName = "[dbo].[Update_Assistant_Profile]";
@@ -90,7 +90,7 @@ public interface IAssistantProfileRepository
 {
     // Async Fn
     Task<EntityAssistantProfile?> GetAssistantProfileAsync(CancellationToken cancellationToken);
-    Task<int> PostAssistantProfileAsync(EntityPostAssistantProfile postAssistantProfile, CancellationToken cancellationToken);
+    Task<int> PostAssistantProfileAsync(EntityPostAssistantProfile postAssistantProfile, string host, CancellationToken cancellationToken);
     // Sync Fn
     public bool VerifyAvailableName(string name);
 }
