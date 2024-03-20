@@ -4,9 +4,10 @@ import IconExpand from '@/components/icons/IconExpand.vue'
 import IconDropdown from '@/components/icons/IconDropdown.vue'
 
 import { RouterLink } from 'vue-router'
-import { ref } from 'vue'
+import { useStorage } from '@vueuse/core'
+import { onBeforeMount } from 'vue'
 
-const menus = ref([
+const adminDefault = [
   {
     name: 'Dashboard',
     sub: [
@@ -48,10 +49,24 @@ const menus = ref([
     icon: 'article',
     active: false
   }
-])
+]
+
+const adminMenu = useStorage('appMenu', {
+  type: 'admin',
+  menus: adminDefault
+})
+
+onBeforeMount(() => {
+  if (adminMenu.value.type !== 'admin') {
+    adminMenu.value = {
+      type: 'admin',
+      menus: adminDefault
+    }
+  }
+})
 
 function setMenu(menu) {
-  menus.value.map((key) => {
+  adminMenu.value.menus.map((key) => {
     key.active = key.name === menu
     key.sub?.map((item) => (item.active = false))
     if ('expand' in key) {
@@ -61,7 +76,7 @@ function setMenu(menu) {
 }
 
 function toggleExpand(menu) {
-  menus.value.map((key) => {
+  adminMenu.value.menus.map((key) => {
     if (key.name === menu && 'expand' in key) {
       key.expand = !key.expand
     } else if (key.name !== menu && 'expand' in key) {
@@ -71,7 +86,7 @@ function toggleExpand(menu) {
 }
 
 function setSub(sub, menu) {
-  menus.value.map((key) => {
+  adminMenu.value.menus.map((key) => {
     key.sub?.map((item) => (item.active = item.name === sub))
     key.active = key.name === menu
   })
@@ -80,7 +95,7 @@ function setSub(sub, menu) {
 
 <template>
   <div class="mt-12 flex flex-col gap-2">
-    <template v-for="menu in menus" :key="menu.name">
+    <template v-for="menu in adminMenu.menus" :key="menu.name">
       <div
         class="w-full rounded-2xl py-2 px-3.5 cursor-pointer select-none"
         :class="[menu.active ? 'bg-green-800' : 'hover:bg-[#b1d3b9]']"
