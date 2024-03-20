@@ -9,54 +9,57 @@ public record GetContentsQuery(RequestContent Argument) : IQuery<ResponseContent
 
 public class GetContentsValidator : AbstractValidator<GetContentsQuery>
 {
-    public GetContentsValidator()
-    {
+	public GetContentsValidator()
+	{
 
-    }
+	}
 }
 
 public class GetContentsHandler : IQueryHandler<GetContentsQuery, ResponseContent>
 {
-    private readonly IContentRepository _contentRepository;
-    private readonly IValidator<GetContentsQuery> _validator;
+	private readonly IContentRepository _contentRepository;
+	private readonly IValidator<GetContentsQuery> _validator;
 
-    public GetContentsHandler(IContentRepository contentRepository, IValidator<GetContentsQuery> validator)
-    {
-        _contentRepository = contentRepository;
-        _validator = validator;
-    }
+	public GetContentsHandler(IContentRepository contentRepository, IValidator<GetContentsQuery> validator)
+	{
+		_contentRepository = contentRepository;
+		_validator = validator;
+	}
 
-    public async Task<Result<ResponseContent>> Handle(GetContentsQuery request, CancellationToken cancellationToken)
-    {
-        await _validator.ValidateAndThrowAsync(request, cancellationToken);
+	public async Task<Result<ResponseContent>> Handle(GetContentsQuery request, CancellationToken cancellationToken)
+	{
+		await _validator.ValidateAndThrowAsync(request, cancellationToken);
 
-        var filter = new FilterContent()
-        {
-            Title_Or_Category = request.Argument.Searched_Title_Or_Category,
-            Article_Status = request.Argument.Searched_Article_Status?.Count > 1 ? null : request.Argument.Searched_Article_Status?.First(),
-            Category_Status = request.Argument.Inactive_Category.HasValue ? false : null,
-            Current_Page = request.Argument.Searched_Page,
-        };
+		var filter = new FilterContent()
+		{
+			Title_Or_Category = request.Argument.Searched_Title_Or_Category,
+			Article_Status = request.Argument.Searched_Article_Status?.Count > 1 ? null : request.Argument.Searched_Article_Status?.First(),
+			Category_Status = request.Argument.Inactive_Category.HasValue ? false : null,
+			Current_Page = request.Argument.Searched_Page,
+			Page_Limit = request.Argument.Limit_Page,
+			Sort_Order = request.Argument.Order_Sort,
+			Sort_Column = request.Argument.Column_Sort
+		};
 
-        var contents = await _contentRepository.GetContentAsync(filter, cancellationToken);
+		var contents = await _contentRepository.GetContentAsync(filter, cancellationToken);
 
-        var response = new ResponseContent()
-        {
-            Items = contents.Select(col => new Contents()
-            {
-                Id = col.Uid.ToString("N"),
-                Title = col.Title,
-                Category = col.Category,
-                Article_Status = col.Article_Status,
-                Category_Status = col.Category_Status
-            }).ToList(),
-            Total_Row = contents.FirstOrDefault()?.Total_Row,
-            Curr_Page = contents.FirstOrDefault()?.Curr_Page,
-            Next_Page = contents.FirstOrDefault()?.Next_Page,
-            Prev_Page = contents.FirstOrDefault()?.Prev_Page,
-            Max_Page = contents.FirstOrDefault()?.Max_Page,
-        };
+		var response = new ResponseContent()
+		{
+			Items = contents.Select(col => new Contents()
+			{
+				Id = col.Uid.ToString("N"),
+				Title = col.Title,
+				Category = col.Category,
+				Article_Status = col.Article_Status,
+				Category_Status = col.Category_Status
+			}).ToList(),
+			Total_Row = contents.FirstOrDefault()?.Total_Row,
+			Curr_Page = contents.FirstOrDefault()?.Curr_Page,
+			Next_Page = contents.FirstOrDefault()?.Next_Page,
+			Prev_Page = contents.FirstOrDefault()?.Prev_Page,
+			Max_Page = contents.FirstOrDefault()?.Max_Page,
+		};
 
-        return Result.Success(response);
-    }
+		return Result.Success(response);
+	}
 }

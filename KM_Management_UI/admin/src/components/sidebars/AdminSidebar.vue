@@ -3,7 +3,7 @@ import IconSidebar from '@/components/sidebars/IconSidebar.vue'
 import IconExpand from '@/components/icons/IconExpand.vue'
 import IconDropdown from '@/components/icons/IconDropdown.vue'
 
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 import { useStorage } from '@vueuse/core'
 import { onBeforeMount } from 'vue'
 
@@ -56,12 +56,15 @@ const adminMenu = useStorage('appMenu', {
   menus: adminDefault
 })
 
+const router = useRouter()
+
 onBeforeMount(() => {
   if (adminMenu.value.type !== 'admin') {
     adminMenu.value = {
       type: 'admin',
       menus: adminDefault
     }
+    router.push('/')
   }
 })
 

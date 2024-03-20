@@ -3,7 +3,7 @@ import IconSidebar from '@/components/sidebars/IconSidebar.vue'
 import IconExpand from '@/components/icons/IconExpand.vue'
 import IconDropdown from '@/components/icons/IconDropdown.vue'
 
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 import { useStorage } from '@vueuse/core'
 import { onBeforeMount } from 'vue'
 
@@ -85,12 +85,16 @@ const superMenu = useStorage('appMenu', {
   menus: superDefault
 })
 
+const router = useRouter()
+
 onBeforeMount(() => {
   if (superMenu.value.type !== 'super') {
     superMenu.value = {
       type: 'super',
       menus: superDefault
     }
+
+    router.push('/')
   }
 })
 

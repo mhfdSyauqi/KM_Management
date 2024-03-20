@@ -3,7 +3,7 @@ import IconSidebar from '@/components/sidebars/IconSidebar.vue'
 import IconExpand from '@/components/icons/IconExpand.vue'
 import IconDropdown from '@/components/icons/IconDropdown.vue'
 
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 import { useStorage } from '@vueuse/core'
 import { onBeforeMount } from 'vue'
 
@@ -32,12 +32,15 @@ const userMenu = useStorage('appMenu', {
   menus: userDefault
 })
 
+const router = useRouter()
+
 onBeforeMount(() => {
   if (userMenu.value.type !== 'user') {
     userMenu.value = {
       type: 'user',
       menus: userDefault
     }
+    router.push('/')
   }
 })
 

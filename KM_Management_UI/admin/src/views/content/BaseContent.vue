@@ -13,7 +13,9 @@ import {
   GetContentsByFilter,
   HandleSearch,
   HandleCheck,
-  HandlePagination
+  HandlePagination,
+  HandlingSort,
+  HandlingPageLimit
 } from '@/components/pages/content/useContents.js'
 
 import { onMounted, ref } from 'vue'
@@ -41,6 +43,8 @@ const statusModel = ref({
   Published: false,
   Inactive: false
 })
+
+const pageLimit = ref(10)
 
 async function onCheck(e) {
   const checkValue = e.target.value
@@ -108,7 +112,7 @@ async function onCheck(e) {
           <th class="w-[35%]">
             <div class="flex gap-1 items-center">
               <p class="leading-4 text-base font-medium">Title</p>
-              <button>
+              <button @click="HandlingSort('Title')">
                 <IconSort />
               </button>
             </div>
@@ -116,7 +120,7 @@ async function onCheck(e) {
           <th class="w-[35%]">
             <div class="flex gap-1 items-center">
               <p class="leading-4 text-base font-medium">Category</p>
-              <button>
+              <button @click="HandlingSort('Category')">
                 <IconSort />
               </button>
             </div>
@@ -124,7 +128,7 @@ async function onCheck(e) {
           <th class="w-[25%]">
             <div class="flex gap-1 items-center">
               <p class="leading-4 text-base font-medium">Status</p>
-              <button>
+              <button @click="HandlingSort('Status')">
                 <IconSort />
               </button>
             </div>
@@ -186,9 +190,22 @@ async function onCheck(e) {
       v-show="contents.length > 0"
       class="flex flex-row justify-between items-start md:items-center space-y-5 md:space-y-0 p-4"
     >
-      <span class="text-sm text-orange-500">
-        {{ navigation.show }}
-      </span>
+      <div class="space-x-2">
+        <select
+          class="border rounded border-orange-500"
+          v-model="pageLimit"
+          @change="HandlingPageLimit(pageLimit)"
+        >
+          <option :value="10">10</option>
+          <option :value="20">20</option>
+          <option :value="50">50</option>
+        </select>
+
+        <span class="text-sm text-orange-500">
+          {{ navigation.show }}
+        </span>
+      </div>
+
       <ul class="inline-flex items-stretch -space-x-px">
         <li v-show="navigation.current > 1">
           <PreviousButton @click="HandlePagination(1)" />
