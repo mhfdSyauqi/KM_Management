@@ -19,10 +19,14 @@ public class PatchMessageValidator : AbstractValidator<PatchMessageCommand>
     {
         _messageRepository = MessageRepository;
 
-        RuleFor(key => key.Argument.Contents).NotEmpty().NotNull();
-        RuleFor(key => key.Argument.Contents).Length(5, 150).WithMessage("App Name must be between 5 and 150 characters");
-        RuleFor(key => key.Argument.Contents)
-            .Must(ValidateInput).WithMessage("Invalid Format! Please use the following format: '@username @fullname @category");
+        RuleFor(key => key.Argument.Contents).NotEmpty().WithMessage("Message must not be empty.");
+        When(key => key.Argument.Contents.Length > 0, () =>
+        {
+            RuleFor(key => key.Argument.Contents).MinimumLength(5).WithMessage("Message must be at least 5 characters.")
+                .MaximumLength(150).WithMessage("Message cannot exceed 150 characters.");
+            RuleFor(key => key.Argument.Contents)
+                .Must(ValidateInput).WithMessage("Invalid Format! Please use the following format: '@username @fullname @category");
+        });
     }
 
     private bool ValidateInput(string contents)
