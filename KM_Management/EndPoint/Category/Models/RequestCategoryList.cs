@@ -2,7 +2,7 @@
 {
     public class RequestCategoryList
     {
-        public Guid? Uid_Reference { get; set; }
+        public string? Uid_Reference { get; set; }
         public int Layer { get; set; }
         public bool? Is_Active { get; set; }
     }

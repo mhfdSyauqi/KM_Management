@@ -28,13 +28,17 @@ public class GetCategoryListHandler : IQueryHandler<GetCategoryListQuery, List<R
     {
         var filter = new FilterCategoryList()
         {
-            Uid_Reference = request.Argument.Uid_Reference,
+            Uid_Reference = request.Argument.Uid_Reference, 
             Is_Active = request.Argument.Is_Active,
             Layer = request.Argument.Layer
 
         };
 
-        var categories = await _categoriesRepository.GetCategoryListAsync(filter.Uid_Reference, filter.Layer, filter.Is_Active, cancellationToken);
+        Guid? uidReference = !string.IsNullOrEmpty(filter.Uid_Reference)
+                         ? Guid.Parse(request.Argument.Uid_Reference)
+                         : (Guid?)null;
+
+        var categories = await _categoriesRepository.GetCategoryListAsync(uidReference, filter.Layer, filter.Is_Active, cancellationToken);;
 
         if (categories == null)
         {
