@@ -68,6 +68,16 @@ const router = createRouter({
           component: () => import('@/views/categories/list/BaseListCategories.vue')
         },
         {
+          path: ':secondLayer',
+          name: 'categories-second-layer',
+          component: () => import('@/views/categories/list/ListCategoriesSecondLayer.vue')
+        },
+        {
+          path: ':secondLayer/:thirdLayer',
+          name: 'categories-third-layer',
+          component: () => import('@/views/categories/list/ListCategoriesThirdLayer.vue')
+        },
+        {
           path: 'top',
           name: 'top-categories',
           component: () => import('@/views/categories/top/BaseTopCategories.vue')
