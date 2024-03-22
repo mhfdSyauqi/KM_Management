@@ -19,13 +19,23 @@ public class PatchCategoryListValidator : AbstractValidator<PatchCategoryListCom
     {
         _categoryRepository = categoryRepository;
 
+        
         RuleFor(key => key.Argument.Name)
                 .NotEmpty().WithMessage("Category Name Cannot be Null or Empty")
                 .NotNull().WithMessage("Category Name Cannot be Null or Empty")
                 .MaximumLength(120).WithMessage("Category Name must be max 120 characters");
-    
+        
+        RuleFor(key => key.Argument).Must((Category) => UniqueCategoryName(Category.Name, Category.Uid)).WithMessage("Category Name Already Taken!");
+
     }
-    
+
+    private bool UniqueCategoryName(string name, string uid )
+    {
+        bool isValidId = Guid.TryParse(uid, out Guid result);
+        if (!isValidId) return false;
+        return _categoryRepository.VerifyAvailableCategoryName(name, result);
+    }
+
 }
 
 public class PatchCategoryListHandler : ICommandHandler<PatchCategoryListCommand>

@@ -181,6 +181,21 @@ public class CategoryRepository : ICategoryRepository
 
         return result == null;
     }
+
+    public bool VerifyAvailableCategoryName(string Name, Guid categoryUid)
+    {
+        using var connection = _connection.CreateConnecton();
+
+        var query = @"
+             SELECT [name] FROM [dbo].[Bot_Category] WHERE [name] = @Name
+             AND [uid] <> @Id
+        ";
+
+        var command = new CommandDefinition(query, new { Name = Name, Id= categoryUid });
+        var result = connection.QueryFirstOrDefault<string>(command);
+
+        return result == null;
+    }
 }
 
 public interface ICategoryRepository
@@ -199,5 +214,6 @@ public interface ICategoryRepository
     Task<int> PatchCategoryTopIssueSelectedSequenceAsync(EntityPatchCategoryTopIssueSelectedSequence patchSequence, CancellationToken cancellationToken);
     // Sync Fn
     bool VerifyAvailableCategoryName(string name);
+    bool VerifyAvailableCategoryName(string name, Guid categoryUid);
     bool VerifyValidCategory(Guid categoryId);
 }
