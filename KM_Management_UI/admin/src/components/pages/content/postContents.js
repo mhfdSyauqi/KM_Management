@@ -32,11 +32,12 @@ async function GetCategoryReference() {
   }
 }
 
-async function HandlePublish() {
+async function HandleSave(action) {
   const isValid = ValidateEmptyInput()
   if (!isValid) return false
 
   const postArticle = await PostContentAsync(
+    action,
     newArticle.value.title,
     newArticle.value.categoryId,
     newArticle.value.descriptionHtml,
@@ -85,4 +86,4 @@ function ResetInput() {
   }
 }
 
-export { categoryRef, newArticle, errorInput, GetCategoryReference, HandlePublish, ResetInput }
+export { categoryRef, newArticle, errorInput, GetCategoryReference, HandleSave, ResetInput }

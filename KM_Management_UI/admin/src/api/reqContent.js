@@ -1,6 +1,13 @@
 import { useRequest } from '@/api/base/useRequest.js'
 
-export async function GetGeneralContentsAsync(title_or_category = null, status, page = 1) {
+export async function GetGeneralContentsAsync(
+  title_or_category = null,
+  status,
+  page = 1,
+  limit_page = 10,
+  sort_order = null,
+  sort_col = null
+) {
   const articleStatus = status.filter((item) => item !== 'Inactive')
   const isInactive = status.includes('Inactive')
 
@@ -8,7 +15,10 @@ export async function GetGeneralContentsAsync(title_or_category = null, status, 
     Searched_Title_Or_Category: title_or_category,
     Searched_Article_Status: articleStatus.length === 0 ? null : articleStatus,
     Inactive_Category: !isInactive ? null : isInactive,
-    Searched_Page: page
+    Searched_Page: page,
+    Limit_Page: limit_page,
+    Order_Sort: sort_order,
+    Column_Sort: sort_col
   })
 
   const result = {
@@ -49,8 +59,17 @@ export async function GetDetailContentAsync(id) {
 
   return result
 }
-export async function PostContentAsync(title, categoryId, descHtml, desc, article, additional) {
+export async function PostContentAsync(
+  action,
+  title,
+  categoryId,
+  descHtml,
+  desc,
+  article,
+  additional
+) {
   const Payload = JSON.stringify({
+    Action: action,
     Title: title,
     Category_Id: categoryId,
     Description_Html: descHtml,
@@ -73,6 +92,7 @@ export async function PostContentAsync(title, categoryId, descHtml, desc, articl
 }
 
 export async function PatchContentAsync(
+  action,
   id,
   newTitle,
   newCategoryId,
@@ -82,6 +102,7 @@ export async function PatchContentAsync(
   newAdditional
 ) {
   const Payload = JSON.stringify({
+    Action: action,
     Id: id,
     Title: newTitle,
     Category_Id: newCategoryId,

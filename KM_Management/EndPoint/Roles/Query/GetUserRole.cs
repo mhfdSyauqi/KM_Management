@@ -17,6 +17,7 @@ public class GetUserRoleHandler : IQueryHandler<GetUserRoleQuery, ResponseUserRo
             Role = "Super"
         };
 
+
 		return Result.Success(response);
 	}
 }
