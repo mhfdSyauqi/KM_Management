@@ -18,9 +18,9 @@ public class PostAssistantProfileValidator : AbstractValidator<PostAssistantProf
         _assistantProfileRepository = assistantProfileRepository;
 
         RuleFor(x => x.Argument.AppName)
-            .NotEmpty().WithMessage("App Name is required.")
-            .MinimumLength(5).WithMessage("App Name must be at least 5 characters.")
-            .MaximumLength(150).WithMessage("App Name cannot exceed 150 characters.");
+            .NotEmpty().WithMessage("Virtual Name is required.")
+            .MinimumLength(5).WithMessage("Virtual Name must be at least 5 characters.")
+            .MaximumLength(150).WithMessage("Virtual Name cannot exceed 150 characters.");
 
         When(key => key.Argument.Files?.Count > 0, () =>
         {
@@ -66,9 +66,9 @@ public class PostAssistantProfileHandler : ICommandHandler<PostAssistantProfileC
 
         var postAssistantProfile = new EntityPostAssistantProfile()
         {
-            AppImage = request.Argument.AppImage,
+            AppImage = request?.Argument?.AppImage,
             AppName = request.Argument.AppName,
-            Files = request.Argument.Files.ToList() 
+            Files = request?.Argument?.Files?.ToList() 
         };
 
         await _assistantProfileRepository.PostAssistantProfileAsync(postAssistantProfile, request.Host, cancellationToken);

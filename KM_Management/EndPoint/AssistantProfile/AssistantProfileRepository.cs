@@ -39,6 +39,19 @@ public class AssistantProfileRepository : IAssistantProfileRepository
     {
         await using var connection = await _connection.CreateConnectionAsync();
 
+        int validFile = 0;
+
+        if (postAssistantProfile.Files == null || postAssistantProfile.Files.Count == 0)
+        {
+            validFile = 0;
+        }
+        else {
+            validFile = postAssistantProfile.Files.Count();
+        }
+
+        if (validFile>0) {
+        
+
         foreach (var file in postAssistantProfile.Files)
         {
             var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(file.FileName);
@@ -52,8 +65,9 @@ public class AssistantProfileRepository : IAssistantProfileRepository
                 file.CopyTo(stream);
             }
         }
+        }
 
-        if (postAssistantProfile.Files.Count > 0)
+        if (validFile > 0)
         {
             var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(postAssistantProfile.Files[0].FileName);
             var fileNameWithTimestamp = $"{fileNameWithoutExtension}_{DateTime.Now:dd-MM-yyyy-HH-mm-ss}";
@@ -62,7 +76,7 @@ public class AssistantProfileRepository : IAssistantProfileRepository
         }
 
         var storeProcedureName = "[dbo].[Update_Assistant_Profile]";
-        var parameters = new { AppName = postAssistantProfile.AppName, AppImage = postAssistantProfile.AppImage };
+        var parameters = new { AppName = postAssistantProfile?.AppName, AppImage = postAssistantProfile?.AppImage };
         var command = new CommandDefinition(storeProcedureName, parameters, commandType: System.Data.CommandType.StoredProcedure, cancellationToken: cancellationToken);
         var result = await connection.ExecuteAsync(command);
         return result;
