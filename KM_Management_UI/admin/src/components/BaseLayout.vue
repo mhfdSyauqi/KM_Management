@@ -22,7 +22,7 @@ const userInfo = route.meta.userInfo
       <h4 class="font-bold">Hi, {{ userInfo.userName }}</h4>
     </section>
     <section class="bg-gray-100 basis-[92svh] w-[83%] p-5 max-h-[92svh] overflow-y-auto">
-      <RouterView />
+      <RouterView :key="route.fullPath" />
     </section>
   </main>
 

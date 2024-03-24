@@ -192,15 +192,11 @@ onMounted(() => {
             </div>
             <div v-for="(search, index) in searchCategories" :key="index">
               <RouterLink
+                v-if="router.currentRoute.value.name !== 'categories'"
                 :to="{ name: 'categories' }"
                 @click="navigateToSearchFirst(search.uid)"
                 class="flex w-[100%]"
               >
-                <!-- <router-link
-              @click="navigateToSearchFirst(search.uid)"
-              class="flex w-[100%]"
-              :to="`/categories/list`"
-            > -->
                 <span
                   :class="[
                     search.is_active == true
@@ -213,18 +209,36 @@ onMounted(() => {
                 >
                   {{ search.name }}
                 </span>
-                <!-- </router-link> -->
               </RouterLink>
+              <div
+                v-else
+                class="flex w-[100%]"
+                @click="navigateToSearchFirst(search.uid)"
+                style="cursor: pointer"
+              >
+                <span
+                  :class="[
+                    search.is_active ? 'text-[14px] mr-2 ' : 'text-[14px] mr-2 line-through ',
+                    'bg-orange-100 w-full p-1 pl-2 pr-2 text-gray-500 hover:bg-orange-200 hover:text-orange-500',
+                    index === 0 ? 'rounded-t-xl' : '',
+                    index === searchCategories.length - 1 ? 'rounded-b-xl' : ''
+                  ]"
+                >
+                  {{ search.name }}
+                </span>
+              </div>
             </div>
             <div class="pb-4 pt-4">
               <span v-if="secondResult.length > 0" class="text-orange-500">Layer 2</span>
             </div>
             <div v-for="(secondLayer, secondIndex) in secondResult" :key="secondIndex">
               <RouterLink
+                v-if="router.currentRoute.value.params !== secondLayer.first_parent_name"
                 :to="{
                   name: 'categories-second-layer',
                   params: { secondLayer: secondLayer.first_parent_name }
                 }"
+                :exact="true"
                 @click="
                   navigateToSearchSecond(
                     secondLayer.first_parent_name,
@@ -233,6 +247,7 @@ onMounted(() => {
                     secondLayer.first_parent_active
                   )
                 "
+                replace
                 class="flex w-[100%]"
               >
                 <span
@@ -248,12 +263,41 @@ onMounted(() => {
                   {{ secondLayer.name }}
                 </span>
               </RouterLink>
+              <div
+                class="flex w-[100%]"
+                v-else
+                @click="
+                  navigateToSearchSecond(
+                    secondLayer.first_parent_name,
+                    secondLayer.first_parent_uid,
+                    secondLayer.uid,
+                    secondLayer.first_parent_active
+                  )
+                "
+              >
+                <span
+                  :class="[
+                    secondLayer.is_active == true
+                      ? 'text-[14px] mr-2 '
+                      : 'text-[14px] mr-2 line-through ',
+                    'bg-orange-100 w-full p-1 pl-2 pr-2 text-gray-500 hover:bg-orange-200 hover:text-orange-500',
+                    secondIndex === 0 ? 'rounded-t-xl' : '',
+                    secondIndex === secondResult.length - 1 ? 'rounded-b-xl' : ''
+                  ]"
+                >
+                  {{ secondLayer.name }}
+                </span>
+              </div>
             </div>
             <div class="pb-4 pt-4">
               <span v-if="thirdResult.length > 0" class="text-orange-500">Layer 3</span>
             </div>
             <div v-for="(thirdLayer, thirdIndex) in thirdResult" :key="thirdIndex">
               <RouterLink
+                v-if="
+                  router.currentRoute.value.params.thirdLayer !== thirdLayer.second_parent_name &&
+                  router.currentRoute.value.params.secondLayer !== thirdLayer.first_parent_name
+                "
                 :to="{
                   name: 'categories-third-layer',
                   params: {
@@ -287,6 +331,34 @@ onMounted(() => {
                   {{ thirdLayer.name }}
                 </span>
               </RouterLink>
+              <div
+                @click="
+                  navigateToSearchThird(
+                    thirdLayer.first_parent_name,
+                    thirdLayer.second_parent_name,
+                    thirdLayer.first_parent_uid,
+                    thirdLayer.second_parent_uid,
+                    thirdLayer.uid,
+                    thirdLayer.first_parent_active,
+                    thirdLayer.second_parent_active
+                  )
+                "
+                v-else
+                class="flex w-[100%]"
+              >
+                <span
+                  :class="[
+                    thirdLayer.is_active == true
+                      ? 'text-[14px] mr-2 '
+                      : 'text-[14px] mr-2 line-through ',
+                    'bg-orange-100 w-full p-1 pl-2 pr-2 text-gray-500 hover:bg-orange-200 hover:text-orange-500',
+                    thirdIndex === 0 ? 'rounded-t-xl' : '',
+                    thirdIndex === thirdResult.length - 1 ? 'rounded-b-xl' : ''
+                  ]"
+                >
+                  {{ thirdLayer.name }}
+                </span>
+              </div>
             </div>
           </div>
         </div>

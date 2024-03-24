@@ -42,7 +42,7 @@ const selectedEditUid = ref(null)
 const selectedCreateCategory = ref(null)
 const isActiveYesToggle = ref(true)
 const isActiveNoToggle = ref(true)
-const hightLightUid = ref(storeCategories.getHightlightUid)
+const hightLightUid = ref()
 const create_By = ref('dummyData')
 const modified_By = ref('dummyData')
 const errorAddCategory = ref('')
@@ -231,6 +231,15 @@ const groupedFirstLayer = computed(() => {
   // Split groups with more than 4 items into smaller groups
 
   return groupedArray
+})
+
+const getHightlight = async () => {
+  hightLightUid.value = await storeCategories.getHightlightUid
+  closeSearchModal()
+}
+
+watchEffect(() => {
+  getHightlight()
 })
 
 onMounted(() => {

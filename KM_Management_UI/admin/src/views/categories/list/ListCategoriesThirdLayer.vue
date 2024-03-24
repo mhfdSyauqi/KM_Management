@@ -6,7 +6,7 @@ import {
   category_list,
   filter
 } from '@/components/pages/category/useCategoryList.js'
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watchEffect } from 'vue'
 import SearchModalCategories from '@/views/categories/list/SearchModalCategories.vue'
 import { useRouter } from 'vue-router'
 import ContainerModal from '@/components/modal/ContainerModal.vue'
@@ -44,7 +44,7 @@ const selectedCreateCategory = ref(null)
 const isToggledEdit = ref(false)
 const isToggledCreate = ref(false)
 const isSearchModalOpen = ref(false)
-const hightLightUid = ref(storeCategories.getHightlightUid)
+const hightLightUid = ref()
 const isActiveYesToggle = ref(true)
 const isActiveNoToggle = ref(true)
 const create_By = ref('dummyData')
@@ -248,8 +248,17 @@ const groupedThirdLayer = computed(() => {
   return groupedArray
 })
 
+const getHightlight = async () => {
+  hightLightUid.value = await storeCategories.getHightlightUid
+  closeSearchModal()
+}
+
 onMounted(() => {
   checkBoxChange()
+  getHightlight()
+})
+watchEffect(() => {
+  getHightlight()
 })
 </script>
 
