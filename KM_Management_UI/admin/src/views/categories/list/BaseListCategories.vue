@@ -255,7 +255,7 @@ onMounted(() => {
       <div class="flex items-end space-x-2">
         <button
           @click="openSearchModal"
-          class="min-w-40 flex items-center rounded-3xl border-2 p-2 px-4 gap-2 text-green-700 bg-white border-green-700 hover:border-white hover:bg-teal-200 active:scale-95"
+          class="min-w-40 flex items-center rounded-3xl border p-2 px-4 gap-2 text-green-700 bg-white border-green-700 hover:border-white hover:bg-teal-200 active:scale-95"
         >
           <IconSearch />
           Search
