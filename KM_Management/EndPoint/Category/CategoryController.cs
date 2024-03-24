@@ -89,8 +89,9 @@ public class CategoryController : MyAPIController
 
     [HttpPost]
     [Route("AddAllSelectedTopIssue")]
-    public async Task<IActionResult> PostCategoryTopIssueAllSelected([FromBody] RequestPostCategoryTopIssueAllSelected request, CancellationToken cancellationToken)
+    public async Task<IActionResult> PostCategoryTopIssueAllSelected(CancellationToken cancellationToken)
     {
+        var request = new RequestPostCategoryTopIssueAllSelected();
         string computerName = User.Identity?.Name ?? "Error\\NotAuthUser";
         request.Create_By = computerName.Split("\\")[1];
         request.Create_At = DateTime.Now;
@@ -113,8 +114,9 @@ public class CategoryController : MyAPIController
 
     [HttpPatch]
     [Route("RemoveAllSelectedTopIssue")]
-    public async Task<IActionResult> DeleteCategoryTopIssueAllSelected([FromBody] RequestDeleteCategoryTopIssueAllSelected request, CancellationToken cancellationToken)
+    public async Task<IActionResult> DeleteCategoryTopIssueAllSelected( CancellationToken cancellationToken)
     {
+        var request = new RequestDeleteCategoryTopIssueAllSelected();
         string computerName = User.Identity?.Name ?? "Error\\NotAuthUser";
         request.Modified_By = computerName.Split("\\")[1];
         request.Modified_At = DateTime.Now;
