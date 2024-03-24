@@ -276,7 +276,7 @@ onMounted(() => {
     <div class="flex gap-2.5 justify-between border-b-2 py-5 px-8">
       <div class="flex items-start space-x-2">
         <h1 class="basis-[85%] text-2xl font-bold text-green-800">Categories List</h1>
-        <span class="rounded-xl min-w-14 px-2 py-1 bg-blue-50 text-xs"> Layer 2 </span>
+        <span class="rounded-xl min-w-14 px-2 py-1 bg-blue-50 text-[10px]"> Layer 2 </span>
         <span
           v-if="firstActive === false"
           class="rounded-xl min-w-fit px-2 py-1 bg-red-200 text-red-700 text-[10px]"
@@ -450,7 +450,7 @@ onMounted(() => {
         <h1>
           <span class="font-semibold text-2xl">New Categories</span>
         </h1>
-        <span class="rounded-3xl pl-2 pr-2 pb-1 pt-1 bg-blue-50 text-[12px] text-gray-500"
+        <span class="rounded-3xl pl-2 pr-2 pb-1 pt-1 bg-blue-50 text-gray-500 text-[10px]"
           >Layer 2</span
         >
       </div>
@@ -538,7 +538,7 @@ onMounted(() => {
         <h1>
           <span class="font-semibold text-2xl">Edit Categories</span>
         </h1>
-        <span class="rounded-3xl pl-2 pr-2 pb-1 pt-1 bg-blue-50 text-[12px] text-gray-500"
+        <span class="rounded-3xl pl-2 pr-2 pb-1 pt-1 bg-blue-50 text-[10px] text-gray-500"
           >Layer 2</span
         >
       </div>

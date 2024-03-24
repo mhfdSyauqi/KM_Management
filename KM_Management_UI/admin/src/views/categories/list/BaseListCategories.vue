@@ -250,7 +250,7 @@ onMounted(() => {
     <div class="flex gap-2.5 justify-between border-b-2 py-5 px-8">
       <div class="flex items-start space-x-2">
         <h1 class="basis-[85%] text-2xl font-bold text-green-800">Categories List</h1>
-        <span class="rounded-xl min-w-14 px-2 py-1 bg-blue-50 text-xs"> Layer 1 </span>
+        <span class="rounded-xl min-w-14 px-2 py-1 bg-blue-50 text-[10px]"> Layer 1 </span>
       </div>
       <div class="flex items-end space-x-2">
         <button
@@ -377,7 +377,7 @@ onMounted(() => {
         <h1>
           <span class="font-semibold text-2xl">New Categories</span>
         </h1>
-        <span class="rounded-3xl pl-2 pr-2 pb-1 pt-1 bg-blue-50 text-[12px] text-gray-500"
+        <span class="rounded-3xl pl-2 pr-2 pb-1 pt-1 bg-blue-50 text-[10px] text-gray-500"
           >Layer 1</span
         >
       </div>
@@ -457,7 +457,7 @@ onMounted(() => {
         <h1>
           <span class="font-semibold text-2xl">Edit Categories</span>
         </h1>
-        <span class="rounded-3xl pl-2 pr-2 pb-1 pt-1 bg-blue-50 text-[12px] text-gray-500"
+        <span class="rounded-3xl pl-2 pr-2 pb-1 pt-1 bg-blue-50 text-[10px] text-gray-500"
           >Layer 1</span
         >
       </div>
