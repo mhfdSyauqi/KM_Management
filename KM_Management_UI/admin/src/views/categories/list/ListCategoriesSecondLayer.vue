@@ -205,22 +205,6 @@ const addNewCategory = async (name, is_Active) => {
         confirmButtonColor: '#2c7b4b'
       })
     }
-    // const newMessage = {
-    //   name: name,
-    //   layer: 2,
-    //   uid_Reference: firstUid.value,
-    //   is_Active: is_Active,
-    //   create_by: create_By.value,
-    // };
-    // console.log(newMessage);
-    // await storeContent.addNewCategory(newMessage);
-    // if (storeContent.getErrorMessageAddCategory) {
-    //   errorAddCategory.value = storeContent.getErrorMessageAddCategory;
-    // } else {
-    //   checkBoxChange();
-    //   selectedCreateCategory.value = "";
-    //   closeCreateModal();
-    // }
   } catch (error) {
     console.error('Terjadi Kesalahan :', error)
   }

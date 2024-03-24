@@ -138,21 +138,6 @@ const updateCategory = async (uid, name, is_Active) => {
         confirmButtonColor: '#2c7b4b'
       })
     }
-
-    // const newMessage = {
-    //   uid: uid,
-    //   name: name,
-    //   is_Active: is_Active,
-    //   modified_By: modified_By.value,
-    // };
-    // await storeContent.updateCategory(newMessage);
-    // if (storeContent.getErrorMessageUpdateCategory) {
-    //   errorUpdateCategory.value = storeContent.getErrorMessageUpdateCategory;
-    // } else {
-    //   checkBoxChange();
-    //   selectedCreateCategory.value = "";
-    //   closeEditModal();
-    // }
   } catch (error) {
     console.error('Terjadi Kesalahan :', error)
   }
@@ -161,13 +146,7 @@ const updateCategory = async (uid, name, is_Active) => {
 const addNewCategory = async (name, is_Active) => {
   try {
     errorAddCategory.value = ''
-    // const newMessage = {
-    //   name: name,
-    //   layer: 1,
-    //   uid_Reference: null,
-    //   is_Active: is_Active,
-    //   create_by: create_By.value,
-    // };
+
     newCategory.value.Name = name
     newCategory.value.Layer = 1
     newCategory.value.Is_Active = is_Active
@@ -207,15 +186,6 @@ const addNewCategory = async (name, is_Active) => {
         confirmButtonColor: '#2c7b4b'
       })
     }
-    // console.log(newMessage);
-    // await storeContent.addNewCategory(newMessage);
-    // if (storeContent.getErrorMessageAddCategory) {
-    //   errorAddCategory.value = storeContent.getErrorMessageAddCategory;
-    // } else {
-    //   checkBoxChange();
-    //   selectedCreateCategory.value = "";
-    //   closeCreateModal();
-    // }
   } catch (error) {
     console.error('Terjadi Kesalahan :', error)
   }
@@ -264,10 +234,6 @@ const groupedFirstLayer = computed(() => {
 })
 
 onMounted(() => {
-  checkBoxChange()
-})
-
-watchEffect(() => {
   checkBoxChange()
 })
 </script>

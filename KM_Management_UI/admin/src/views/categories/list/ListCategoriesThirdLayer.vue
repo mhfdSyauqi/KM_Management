@@ -91,28 +91,11 @@ const closeEditModal = () => {
 
 const fetchThirdLayer = async (is_Active) => {
   try {
-    // secondCategory.value = router.currentRoute.value.params.layer3;
-    // firstCategory.value = router.currentRoute.value.params.layer2;
-    // hightLightUid.value = storeCategories.getHightlightUid;
-    // secondUid.value = storeCategories.getSecondUid(secondCategory.value);
-    // firstActive.value = JSON.parse(
-    //   storeCategories.getSecondActive(firstCategory.value)
-    // );
-    // secondActive.value = JSON.parse(
-    //   storeCategories.getSecondActive(secondCategory.value)
-    // );
-    // const formData = {
-    //   uidReference: secondUid.value,
-    //   layer: 3,
-    //   is_Active: is_Active,
-    // };
     filter.value.Uid_Reference = secondUid.value
     filter.value.Layer = 3
     filter.value.Is_Active = is_Active
     const response = await GetCategoryListByFilter()
     thirdLayer.value = category_list.value
-    // await storeCategories.fetchThirdLayer(formData);
-    // thirdLayer.value = await storeCategories.getThirdLayer;
   } catch (error) {
     console.error('Error fetching content:', error)
   }
@@ -162,22 +145,6 @@ const addNewCategory = async (name, is_Active) => {
         confirmButtonColor: '#2c7b4b'
       })
     }
-
-    // const newMessage = {
-    //   name: name,
-    //   layer: 3,
-    //   uid_Reference: secondUid.value,
-    //   is_Active: is_Active,
-    //   create_by: create_By.value,
-    // };
-    // await storeCategories.addNewCategory(newMessage);
-    // if (storeCategories.getErrorMessageAddCategory) {
-    //   errorAddCategory.value = storeCategories.getErrorMessageAddCategory;
-    // } else {
-    //   checkBoxChange();
-    //   selectedCreateCategory.value = "";
-    //   closeCreateModal();
-    // }
   } catch (error) {
     console.error('Terjadi Kesalahan :', error)
   }
@@ -224,20 +191,6 @@ const updateCategory = async (uid, name, is_Active) => {
         confirmButtonColor: '#2c7b4b'
       })
     }
-    // const newMessage = {
-    //   uid: uid,
-    //   name: name,
-    //   is_Active: is_Active,
-    //   modified_By: modified_By.value,
-    // };
-    // await storeCategories.updateCategory(newMessage);
-    // if (storeCategories.getErrorMessageUpdateCategory) {
-    //   errorUpdateCategory.value = storeCategories.getErrorMessageUpdateCategory;
-    // } else {
-    //   checkBoxChange();
-    //   selectedCreateCategory.value = "";
-    //   closeEditModal();
-    // }
   } catch (error) {
     console.error('Terjadi Kesalahan :', error)
   }
