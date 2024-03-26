@@ -80,6 +80,53 @@ public class CategoryRepository : ICategoryRepository
         return result;
     }
 
+
+    public async Task<IEnumerable<EntityExportCategoryListFirstLayer?>> GetExportCategoriesFirstLayerAsync(bool? is_active, CancellationToken cancellationToken)
+    {
+        await using var connection = await _connection.CreateConnectionAsync();
+
+        var storeProcedureFirstLayer = "[dbo].[Get_Export_Category_List_First_Layer]";
+        var filterExport = new
+        {
+            Is_Active = is_active,
+        };
+        var command = new CommandDefinition(storeProcedureFirstLayer, filterExport, commandType: System.Data.CommandType.StoredProcedure, cancellationToken: cancellationToken);
+        var result = await connection.QueryAsync<EntityExportCategoryListFirstLayer?>(command);
+        return result;
+    }
+
+    public async Task<IEnumerable<EntityExportCategoryListSecondLayer?>> GetExportCategoriesSecondLayerAsync(bool? is_active, CancellationToken cancellationToken)
+    {
+        await using var connection = await _connection.CreateConnectionAsync();
+
+
+        var storeProcedureSecondLayer = "[dbo].[Get_Export_Category_List_Second_Layer]";
+        var filterExport = new
+        {
+            Is_Active = is_active,
+        };
+        var command = new CommandDefinition(storeProcedureSecondLayer, filterExport, commandType: System.Data.CommandType.StoredProcedure, cancellationToken: cancellationToken);
+        var result = await connection.QueryAsync<EntityExportCategoryListSecondLayer?>(command);
+        return result;
+    }
+
+    public async Task<IEnumerable<EntityExportCategoryListThirdLayer?>> GetExportCategoriesThirdLayerAsync(bool? is_active, CancellationToken cancellationToken)
+    {
+        await using var connection = await _connection.CreateConnectionAsync();
+
+
+        var storeProcedureThirdLayer = "[dbo].[Get_Export_Category_List_Third_Layer]";
+        var filterExport = new
+        {
+            Is_Active = is_active,
+        };
+        var command = new CommandDefinition(storeProcedureThirdLayer, filterExport, commandType: System.Data.CommandType.StoredProcedure, cancellationToken: cancellationToken);
+        var result = await connection.QueryAsync<EntityExportCategoryListThirdLayer?>(command);
+        return result;
+    }
+
+    
+
     public async Task<IEnumerable<EntityCategoryTopIssueAvailable?>> GetCategoryTopIssueAvailableAsync(bool? is_active, CancellationToken cancellationToken)
     {
         await using var connection = await _connection.CreateConnectionAsync();
@@ -212,6 +259,13 @@ public interface ICategoryRepository
     Task<int> PostCategoryTopIssueSelectedAsync(EntityPostCategoryTopIssueSelected postCategory, CancellationToken cancellationToken);
     Task<int> DeleteCategoryTopIssueSelectedAsync(EntityDeleteCategoryTopIssueSelected deleteCategory, CancellationToken cancellationToken);
     Task<int> PatchCategoryTopIssueSelectedSequenceAsync(EntityPatchCategoryTopIssueSelectedSequence patchSequence, CancellationToken cancellationToken);
+
+    Task<IEnumerable<EntityExportCategoryListFirstLayer?>> GetExportCategoriesFirstLayerAsync(bool? is_active, CancellationToken cancellationToken);
+
+    Task<IEnumerable<EntityExportCategoryListSecondLayer?>> GetExportCategoriesSecondLayerAsync(bool? is_active, CancellationToken cancellationToken);
+
+    Task<IEnumerable<EntityExportCategoryListThirdLayer?>> GetExportCategoriesThirdLayerAsync(bool? is_active, CancellationToken cancellationToken);
+
     // Sync Fn
     bool VerifyAvailableCategoryName(string name);
     bool VerifyAvailableCategoryName(string name, Guid categoryUid);

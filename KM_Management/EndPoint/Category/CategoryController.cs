@@ -1,4 +1,5 @@
-﻿using KM_Management.Controllers;
+﻿using Azure.Core;
+using KM_Management.Controllers;
 using KM_Management.EndPoint.Category.Command;
 using KM_Management.EndPoint.Category.Models;
 using KM_Management.EndPoint.Category.Query;
@@ -6,8 +7,12 @@ using KM_Management.EndPoint.Content.Command;
 using KM_Management.EndPoint.Content.Models;
 using KM_Management.EndPoint.Message.Command;
 using KM_Management.EndPoint.Message.Models;
+using KM_Management.EndPoint.RateAndFeedback.Models;
+using KM_Management.EndPoint.RateAndFeedback.Query;
+using KM_Management.Helper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 
 namespace KM_Management.EndPoint.Category;
 
@@ -136,6 +141,32 @@ public class CategoryController : MyAPIController
         var result = await _Mediator.Send(command, cancellationToken);
         return result.MapResponse();
     }
+
+
+    [HttpPost]
+    [Route("ExportExcelCategoryList")]
+    public async Task<IActionResult> ExportCategoryList([FromBody] RequestExportCategoryList request, CancellationToken cancellationToken)
+    {
+        var query = new GetExportCategoryListQuery(request);
+        var result = await _Mediator.Send(query, cancellationToken);
+
+        byte[] fileBytes = ExcelExportHelper.ExportExcelCategories(result.Value.First_Layer, result.Value.Second_Layer, result.Value.Third_Layer);
+
+        return File(fileBytes, ExcelExportHelper.ExcelContentType);
+
+    }
+
+    [HttpPost]
+    [Route("GetExportCategoryList")]
+    public async Task<IActionResult> GetExportCategoryListWithFilter([FromBody] RequestExportCategoryList request, CancellationToken cancellationToken)
+    {
+        var query = new GetExportCategoryListQuery(request);
+        var result = await _Mediator.Send(query, cancellationToken);
+
+        return result.MapResponse();
+    }
+
+
 
     [HttpGet("ref")]
     public async Task<IActionResult> GetCategoryReference(CancellationToken cancellationToken)
