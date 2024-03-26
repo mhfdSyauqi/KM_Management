@@ -227,3 +227,85 @@ export async function PatchSequenceTopIssueSelectedAsync(
 
   return result
 }
+
+export async function ExportCategoryLayerOneAsync(request) {
+  const result = {
+    is_success: true,
+    error: null,
+    excelData: null // Menyimpan data excel yang diterima
+  };
+
+  await useRequest
+    .post(`Category/ExportExcelCategoryList`, request, {
+      responseType: 'blob' // Mengatur tipe respons sebagai blob (binary data)
+    })
+    .then((res) => {
+      const blob = new Blob([res.data], { type: res.headers['content-type'] }); // Membuat blob dari data respons
+      const url = window.URL.createObjectURL(blob); // Membuat URL dari blob
+
+      // Format tanggal dan waktu saat ini
+      const dateTimeNow = new Date();
+      const formattedDateTime = `${dateTimeNow.getDate()}-${dateTimeNow.getMonth() + 1}-${dateTimeNow.getFullYear()}.${dateTimeNow.getHours()}.${dateTimeNow.getMinutes()}.${dateTimeNow.getSeconds()}`;
+
+      // Misalnya, Anda ingin menampilkan tautan untuk mengunduh file excel
+      const downloadLink = document.createElement('a');
+      downloadLink.href = url;
+      downloadLink.download = `General_List_Categories_${formattedDateTime}.xlsx`; // Nama file excel yang diunduh
+      downloadLink.click();
+
+      // Atau, jika Anda ingin menyimpan data excel ke dalam variabel
+      result.excelData = blob;
+
+      // Jangan lupa untuk melepaskan objek URL setelah penggunaan
+      window.URL.revokeObjectURL(url);
+    })
+    .catch((err) => {
+      result.is_success = false;
+      result.error = err.response.data;
+    });
+
+  return result;
+}
+
+
+// export async function ExportCategoryLayerTwoAsync(request) {
+//   const result = {
+//     is_success: true,
+//     error: null,
+//     excelData: null // Menyimpan data excel yang diterima
+//   };
+
+//   await useRequest
+//     .post(`Category/ExportCategoryLayerTwo`, request, {
+//       responseType: 'blob' // Mengatur tipe respons sebagai blob (binary data)
+//     })
+//     .then((res) => {
+//       const blob = new Blob([res.data], { type: res.headers['content-type'] }); // Membuat blob dari data respons
+//       const url = window.URL.createObjectURL(blob); // Membuat URL dari blob
+
+//       // Format tanggal dan waktu saat ini
+//       const dateTimeNow = new Date();
+//       const formattedDateTime = `${dateTimeNow.getDate()}_${dateTimeNow.getMonth() + 1}_${dateTimeNow.getFullYear()}_${dateTimeNow.getHours()}_${dateTimeNow.getMinutes()}_${dateTimeNow.getSeconds()}`;
+
+//       // Misalnya, Anda ingin menampilkan tautan untuk mengunduh file excel
+//       const downloadLink = document.createElement('a');
+//       downloadLink.href = url;
+//       downloadLink.download = `Layer_2_Top10_Categories_${formattedDateTime}.xlsx`; // Nama file excel yang diunduh
+//       downloadLink.click();
+
+//       // Atau, jika Anda ingin menyimpan data excel ke dalam variabel
+//       result.excelData = blob;
+
+//       // Jangan lupa untuk melepaskan objek URL setelah penggunaan
+//       window.URL.revokeObjectURL(url);
+//     })
+//     .catch((err) => {
+//       result.is_success = false;
+//       result.error = err.response.data;
+//     });
+
+//   return result;
+// }
+
+
+

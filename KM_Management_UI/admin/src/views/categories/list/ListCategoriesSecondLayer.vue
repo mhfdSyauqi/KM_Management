@@ -14,6 +14,11 @@ import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import OptionButton from '@/components/buttons/OptionButton.vue'
 import IconSearch from '@/components/icons/IconSearch.vue'
 import {
+  HandleExcelExport,
+  filterExportCategories
+} from '@/components/pages/category/postExportExcelCategoryList.js'
+
+import {
   HandlePublish,
   ResetPostInput,
   errorInput,
@@ -96,6 +101,14 @@ const fetchSecondLayer = async (is_Active) => {
     filter.value.Is_Active = is_Active
     const response = await GetCategoryListByFilter()
     secondLayer.value = category_list.value
+  } catch (error) {
+    console.error('Error fetching content:', error)
+  }
+}
+
+const exportExcel = async () => {
+  try {
+    const response = await HandleExcelExport()
   } catch (error) {
     console.error('Error fetching content:', error)
   }
@@ -256,6 +269,16 @@ const groupedSecondLayer = computed(() => {
   return groupedArray
 })
 
+const filterExportExcel = () => {
+  if (isActiveYesToggle.value == true && isActiveNoToggle.value == true) {
+    filterExportCategories.value = null
+  } else if (isActiveYesToggle.value == true) {
+    filterExportCategories.value = true
+  } else if (isActiveNoToggle.value == true) {
+    filterExportCategories.value = false
+  }
+}
+
 onMounted(() => {
   checkBoxChange()
 })
@@ -266,6 +289,7 @@ const getHightlight = async () => {
 }
 
 watchEffect(() => {
+  filterExportExcel()
   getHightlight()
 })
 </script>
@@ -303,7 +327,10 @@ watchEffect(() => {
         </button>
 
         <button
+          @click="exportExcel"
+          :disabled="isActiveYesToggle == false && isActiveNoToggle == false"
           class="min-w-36 font-semibold rounded-3xl border text-green-700 bg-white border-green-700 p-2 hover:border-white hover:bg-teal-200 active:scale-95"
+          :class="{ 'bg-gray-300': isActiveYesToggle == false && isActiveNoToggle == false }"
         >
           Export to Excel
         </button>

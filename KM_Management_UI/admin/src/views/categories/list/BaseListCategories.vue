@@ -21,6 +21,11 @@ import {
   newCategory
 } from '@/components/pages/category/postCategoryList.js'
 import {
+  HandleExcelExport,
+  filterExportCategories
+} from '@/components/pages/category/postExportExcelCategoryList.js'
+
+import {
   HandleRePublish,
   ResetEditInput,
   errorEdit,
@@ -92,6 +97,14 @@ const fetchFirstLayer = async (isActive) => {
 
     const response = await GetCategoryListByFilter()
     firstLayer.value = category_list.value
+  } catch (error) {
+    console.error('Error fetching content:', error)
+  }
+}
+
+const exportExcel = async () => {
+  try {
+    const response = await HandleExcelExport()
   } catch (error) {
     console.error('Error fetching content:', error)
   }
@@ -238,8 +251,19 @@ const getHightlight = async () => {
   closeSearchModal()
 }
 
+const filterExportExcel = () => {
+  if (isActiveYesToggle.value == true && isActiveNoToggle.value == true) {
+    filterExportCategories.value = null
+  } else if (isActiveYesToggle.value == true) {
+    filterExportCategories.value = true
+  } else if (isActiveNoToggle.value == true) {
+    filterExportCategories.value = false
+  }
+}
+
 watchEffect(() => {
   getHightlight()
+  filterExportExcel()
 })
 
 onMounted(() => {
@@ -271,7 +295,10 @@ onMounted(() => {
         </button>
 
         <button
+          @click="exportExcel"
+          :disabled="isActiveYesToggle == false && isActiveNoToggle == false"
           class="min-w-36 font-semibold rounded-3xl border text-green-700 bg-white border-green-700 p-2 hover:border-white hover:bg-teal-200 active:scale-95"
+          :class="{ 'bg-gray-300': isActiveYesToggle == false && isActiveNoToggle == false }"
         >
           Export to Excel
         </button>

@@ -25,6 +25,10 @@ import {
   errorEdit,
   editCategory
 } from '@/components/pages/category/patchCategoryList.js'
+import {
+  HandleExcelExport,
+  filterExportCategories
+} from '@/components/pages/category/postExportExcelCategoryList.js'
 
 const router = useRouter()
 const storeCategories = useCategoriesStore()
@@ -228,6 +232,16 @@ const checkBoxChange = () => {
   }
 }
 
+const filterExportExcel = () => {
+  if (isActiveYesToggle.value == true && isActiveNoToggle.value == true) {
+    filterExportCategories.value = null
+  } else if (isActiveYesToggle.value == true) {
+    filterExportCategories.value = true
+  } else if (isActiveNoToggle.value == true) {
+    filterExportCategories.value = false
+  }
+}
+
 const groupedThirdLayer = computed(() => {
   // Group items by the first letter of their names
   const groups = {}
@@ -253,9 +267,16 @@ const getHightlight = async () => {
   closeSearchModal()
 }
 
+const exportExcel = async () => {
+  try {
+    const response = await HandleExcelExport()
+  } catch (error) {
+    console.error('Error fetching content:', error)
+  }
+}
+
 onMounted(() => {
   checkBoxChange()
-  getHightlight()
 })
 watchEffect(() => {
   getHightlight()
@@ -300,7 +321,10 @@ watchEffect(() => {
         </button>
 
         <button
+          @click="exportExcel"
+          :disabled="isActiveYesToggle == false && isActiveNoToggle == false"
           class="min-w-36 font-semibold rounded-3xl border text-green-700 bg-white border-green-700 p-2 hover:border-white hover:bg-teal-200 active:scale-95"
+          :class="{ 'bg-gray-300': isActiveYesToggle == false && isActiveNoToggle == false }"
         >
           Export to Excel
         </button>
