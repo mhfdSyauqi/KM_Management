@@ -132,7 +132,7 @@ namespace KM_Management.Helper
                 firstWorksheet.Cells["B6"].LoadFromCollection(firstData, true);
                 firstWorksheet.Cells["A2:D2"].Merge = true;
                 firstWorksheet.Cells["A2"].Style.Font.Bold = true;
-                firstWorksheet.Cells["A2"].Value = "Layer 1 - Top Categories";
+                firstWorksheet.Cells["A2"].Value = "Layer 1 - List Categories";
 
 
 
@@ -196,7 +196,7 @@ namespace KM_Management.Helper
                 secondWorksheet.Cells["B6"].LoadFromCollection(secondData, true);
                 secondWorksheet.Cells["A2:E2"].Merge = true;
                 secondWorksheet.Cells["A2"].Style.Font.Bold = true;
-                secondWorksheet.Cells["A2"].Value = "Layer 2 - Top Categories";
+                secondWorksheet.Cells["A2"].Value = "Layer 2 - List Categories";
 
 
 
@@ -260,7 +260,7 @@ namespace KM_Management.Helper
                 thirdWorksheet.Cells["B6"].LoadFromCollection(thirdData, true);
                 thirdWorksheet.Cells["A2:F2"].Merge = true;
                 thirdWorksheet.Cells["A2"].Style.Font.Bold = true;
-                thirdWorksheet.Cells["A2"].Value = "Layer 3 - Top Categories";
+                thirdWorksheet.Cells["A2"].Value = "Layer 3 - List Categories";
 
 
 
@@ -287,85 +287,6 @@ namespace KM_Management.Helper
 
             }
         }
-
-
-
-        //public static byte[] ExportExcelCategoriesLayerTwo<T>(List<T> data, List<string> AllVisibleColumns)
-        //{
-        //    ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
-        //    using (var excelFile = new ExcelPackage())
-        //    {
-        //        var i = 1;
-        //        var worksheet = excelFile.Workbook.Worksheets.Add("Layer 1");
-        //        worksheet.PrinterSettings.PaperSize = ePaperSize.A3;
-        //        worksheet.PrinterSettings.Orientation = eOrientation.Landscape;
-        //        worksheet.PrinterSettings.FitToPage = true;
-        //        worksheet.PrinterSettings.HeaderMargin = 0.76M;
-        //        worksheet.PrinterSettings.FooterMargin = 0.76M;
-        //        worksheet.PrinterSettings.TopMargin = 0;
-        //        worksheet.PrinterSettings.RightMargin = 0;
-        //        worksheet.PrinterSettings.BottomMargin = 0;
-        //        worksheet.PrinterSettings.LeftMargin = 0;
-
-        //        worksheet.Cells["A6"].Value = "No";
-        //        worksheet.Cells[$"A2:ED"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-        //        data.ForEach(x =>
-        //        {
-        //            worksheet.Cells[$"A{6 + i}:D{6 + i}"].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-        //            worksheet.Cells[$"A{6 + i}:D{6 + i}"].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-        //            worksheet.Cells[$"A{6 + i}:D{6 + i}"].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-        //            worksheet.Cells[$"A{6 + i}:D{6 + i}"].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-        //            worksheet.Cells[$"A{6 + i}:D{6 + i}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-        //            worksheet.Cells[$"B{6 + i}:D{6 + i}"].Calculate();
-        //            worksheet.Cells[$"A{6 + i}"].Value = i;
-        //            i++;
-        //        });
-
-        //        worksheet.Column(1).AutoFit();
-
-        //        using (var range = worksheet.Cells["A6:E6"])
-        //        {
-        //            range.Style.Fill.PatternType = ExcelFillStyle.Solid;
-        //            range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightBlue);
-        //            range.Style.Font.Bold = true;
-        //            range.Style.Border.Top.Style = ExcelBorderStyle.Thin;
-        //            range.Style.Border.Left.Style = ExcelBorderStyle.Thin;
-        //            range.Style.Border.Right.Style = ExcelBorderStyle.Thin;
-        //            range.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-        //            range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-        //        }
-
-        //        worksheet.Cells["B6"].LoadFromCollection(data, true);
-        //        worksheet.Cells["A2:F2"].Merge = true;
-        //        worksheet.Cells["A2"].Style.Font.Bold = true;
-        //        worksheet.Cells["A2"].Value = "Layer 2 - Top Categories";
-
-
-
-
-
-
-        //        worksheet.Cells["A4"].Value = "Period : " + DateTime.Now.ToString("MMM dd, yyyy");
-        //        //def header
-        //        worksheet.Cells["B6"].Value = "Layer 2";
-        //        worksheet.Cells["C6"].Value = "Layer 1";
-        //        worksheet.Cells["D6"].Value = "Status";
-        //        worksheet.Cells["E6"].Value = "Publication";
-
-
-
-        //        for (int column = 2; column <= 6; column++)
-        //        {
-        //            worksheet.Column(column).AutoFit();
-        //            worksheet.Column(column).Width = worksheet.Column(column).Width + 5;
-        //        }
-
-
-
-        //        return excelFile.GetAsByteArray();
-
-        //    }
-        //}
 
 
 
