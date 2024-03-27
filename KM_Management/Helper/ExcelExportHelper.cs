@@ -111,7 +111,8 @@ namespace KM_Management.Helper
                     firstWorksheet.Cells[$"A{6 + i}:D{6 + i}"].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     firstWorksheet.Cells[$"A{6 + i}:D{6 + i}"].Style.Border.Left.Style = ExcelBorderStyle.Thin;
                     firstWorksheet.Cells[$"A{6 + i}:D{6 + i}"].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                    firstWorksheet.Cells[$"A{6 + i}:D{6 + i}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    firstWorksheet.Cells[$"A{6 + i}:B{6 + i}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    firstWorksheet.Cells[$"C{6 + i}:D{6 + i}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     firstWorksheet.Cells[$"B{6 + i}:D{6 + i}"].Calculate();
                     firstWorksheet.Cells[$"A{6 + i}"].Value = i;
                     i++;
@@ -175,7 +176,8 @@ namespace KM_Management.Helper
                     secondWorksheet.Cells[$"A{6 + y}:E{6 + y}"].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     secondWorksheet.Cells[$"A{6 + y}:E{6 + y}"].Style.Border.Left.Style = ExcelBorderStyle.Thin;
                     secondWorksheet.Cells[$"A{6 + y}:E{6 + y}"].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                    secondWorksheet.Cells[$"A{6 + y}:E{6 + y}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    secondWorksheet.Cells[$"A{6 + y}:C{6 + y}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    secondWorksheet.Cells[$"D{6 + y}:E{6 + y}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     secondWorksheet.Cells[$"B{6 + y}:E{6 + y}"].Calculate();
                     secondWorksheet.Cells[$"A{6 + y}"].Value = y;
                     y++;
@@ -239,7 +241,8 @@ namespace KM_Management.Helper
                     thirdWorksheet.Cells[$"A{6 + j}:F{6 + j}"].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     thirdWorksheet.Cells[$"A{6 + j}:F{6 + j}"].Style.Border.Left.Style = ExcelBorderStyle.Thin;
                     thirdWorksheet.Cells[$"A{6 + j}:F{6 + j}"].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                    thirdWorksheet.Cells[$"A{6 + j}:F{6 + j}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    thirdWorksheet.Cells[$"A{6 + j}:D{6 + j}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    thirdWorksheet.Cells[$"E{6 + j}:F{6 + j}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     thirdWorksheet.Cells[$"B{6 + j}:F{6 + j}"].Calculate();
                     thirdWorksheet.Cells[$"A{6 + j}"].Value = j;
                     j++;
