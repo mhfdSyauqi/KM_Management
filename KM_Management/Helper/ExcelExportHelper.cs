@@ -41,6 +41,7 @@ namespace KM_Management.Helper
 
         public static byte[] ExportExcelRateAndFeedback<T>(List<T> data, List<string> AllVisibleColumns)
         {
+
             ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
             using (var excelFile = new ExcelPackage())
             {
@@ -86,6 +87,7 @@ namespace KM_Management.Helper
 
         public static byte[] ExportExcelCategories<T,U,X>(List<T> firstData, List<U> secondData, List<X> thirdData)
         {
+
             ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
             using (var excelFile = new ExcelPackage())
             {
@@ -109,13 +111,13 @@ namespace KM_Management.Helper
                     firstWorksheet.Cells[$"A{6 + i}:D{6 + i}"].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     firstWorksheet.Cells[$"A{6 + i}:D{6 + i}"].Style.Border.Left.Style = ExcelBorderStyle.Thin;
                     firstWorksheet.Cells[$"A{6 + i}:D{6 + i}"].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                    firstWorksheet.Cells[$"A{6 + i}:D{6 + i}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    firstWorksheet.Cells[$"A{6 + i}:D{6 + i}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                     firstWorksheet.Cells[$"B{6 + i}:D{6 + i}"].Calculate();
                     firstWorksheet.Cells[$"A{6 + i}"].Value = i;
                     i++;
                 });
 
-                firstWorksheet.Column(1).AutoFit();
+                firstWorksheet.Column(1).Width = 5;
 
                 using (var range = firstWorksheet.Cells["A6:D6"])
                 {
@@ -139,7 +141,7 @@ namespace KM_Management.Helper
 
 
 
-                firstWorksheet.Cells["A4"].Value = "Period : " + DateTime.Now.ToString("MMM dd, yyyy");
+                firstWorksheet.Cells["A4"].Value = "Date : " + DateTime.Now.ToString("MMM dd, yyyy");
                 //def header
                 firstWorksheet.Cells["B6"].Value = "Layer 1";
                 firstWorksheet.Cells["C6"].Value = "Status";
@@ -173,13 +175,13 @@ namespace KM_Management.Helper
                     secondWorksheet.Cells[$"A{6 + y}:E{6 + y}"].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     secondWorksheet.Cells[$"A{6 + y}:E{6 + y}"].Style.Border.Left.Style = ExcelBorderStyle.Thin;
                     secondWorksheet.Cells[$"A{6 + y}:E{6 + y}"].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                    secondWorksheet.Cells[$"A{6 + y}:E{6 + y}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    secondWorksheet.Cells[$"A{6 + y}:E{6 + y}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                     secondWorksheet.Cells[$"B{6 + y}:E{6 + y}"].Calculate();
                     secondWorksheet.Cells[$"A{6 + y}"].Value = y;
                     y++;
                 });
 
-                secondWorksheet.Column(1).AutoFit();
+                secondWorksheet.Column(1).Width = 5;
 
                 using (var range = secondWorksheet.Cells["A6:E6"])
                 {
@@ -203,7 +205,7 @@ namespace KM_Management.Helper
 
 
 
-                secondWorksheet.Cells["A4"].Value = "Period : " + DateTime.Now.ToString("MMM dd, yyyy");
+                secondWorksheet.Cells["A4"].Value = "Date : " + DateTime.Now.ToString("MMM dd, yyyy");
                 //def header
                 secondWorksheet.Cells["B6"].Value = "Layer 2";
                 secondWorksheet.Cells["C6"].Value = "Layer 1";
@@ -237,13 +239,13 @@ namespace KM_Management.Helper
                     thirdWorksheet.Cells[$"A{6 + j}:F{6 + j}"].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     thirdWorksheet.Cells[$"A{6 + j}:F{6 + j}"].Style.Border.Left.Style = ExcelBorderStyle.Thin;
                     thirdWorksheet.Cells[$"A{6 + j}:F{6 + j}"].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                    thirdWorksheet.Cells[$"A{6 + j}:F{6 + j}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    thirdWorksheet.Cells[$"A{6 + j}:F{6 + j}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                     thirdWorksheet.Cells[$"B{6 + j}:F{6 + j}"].Calculate();
                     thirdWorksheet.Cells[$"A{6 + j}"].Value = j;
                     j++;
                 });
 
-                thirdWorksheet.Column(1).AutoFit();
+                thirdWorksheet.Column(1).Width = 5;
 
                 using (var range = thirdWorksheet.Cells["A6:F6"])
                 {
@@ -267,7 +269,7 @@ namespace KM_Management.Helper
 
 
 
-                thirdWorksheet.Cells["A4"].Value = "Period : " + DateTime.Now.ToString("MMM dd, yyyy");
+                thirdWorksheet.Cells["A4"].Value = "Date : " + DateTime.Now.ToString("MMM dd, yyyy");
                 //def header
                 thirdWorksheet.Cells["B6"].Value = "Layer 3";
                 thirdWorksheet.Cells["C6"].Value = "Layer 2";
