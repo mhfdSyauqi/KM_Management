@@ -6,10 +6,13 @@ import IconEdit from '@/components/icons/IconEdit.vue'
 import IconSort from '@/components/icons/IconSort.vue'
 import NextButton from '@/components/buttons/NextButton.vue'
 import IconDelete from '@/components/icons/IconDelete.vue'
+import CreateRole from '@/views/setup/role/CreateRole.vue'
+import EditRole from '@/views/setup/role/EditRole.vue'
 
 import {
   usersRole,
   navigation,
+  modals,
   GetUsersRoleByFilter,
   HandleSearch,
   HandlePagination,
@@ -17,14 +20,33 @@ import {
   HandlingPageLimit
 } from '@/components/pages/setup/roles/useRoles.js'
 
-import { onMounted, ref } from 'vue'
-import CreateRole from '@/views/setup/role/CreateRole.vue'
+import { editedUser } from '@/components/pages/setup/roles/patchRoles.js'
+
+import { useNotificationStore } from '@/stores/useNotification.js'
+import { onMounted, ref, watchEffect } from 'vue'
+import { HandleDelete } from '@/components/pages/setup/roles/deleteRoles.js'
+
+const notificationStore = useNotificationStore()
+const pageLimit = ref(10)
 
 onMounted(async () => {
   await GetUsersRoleByFilter()
 })
 
-const pageLimit = ref(10)
+function onEdit(user) {
+  editedUser.value.user_name = user.login_name
+  editedUser.value.full_name = user.full_name
+  editedUser.value.role = user.role
+
+  modals.value.edit = true
+}
+
+watchEffect(async () => {
+  if (notificationStore.status === 'reload') {
+    await GetUsersRoleByFilter()
+    notificationStore.reset()
+  }
+})
 </script>
 
 <template>
@@ -39,7 +61,7 @@ const pageLimit = ref(10)
     <div class="flex gap-2.5 items-center">
       <h1 class="basis-[65%] text-2xl font-bold text-green-800">Content List</h1>
       <SearchButton @on-search="HandleSearch" />
-      <PrimaryButton class="w-36">Add Account</PrimaryButton>
+      <PrimaryButton class="w-36" @click.passive="modals.add = true">Add Account</PrimaryButton>
     </div>
 
     <br />
@@ -88,10 +110,10 @@ const pageLimit = ref(10)
       <tbody>
         <tr class="text-sm border-b-2 hover:bg-orange-50" v-for="(user, i) in usersRole" :key="i">
           <td class="p-2.5 space-x-1">
-            <button>
+            <button @click.prevent="onEdit(user)">
               <IconEdit class="w-5 h-5 hover:fill-green-800" />
             </button>
-            <button>
+            <button @click.prevent="HandleDelete(user)" :disabled="usersRole.length <= 1">
               <IconDelete class="w-5 h-5 hover:fill-green-800" />
             </button>
           </td>
@@ -181,7 +203,8 @@ const pageLimit = ref(10)
     </nav>
   </div>
 
-  <CreateRole />
+  <CreateRole v-model="modals.add" />
+  <EditRole v-model="modals.edit" />
 </template>
 
 <style scoped></style>

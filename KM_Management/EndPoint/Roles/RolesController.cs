@@ -1,4 +1,5 @@
 ﻿using KM_Management.Controllers;
+using KM_Management.EndPoint.Roles.Command;
 using KM_Management.EndPoint.Roles.Models;
 using KM_Management.EndPoint.Roles.Query;
 using MediatR;
@@ -29,6 +30,42 @@ public class RolesController : MyAPIController
 	{
 		var query = new GetUsersRoleQuery(request);
 		var result = await _Mediator.Send(query, cancellationToken);
+
+		return result.MapResponse();
+	}
+
+	[HttpGet("ref/{keywords?}")]
+	public async Task<IActionResult> GetUserReference(string? keywords, CancellationToken cancellationToken)
+	{
+		var query = new GetUserReferenceQuery(keywords);
+		var result = await _Mediator.Send(query, cancellationToken);
+
+		return result.MapResponse();
+	}
+
+	[HttpPost("action")]
+	public async Task<IActionResult> PostUserRole([FromBody] RequestUserRole request, CancellationToken cancellationToken)
+	{
+		var command = new PostUserRolesCommand(request);
+		var result = await _Mediator.Send(command, cancellationToken);
+
+		return result.MapResponse();
+	}
+
+	[HttpPatch("action")]
+	public async Task<IActionResult> PatchUserRole([FromBody] RequestUserRole request, CancellationToken cancellationToken)
+	{
+		var command = new PatchUserRolesCommand(request);
+		var result = await _Mediator.Send(command, cancellationToken);
+
+		return result.MapResponse();
+	}
+
+	[HttpDelete("action/{userName}")]
+	public async Task<IActionResult> DeleteUserRole(string userName, CancellationToken cancellationToken)
+	{
+		var command = new DeleteUserRolesCommand(userName);
+		var result = await _Mediator.Send(command, cancellationToken);
 
 		return result.MapResponse();
 	}

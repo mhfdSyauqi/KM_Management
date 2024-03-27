@@ -53,3 +53,75 @@ export async function GetUsersRoleAsync(
 
   return result
 }
+
+export async function GetUserReferenceAsync(keywords) {
+  const result = {
+    is_success: true,
+    user_ref: [],
+    error: null
+  }
+
+  await useRequest
+    .get(`roles/ref/${keywords}`)
+    .then((res) => {
+      result.user_ref = res.data.data.user_ref
+    })
+    .catch((err) => {
+      result.is_success = false
+      result.error = err.response?.data
+    })
+
+  return result
+}
+
+export async function PostUserRoleAsync(user_name, role) {
+  const Payload = JSON.stringify({
+    User_Name: user_name,
+    Role: role
+  })
+
+  const result = {
+    is_success: true,
+    error: null
+  }
+
+  await useRequest.post('roles/action', Payload).catch((err) => {
+    result.is_success = false
+    result.error = err.response?.data
+  })
+
+  return result
+}
+
+export async function PatchUserRoleAsync(user_name, role) {
+  const Payload = JSON.stringify({
+    User_Name: user_name,
+    Role: role
+  })
+
+  const result = {
+    is_success: true,
+    error: null
+  }
+
+  await useRequest.patch('roles/action', Payload).catch((err) => {
+    result.is_success = false
+    result.error = err.response?.data
+  })
+
+  return result
+}
+
+export async function DeleteUserRoleAsync(user_name) {
+  const result = {
+    is_success: true,
+    error: null
+  }
+
+  await useRequest.delete(`roles/action/${user_name}`).catch((err) => {
+    result.is_success = false
+    result.error = err.response?.data
+  })
+
+  return result
+}

@@ -32,4 +32,7 @@ public class CustomOkResponseData
 
 	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
 	public ResponseUsersRole? Users_Role { get; set; }
+
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+	public List<ResponseUserReference>? User_Ref { get; set; }
 }

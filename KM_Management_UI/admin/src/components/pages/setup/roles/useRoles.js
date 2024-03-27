@@ -2,6 +2,10 @@ import { ref } from 'vue'
 import { GetUsersRoleAsync } from '@/api/reqRole.js'
 
 const usersRole = ref([])
+const modals = ref({
+  add: false,
+  edit: false
+})
 
 const filter = ref({
   search: null,
@@ -83,6 +87,7 @@ async function HandlingPageLimit(limit) {
 export {
   usersRole,
   navigation,
+  modals,
   GetUsersRoleByFilter,
   HandleSearch,
   HandlePagination,

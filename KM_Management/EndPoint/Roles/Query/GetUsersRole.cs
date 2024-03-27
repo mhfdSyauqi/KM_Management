@@ -28,7 +28,7 @@ public class GetUsersRoleHandler : IQueryHandler<GetUsersRoleQuery, ResponseUser
 
 	public async Task<Result<ResponseUsersRole>> Handle(GetUsersRoleQuery request, CancellationToken cancellationToken)
 	{
-		await _validator.ValidateAndThrowAsync(request, cancellationToken);
+		var validator = await _validator.ValidateAsync(request, cancellationToken);
 
 		var filter = new FilterUsersRole()
 		{
