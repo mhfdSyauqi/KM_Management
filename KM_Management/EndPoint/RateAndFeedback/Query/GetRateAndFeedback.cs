@@ -2,6 +2,7 @@
 using KM_Management.Commons.Mediator;
 using KM_Management.EndPoint.RateAndFeedback.Models;
 using KM_Management.Shared;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Database;
 
 namespace KM_Management.EndPoint.RateAndFeedback.Query;
 
@@ -51,12 +52,13 @@ public class GetRateAndFeedbackHandler : IQueryHandler<GetRateAndFeedbackQuery, 
 
         var response = new ResponseRateAndFeedback()
         {
-            Summary = summary.Select(col => new Summary_User_Feedback()
+            Periode = feedback.FirstOrDefault().Periode,
+            Summary =  new Summary_User_Feedback()
             {
-                User_Preview = col.User_Preview,
-                Total_Feedback = col.Total_Feedback,
-                Overall_Rating = col.Overall_Rating
-            }).ToList(),
+                User_Preview = summary.User_Preview,
+                Total_Feedback = summary.Total_Feedback,
+                Overall_Rating = summary.Overall_Rating
+            },
             Items = feedback.Select(col => new User_Feedback()
             {
                 Rating = col.Rating,

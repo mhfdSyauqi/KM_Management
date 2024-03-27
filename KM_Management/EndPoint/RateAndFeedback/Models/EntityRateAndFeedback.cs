@@ -16,5 +16,7 @@
         public int? Curr_Page { get; set; }
         public int? Next_Page { get; set; }
         public int? Max_Page { get; set; }
+        public string Periode {  get; set; }
+
     }
 }

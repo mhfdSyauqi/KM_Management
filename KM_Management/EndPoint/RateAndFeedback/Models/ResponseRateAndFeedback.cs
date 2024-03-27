@@ -4,7 +4,8 @@ namespace KM_Management.EndPoint.RateAndFeedback.Models
 {
     public class ResponseRateAndFeedback
     {
-        public List<Summary_User_Feedback> Summary { get; set; }
+        public string Periode { get; set; }
+        public Summary_User_Feedback Summary { get; set; }
         public List<User_Feedback> Items { get; set; }
         public int? Total_Row { get; set; }
         public int? Prev_Page { get; set; }
@@ -23,6 +24,7 @@ namespace KM_Management.EndPoint.RateAndFeedback.Models
 
     public class User_Feedback
     {
+        
         public int Rating { get; init; }
         public string Remark { get; init; }
         public string Uid_Session_Header { get; init; }

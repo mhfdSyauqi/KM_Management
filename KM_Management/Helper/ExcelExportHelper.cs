@@ -1,9 +1,11 @@
 ﻿using OfficeOpenXml;
+using OfficeOpenXml.DataValidation;
 using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Common;
 
 namespace KM_Management.Helper
 {
@@ -39,48 +41,79 @@ namespace KM_Management.Helper
             return dataTable;
         }
 
-        public static byte[] ExportExcelRateAndFeedback<T>(List<T> data, List<string> AllVisibleColumns)
+        public static byte[] ExportExcelRateAndFeedback<T>(List<T> data, string periode, List<string> AllVisibleColumns)
         {
-
             ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
             using (var excelFile = new ExcelPackage())
-            {
+            { 
                 var i = 1;
-                var worksheet = excelFile.Workbook.Worksheets.Add("Sheet1");
-                worksheet.PrinterSettings.PaperSize = ePaperSize.A3;
-                worksheet.PrinterSettings.Orientation = eOrientation.Landscape;
-                worksheet.PrinterSettings.FitToPage = true;
-                worksheet.PrinterSettings.HeaderMargin = 0.76M;
-                worksheet.PrinterSettings.FooterMargin = 0.76M;
-                worksheet.PrinterSettings.TopMargin = 0;
-                worksheet.PrinterSettings.RightMargin = 0;
-                worksheet.PrinterSettings.BottomMargin = 0;
-                worksheet.PrinterSettings.LeftMargin = 0;
+            var worksheet = excelFile.Workbook.Worksheets.Add("Layer 1");
+            worksheet.PrinterSettings.PaperSize = ePaperSize.A3;
+            worksheet.PrinterSettings.Orientation = eOrientation.Landscape;
+            worksheet.PrinterSettings.FitToPage = true;
+            worksheet.PrinterSettings.HeaderMargin = 0.76M;
+            worksheet.PrinterSettings.FooterMargin = 0.76M;
+            worksheet.PrinterSettings.TopMargin = 0;
+            worksheet.PrinterSettings.RightMargin = 0;
+            worksheet.PrinterSettings.BottomMargin = 0;
+            worksheet.PrinterSettings.LeftMargin = 0;
 
-                
+            worksheet.Cells["A6"].Value = "No";
+            worksheet.Cells[$"A2:F2"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            data.ForEach(x =>
+            {
+                worksheet.Cells[$"A{6 + i}:F{6 + i}"].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells[$"A{6 + i}:F{6 + i}"].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells[$"A{6 + i}:F{6 + i}"].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells[$"A{6 + i}:F{6 + i}"].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells[$"A{6 + i}:F{6 + i}"].Style.VerticalAlignment= ExcelVerticalAlignment.Center;
+                worksheet.Cells[$"A{6 + i}:B{6 + i}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells[$"C{6 + i}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                worksheet.Cells[$"D{6 + i}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells[$"E{6 + i}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells[$"F{6 + i}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                worksheet.Cells[$"B{6 + i}:F{6 + i}"].Calculate();
+                worksheet.Cells[$"A{6 + i}"].Value = i;
+                worksheet.Cells[$"F{6 + i}"].Style.WrapText = true;
+                i++;
+            });
 
-                worksheet.Cells["B4"].LoadFromCollection(data, true);
+            worksheet.Column(1).Width = 5;
+
+            using (var range = worksheet.Cells["A6:F6"])
+            {
+                range.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightBlue);
+                range.Style.Font.Bold = true;
+                range.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                range.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                range.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                range.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            }
+
+            worksheet.Cells["B6"].LoadFromCollection(data, true);
+            worksheet.Cells["A2:F2"].Merge = true;
+            worksheet.Cells["A2"].Style.Font.Bold = true;
+            worksheet.Cells["A2"].Value = "Rate & Feedback";
+            worksheet.Cells["A4"].Value = "Periode : "+periode;
+            //def header
+            worksheet.Cells["B6"].Value = "Time";
+            worksheet.Cells["C6"].Value = "Name";
+            worksheet.Cells["D6"].Value = "Total Categoy";
+            worksheet.Cells["E6"].Value = "Rating";
+            worksheet.Cells["F6"].Value = "Feedback";
 
 
-                //def header
-                worksheet.Cells["B4"].Value = "Time";
-                worksheet.Cells["C4"].Value = "Name";
-                worksheet.Cells["D4"].Value = "Total Category";
-                worksheet.Cells["E4"].Value = "Rating";
-                worksheet.Cells["F4"].Value = "Feedback";
 
 
-                worksheet.Cells["A1"].Value = "Rate & Feedback ";
-                worksheet.Cells["A1"].Style.Font.Size = 14;
-                worksheet.Cells["A2"].Style.Font.Size = 14;
-
-                for (int column = 2; column <= 6; column++)
-                {
-                    worksheet.Column(column).AutoFit();
-                }
-
+                for (int column = 2; column <= 5; column++)
+            {
+                worksheet.Column(column).AutoFit();
+                worksheet.Column(column).Width = worksheet.Column(column).Width + 5;
+            }
+                worksheet.Column(6).Width = worksheet.Column(6).Width + 60;
                 return excelFile.GetAsByteArray();
-
             }
         }
 

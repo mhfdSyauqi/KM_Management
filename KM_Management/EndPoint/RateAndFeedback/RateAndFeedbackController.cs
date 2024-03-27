@@ -33,7 +33,7 @@ public class RateAndFeedbackController : MyAPIController
 
 
         var data = result.Value.Items;
-
+        var periode = result.Value.Periode;
         var newData = data.Select(item => new
         {
 
@@ -46,7 +46,7 @@ public class RateAndFeedbackController : MyAPIController
 
         var columns = new List<string> { "Time", "Name", "Total Category", "Rating", "Feedback"};
 
-        byte[] fileBytes = ExcelExportHelper.ExportExcelRateAndFeedback(newData, columns);
+        byte[] fileBytes = ExcelExportHelper.ExportExcelRateAndFeedback(newData, periode ,columns);
 
         return File(fileBytes, ExcelExportHelper.ExcelContentType, "RateAndFeedback.xlsx");
 
