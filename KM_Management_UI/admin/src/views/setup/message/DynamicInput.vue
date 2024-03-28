@@ -38,6 +38,7 @@
             <div
               class="flex justify-items-center w-full pt-4 pb-4"
               v-for="(msg, index) in messageData"
+              :key="index"
             >
               <div
                 v-if="isDropDownOpen[index]"
@@ -56,7 +57,7 @@
                 <div style="position: relative">
                   <textarea
                     :readonly="!editMode[index]"
-                    v-model="updateText[index]"
+                    v-model="localUpdateText[index]"
                     v-if="expanded"
                     maxlength="150"
                     @click.stop
@@ -180,6 +181,7 @@
             <div
               class="flex justify-items-center w-full pt-4 pb-4"
               v-for="(message, index) in addedMessages"
+              :key="index"
             >
               <div
                 v-if="expanded"
@@ -256,35 +258,15 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits, onMounted } from 'vue'
+import { ref, defineProps, defineEmits, watch } from 'vue'
 import Swal from 'sweetalert2'
-import {
-  newMessage,
-  errorPost,
-  HandlePublish,
-  ResetPostInput
-} from '@/components/pages/setup/postMessage.js'
+import { newMessage, errorPost, HandlePublish } from '@/components/pages/setup/postMessage.js'
 
-import {
-  errorEdit,
-  ResetEditInput,
-  editMessage,
-  HandleRePublish
-} from '@/components/pages/setup/patchMessage.js'
+import { errorEdit, editMessage, HandleRePublish } from '@/components/pages/setup/patchMessage.js'
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
-import {
-  errorDelete,
-  ResetDeleteInput,
-  deleteMessage,
-  HandleUnPublish
-} from '@/components/pages/setup/deleteMessage.js'
+import { deleteMessage, HandleUnPublish } from '@/components/pages/setup/deleteMessage.js'
 
-import {
-  HandleSequence,
-  ResetSequence,
-  editSequence,
-  errorSequence
-} from '@/components/pages/setup/patchSequenceMessage.js'
+import { HandleSequence, editSequence } from '@/components/pages/setup/patchSequenceMessage.js'
 
 const props = defineProps([
   'nameInput',
@@ -302,18 +284,23 @@ const props = defineProps([
 const emits = defineEmits(['toggleExpand'])
 
 const showAddMessage = ref(false)
-import OptionButton from '@/components/buttons/OptionButton.vue'
-const showInvalidEdit = ref([])
-const showInvalidAdd = ref([])
-const editMode = ref(props.editMode)
 
-const modifiedBy = ref(props.modifiedBy)
+const editMode = ref(props.editMode)
 
 const isDropDownOpen = ref(props.isDropDownOpen)
 
 const addedMessages = ref([])
 
 const addText = ref([])
+
+const localUpdateText = ref([props.updateText])
+
+watch(
+  () => props.updateText,
+  (newValue) => {
+    localUpdateText.value = newValue
+  }
+)
 
 const errorAddMessage = ref([])
 const errorUpdateMessage = ref([])
@@ -516,14 +503,14 @@ const updateSequenceSetupMessage = async (type, move, currentSequence, length, i
       editSequence.value.type = type
       editSequence.value.current_sequence = currentSequenceInt
       editSequence.value.new_sequence = upSequence
-      const result = await HandleSequence()
+      await HandleSequence()
       fetchData()
       isDropDownOpen.value[index] = false
     } else if (move == 'down' && currentSequence < length) {
       editSequence.value.type = type
       editSequence.value.current_sequence = currentSequenceInt
       editSequence.value.new_sequence = downSequence
-      const result = await HandleSequence()
+      await HandleSequence()
       fetchData()
       isDropDownOpen.value[index] = false
     } else {
@@ -589,10 +576,6 @@ const cancelMessage = (index) => {
   editMode.value[index] = !editMode.value[index]
   errorUpdateMessage.value[index] = ''
   fetchData()
-}
-
-const toggleDropdown = (index) => {
-  isDropDownOpen.value[index] = !isDropDownOpen.value[index]
 }
 
 // const getNextSequenceNumber = (index) => {

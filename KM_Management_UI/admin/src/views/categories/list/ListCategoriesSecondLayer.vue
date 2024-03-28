@@ -38,7 +38,6 @@ const firstUid = ref(storeCategories.getFirstUid(firstCategory.value))
 const firstActive = ref(JSON.parse(storeCategories.getFirstActive(firstCategory.value)))
 
 const secondLayer = ref([])
-const isActiveDropDownOpen = ref(false)
 
 const isCreateModalOpen = ref(false)
 const isEditModalOpen = ref(false)
@@ -51,18 +50,8 @@ const isSearchModalOpen = ref(false)
 const hightLightUid = ref()
 const isActiveYesToggle = ref(true)
 const isActiveNoToggle = ref(true)
-const create_By = ref('dummyData')
-const modified_By = ref('dummyData')
 const errorAddCategory = ref('')
 const errorUpdateCategory = ref('')
-
-const toggleActiveDropdown = () => {
-  isActiveDropDownOpen.value = !isActiveDropDownOpen.value
-}
-
-const closeActiveDropDown = () => {
-  isActiveDropDownOpen.value = false
-}
 
 const openCreateModal = () => {
   isCreateModalOpen.value = true
@@ -99,7 +88,7 @@ const fetchSecondLayer = async (is_Active) => {
     filter.value.Uid_Reference = firstUid.value
     filter.value.Layer = 2
     filter.value.Is_Active = is_Active
-    const response = await GetCategoryListByFilter()
+    await GetCategoryListByFilter()
     secondLayer.value = category_list.value
   } catch (error) {
     console.error('Error fetching content:', error)
@@ -108,7 +97,7 @@ const fetchSecondLayer = async (is_Active) => {
 
 const exportExcel = async () => {
   try {
-    const response = await HandleExcelExport()
+    await HandleExcelExport()
   } catch (error) {
     console.error('Error fetching content:', error)
   }
@@ -230,11 +219,6 @@ const navigateToSecondUid = (name, uid, is_active) => {
 const getCategorySecondtLetter = (category) => {
   // Extract the first letter of the category
   return category.charAt(0).toUpperCase()
-}
-
-const goToFirst = () => {
-  const newPath = `/categories/list`
-  router.push(newPath)
 }
 
 const checkBoxChange = () => {
@@ -381,14 +365,11 @@ watchEffect(() => {
 
     <div class="overflow-y-auto max-h-[80%]">
       <div
+        v-if="groupedSecondLayer.length > 0"
         class="p-10 overflow-y-scroll grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10"
         style="max-height: 60vh"
       >
-        <div
-          v-if="groupedSecondLayer.length > 0"
-          v-for="group in groupedSecondLayer"
-          :key="group.letter"
-        >
+        <div v-for="group in groupedSecondLayer" :key="group.letter">
           <div
             class="bg-orange-100 w-[100%] min-h-[165px] h-full p-4 rounded-tr-3xl rounded-bl-3xl"
           >
@@ -398,7 +379,7 @@ watchEffect(() => {
             </h1>
 
             <!-- Display items in the current card -->
-            <div v-for="(item, index) in group.items" :key="item.uid">
+            <div v-for="item in group.items" :key="item.uid">
               <div class="flex items-center pb-1">
                 <button
                   class="mr-2"
@@ -467,13 +448,11 @@ watchEffect(() => {
             </div>
           </div>
         </div>
-        <div v-else>
-          <div>
-            <div
-              class="relative bg-orange-100 w-[100%] h-[50%] pl-6 pb-4 pt-4 rounded-tr-3xl rounded-bl-3xl"
-            >
-              <span class="text-[14px] italic mr-2 text-gray-500">Data Not Available</span>
-            </div>
+      </div>
+      <div v-else>
+        <div class="p-10 overflow-y-scroll grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
+          <div class="relative bg-orange-100 w-[100%] pl-6 pb-4 pt-4 rounded-tr-3xl rounded-bl-3xl">
+            <span class="text-[14px] italic mr-2 text-gray-500">Data Not Available</span>
           </div>
         </div>
       </div>

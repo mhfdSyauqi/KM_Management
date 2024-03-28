@@ -17,13 +17,10 @@ import { HandleDelete, deleteSelected } from '@/components/pages/category/delete
 import { HandleAllDelete } from '@/components/pages/category/deleteAllCategorySelected.js'
 import { HandlePublishAllSelected } from '@/components/pages/category/postAllCategorySelected.js'
 import { HandleRePublish, editSequence } from '@/components/pages/category/patchSequenceSelected.js'
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useStore } from '@/stores/topIssueStore.js'
 import Swal from 'sweetalert2'
-import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import OptionButton from '@/components/buttons/OptionButton.vue'
-import IconSearch from '@/components/icons/IconSearch.vue'
-import AbortButton from '@/components/buttons/AbortButton.vue'
 
 const useTopIssueStore = useStore()
 const searchQueryAvailableItem = ref('')
@@ -32,11 +29,8 @@ const availableItems = ref([])
 const searchAvailableItems = ref([])
 const searchSelectedItems = ref([])
 const selectedItems = ref([])
-const createBy = ref('dummyData')
-const modifiedBy = ref('dummyData')
 const isActiveYesToggle = ref(true)
 const isActiveNoToggle = ref(true)
-const isActiveDropDownOpen = ref(false)
 
 const addNewSelected = async (uid_Bot_Category) => {
   try {
@@ -241,12 +235,12 @@ const updateSequence = async (move, currentSequence, length) => {
     if (move == 'up' && upSequence != 0) {
       editSequence.value.Current_Sequence = currentSequenceInt
       editSequence.value.New_Sequence = upSequence
-      const response = await HandleRePublish()
+      await HandleRePublish()
       checkBoxChange()
     } else if (move == 'down' && currentSequence < length) {
       editSequence.value.Current_Sequence = currentSequenceInt
       editSequence.value.New_Sequence = downSequence
-      const response = await HandleRePublish()
+      await HandleRePublish()
       checkBoxChange()
     } else {
       Swal.fire({
@@ -456,7 +450,7 @@ onMounted(() => {
               class="flex-grow p-4 min-h-[150px] max-w-[49%] max-h-[250px] overflow-y-auto border border-gray-300 rounded-2xl"
             >
               <div v-if="searchQueryAvailableItem.length > 0" class="relative">
-                <div v-for="(item, index) in searchAvailableItems">
+                <div v-for="item in searchAvailableItems" :key="item">
                   <span
                     class="block text-sm mb-2 rounded-xl text-gray-500 bg-gray-100 hover:bg-green-200 hover:text-[#77a383] pt-1 pb-1 pl-4 pr-4"
                     style="display: flex; justify-content: space-between; align-items: center"
@@ -477,7 +471,7 @@ onMounted(() => {
                 </div>
               </div>
               <div v-else class="relative">
-                <div v-for="(item, index) in availableItems">
+                <div v-for="item in availableItems" :key="item">
                   <span
                     class="block text-sm mb-2 rounded-xl text-gray-500 bg-gray-100 hover:bg-green-200 hover:text-[#77a383] pt-1 pb-1 pl-4 pr-4"
                     style="display: flex; justify-content: space-between; align-items: center"
@@ -504,7 +498,7 @@ onMounted(() => {
               class="flex-grow p-4 min-h-[150px] max-w-[49%] max-h-[250px] overflow-y-auto border border-gray-300 rounded-2xl"
             >
               <div v-if="searchQuerySelectedItem.length > 0" class="relative">
-                <div v-for="(item, index) in searchSelectedItems">
+                <div v-for="item in searchSelectedItems" :key="item">
                   <span
                     class="block text-sm mb-2 rounded-xl text-gray-500 bg-gray-100 hover:bg-green-200 hover:text-[#77a383] pt-1 pb-1 pl-4 pr-4"
                     style="display: flex; justify-content: space-between; align-items: center"
@@ -527,7 +521,7 @@ onMounted(() => {
                 </div>
               </div>
               <div v-else class="relative">
-                <div v-for="(item, index) in selectedItems">
+                <div v-for="item in selectedItems" :key="item">
                   <span
                     class="block text-sm mb-2 rounded-xl text-gray-500 bg-gray-100 hover:bg-green-200 hover:text-[#77a383] pt-1 pb-1 pl-4 pr-4"
                     style="display: flex; justify-content: space-between; align-items: center"

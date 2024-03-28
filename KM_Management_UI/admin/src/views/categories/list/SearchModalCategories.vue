@@ -5,7 +5,7 @@ import {
   filter
 } from '@/components/pages/category/useCategoryList.js'
 import { useCategoriesStore } from '@/stores/listCategoriesStore.js'
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { defineEmits } from 'vue'
 
 const emit = defineEmits(['close-modal'])
@@ -58,7 +58,7 @@ const fetchFirstLayer = async (isActive) => {
     filter.value.Layer = 1
     filter.value.Is_Active = isActive
 
-    const response = await GetCategoryListByFilter()
+    await GetCategoryListByFilter()
     firstLayer.value = category_list.value
 
     for (const item of firstLayer.value) {
@@ -77,7 +77,7 @@ const fetchSecondLayer = async (uid, layer, isActive) => {
     filter.value.Uid_Reference = uid
     filter.value.Layer = layer
     filter.value.Is_Active = isActive
-    const response = await GetCategoryListByFilter()
+    await GetCategoryListByFilter()
     return category_list.value
   } catch (error) {
     console.error('Error fetching content:', error)
@@ -89,7 +89,7 @@ const fetchThirdLayer = async (uid, layer, isActive) => {
     filter.value.Uid_Reference = uid
     filter.value.Layer = layer
     filter.value.Is_Active = isActive
-    const response = await GetCategoryListByFilter()
+    await GetCategoryListByFilter()
     return category_list.value
   } catch (error) {
     console.error('Error fetching content:', error)

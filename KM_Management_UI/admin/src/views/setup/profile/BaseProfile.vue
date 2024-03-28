@@ -1,5 +1,4 @@
 <script setup>
-import TextForm from '@/components/forms/TextForm.vue'
 import Swal from 'sweetalert2'
 
 import { profile, GetAssistantProfile } from '@/components/pages/setup/useAssistantProfile.js'
@@ -7,7 +6,6 @@ import { profile, GetAssistantProfile } from '@/components/pages/setup/useAssist
 import { HandlePublish, errorInput } from '@/components/pages/setup/postAssistantProfile.js'
 
 import { onMounted, ref } from 'vue'
-import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 
 const appName = ref('')
 const appImage = ref('')

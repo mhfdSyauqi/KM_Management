@@ -13,7 +13,6 @@ import ContainerModal from '@/components/modal/ContainerModal.vue'
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import OptionButton from '@/components/buttons/OptionButton.vue'
 import IconSearch from '@/components/icons/IconSearch.vue'
-import AbortButton from '@/components/buttons/AbortButton.vue'
 import {
   HandlePublish,
   ResetPostInput,
@@ -31,12 +30,10 @@ import {
   errorEdit,
   editCategory
 } from '@/components/pages/category/patchCategoryList.js'
-import { ResetInput } from '@/components/pages/content/postContents'
 
 const storeCategories = useCategoriesStore()
 const firstLayer = ref([])
 
-const isActiveDropDownOpen = ref(false)
 const isEditModalOpen = ref(false)
 const isCreateModalOpen = ref(false)
 const isSearchModalOpen = ref(false)
@@ -48,8 +45,6 @@ const selectedCreateCategory = ref(null)
 const isActiveYesToggle = ref(true)
 const isActiveNoToggle = ref(true)
 const hightLightUid = ref()
-const create_By = ref('dummyData')
-const modified_By = ref('dummyData')
 const errorAddCategory = ref('')
 const errorUpdateCategory = ref('')
 
@@ -81,13 +76,6 @@ const closeCreateModal = () => {
   isCreateModalOpen.value = false
   ResetPostInput()
 }
-const toggleActiveDropdown = () => {
-  isActiveDropDownOpen.value = !isActiveDropDownOpen.value
-}
-
-const closeActiveDropDown = () => {
-  isActiveDropDownOpen.value = false
-}
 
 const fetchFirstLayer = async (isActive) => {
   try {
@@ -95,7 +83,7 @@ const fetchFirstLayer = async (isActive) => {
     filter.value.Layer = 1
     filter.value.Is_Active = isActive
 
-    const response = await GetCategoryListByFilter()
+    await GetCategoryListByFilter()
     firstLayer.value = category_list.value
   } catch (error) {
     console.error('Error fetching content:', error)
@@ -104,7 +92,7 @@ const fetchFirstLayer = async (isActive) => {
 
 const exportExcel = async () => {
   try {
-    const response = await HandleExcelExport()
+    await HandleExcelExport()
   } catch (error) {
     console.error('Error fetching content:', error)
   }
@@ -331,15 +319,13 @@ onMounted(() => {
 
     <div class="overflow-y-auto max-h-[80%]">
       <div
+        v-if="groupedFirstLayer.length > 0"
         class="p-10 overflow-y-scroll grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10"
         style="max-height: 60vh"
       >
         <!-- Loop through groupedFirstLayer and display cards -->
-        <div
-          v-if="groupedFirstLayer.length > 0"
-          v-for="group in groupedFirstLayer"
-          :key="group.letter"
-        >
+
+        <div v-for="group in groupedFirstLayer" :key="group.letter">
           <div
             class="bg-orange-100 w-[100%] min-h-[165px] h-full p-4 rounded-tr-3xl rounded-bl-3xl"
           >
@@ -393,14 +379,11 @@ onMounted(() => {
             </div>
           </div>
         </div>
-
-        <div v-else>
-          <div>
-            <div
-              class="relative bg-orange-100 w-[100%] h-[50%] pl-6 pb-4 pt-4 rounded-tr-3xl rounded-bl-3xl"
-            >
-              <span class="text-[14px] italic mr-2 text-gray-500">Data Not Available</span>
-            </div>
+      </div>
+      <div v-else>
+        <div class="p-10 overflow-y-scroll grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
+          <div class="relative bg-orange-100 w-[100%] pl-6 pb-4 pt-4 rounded-tr-3xl rounded-bl-3xl">
+            <span class="text-[14px] italic mr-2 text-gray-500">Data Not Available</span>
           </div>
         </div>
       </div>
