@@ -7,5 +7,6 @@
         public DateTime? End_Date { get; set; }
         public string Rating { get; set; }
         public int Current_Page { get; set; }
+        public int Page_Limit { get; set; }
     }
 }

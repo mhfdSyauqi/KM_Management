@@ -28,6 +28,7 @@ public class RateAndFeedbackRepository : IRateAndFeedbackRepository
             Start_Date = filter.Start_Date,
             End_Date = filter.End_Date,
             Rating = rating,
+            Page_Limit = filter.Page_Limit,
             Current_Page = filter.Current_Page,
         };
         var command = new CommandDefinition(storeProcedureName, filterFeedback, commandType: System.Data.CommandType.StoredProcedure, cancellationToken: cancellationToken);

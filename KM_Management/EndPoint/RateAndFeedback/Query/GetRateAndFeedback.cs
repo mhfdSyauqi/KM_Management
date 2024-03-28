@@ -37,6 +37,7 @@ public class GetRateAndFeedbackHandler : IQueryHandler<GetRateAndFeedbackQuery, 
             Start_Date = request.Argument.Start_Date,
             End_Date = request.Argument.End_Date,
             Rating = string.Join(",", request.Argument.Rating),
+            Page_Limit = request.Argument.Page_Limit,
             Current_Page = request.Argument.Current_Page,
         };
 
