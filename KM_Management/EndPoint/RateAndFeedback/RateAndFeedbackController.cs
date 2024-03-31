@@ -16,7 +16,7 @@ public class RateAndFeedbackController : MyAPIController
 
     [HttpPost]
     [Route("GetRateAndFeedback")]
-    public async Task<IActionResult> GetRateAndFeedbackWithFilter([FromBody] RequestRateAndFeedback request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetRateAndFeedbackWithFilter([FromBody] RequestRateAndFeedback? request, CancellationToken cancellationToken)
     {
         var query = new GetRateAndFeedbackQuery(request);
         var result = await _Mediator.Send(query, cancellationToken);
@@ -32,16 +32,16 @@ public class RateAndFeedbackController : MyAPIController
         var result = await _Mediator.Send(query, cancellationToken);
 
 
-        var data = result.Value.Items;
-        var periode = result.Value.Periode;
-        var newData = data.Select(item => new
+        var data = result?.Value.Items;
+        var periode = result?.Value.Periode;
+        var newData = data?.Select(item => new
         {
 
-            Create_At = item.Create_At.ToString("dd-MM-yyyy HH:mm:ss"),
-            Create_By = item.Create_By,
-            Total_Category = item.Total_Category,
-            Rating = item.Rating,
-            Remark = item.Remark,
+            Create_At = item?.Create_At?.ToString("dd-MM-yyyy HH:mm:ss"),
+            Create_By = item?.Create_By,
+            Total_Category = item?.Total_Category,
+            Rating = item?.Rating,
+            Remark = item?.Remark,
         }).ToList();
 
         var columns = new List<string> { "Time", "Name", "Total Category", "Rating", "Feedback"};

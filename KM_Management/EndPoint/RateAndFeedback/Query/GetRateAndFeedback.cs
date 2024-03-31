@@ -33,19 +33,19 @@ public class GetRateAndFeedbackHandler : IQueryHandler<GetRateAndFeedbackQuery, 
 
         var filterFeedback = new FilterRateAndFeedback()
         {
-            Filter_Date = request.Argument.Filter_Date,
-            Start_Date = request.Argument.Start_Date,
-            End_Date = request.Argument.End_Date,
-            Rating = string.Join(",", request.Argument.Rating),
-            Page_Limit = request.Argument.Page_Limit,
-            Current_Page = request.Argument.Current_Page,
+            Filter_Date = request?.Argument?.Filter_Date,
+            Start_Date = request?.Argument?.Start_Date,
+            End_Date = request?.Argument?.End_Date,
+            Rating = string.Join(",", request?.Argument.Rating),
+            Page_Limit = request?.Argument?.Page_Limit,
+            Current_Page = request?.Argument?.Current_Page,
         };
 
         var filterSummary = new FilterRateAndFeedbackSummary()
         {
-            Filter_Date = request.Argument.Filter_Date,
-            Start_Date = request.Argument.Start_Date,
-            End_Date = request.Argument.End_Date,
+            Filter_Date = request?.Argument?.Filter_Date,
+            Start_Date = request?.Argument?.Start_Date,
+            End_Date = request?.Argument?.End_Date,
         };
 
         var feedback = await _rateAndFeedbackRepository.GetRateAndFeedbackAsync(filterFeedback, cancellationToken);
@@ -53,27 +53,31 @@ public class GetRateAndFeedbackHandler : IQueryHandler<GetRateAndFeedbackQuery, 
 
         var response = new ResponseRateAndFeedback()
         {
-            Periode = feedback.FirstOrDefault().Periode,
+            Periode = feedback?.FirstOrDefault()?.Periode,
             Summary =  new Summary_User_Feedback()
             {
-                User_Preview = summary.User_Preview,
-                Total_Feedback = summary.Total_Feedback,
-                Overall_Rating = summary.Overall_Rating
+                User_Preview = summary?.User_Preview ?? 0,
+                Total_Feedback = summary?.Total_Feedback ?? 0,
+                Overall_Rating = summary?.Overall_Rating ??0,
+                Rating_One = summary?.Rating_One ?? 0,
+                Rating_Two = summary?.Rating_Two ?? 0,
+                Rating_Three = summary?.Rating_Three ?? 0,
+                Rating_Four = summary?.Rating_Four ?? 0,
             },
-            Items = feedback.Select(col => new User_Feedback()
+            Items = feedback?.Select(col => new User_Feedback()
             {
-                Rating = col.Rating,
-                Remark = col.Remark,
-                Uid_Session_Header = col.Uid_Session_Header.ToString("N"),
-                Create_By = col.Create_By,
-                Create_At = col.Create_At,
-                Total_Category = col.Total_Category,
+                Rating = col?.Rating??0,
+                Remark = col?.Remark??"",
+                Uid_Session_Header = col?.Uid_Session_Header.ToString() ?? default,
+                Create_By = col?.Create_By??"",
+                Create_At = col?.Create_At??default,
+                Total_Category = col?.Total_Category??0,
             }).ToList(),
-            Total_Row = feedback.FirstOrDefault()?.Total_Row,
-            Curr_Page = feedback.FirstOrDefault()?.Curr_Page,
-            Next_Page = feedback.FirstOrDefault()?.Next_Page,
-            Prev_Page = feedback.FirstOrDefault()?.Prev_Page,
-            Max_Page = feedback.FirstOrDefault()?.Max_Page,
+            Total_Row = feedback?.FirstOrDefault()?.Total_Row ?? 0,
+            Curr_Page = feedback?.FirstOrDefault()?.Curr_Page ?? 0,
+            Next_Page = feedback?.FirstOrDefault()?.Next_Page ?? 0,
+            Prev_Page = feedback?.FirstOrDefault()?.Prev_Page ?? 0,
+            Max_Page = feedback?.FirstOrDefault()?.Max_Page ?? 0,
         };
         return Result.Success(response);
     }
