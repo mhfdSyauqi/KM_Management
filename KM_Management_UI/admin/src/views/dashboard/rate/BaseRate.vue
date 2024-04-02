@@ -1,60 +1,151 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watchEffect } from 'vue'
 import iconPerson from '@/components/icons/IconPerson.vue'
 import iconPaper from '@/components/icons/IconPaper.vue'
+import { DatePicker } from 'v-calendar'
+import 'v-calendar/style.css'
+
 import iconChart from '@/components/icons/IconChart.vue'
 import starFull from '@/components/icons/IconStarFull.vue'
 import starEmpty from '@/components/icons/IconStarEmpty.vue'
 import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import IconDropdown from '@/components/icons/IconDropdown.vue'
+
+import IconNext from '@/components/icons/IconNext.vue'
+import IconPrevious from '@/components/icons/IconPrevious.vue'
 import {
   filter,
   summary,
   rate_and_feedback,
-  GetRateAndFeedbackByFilter
+  GetRateAndFeedbackByFilter,
+  HandlePagination,
+  navigation,
+  HandlingPageLimit
 } from '@/components/pages/dashboard/useDashboard.js'
 
-const dateFilter = ref('last_year')
+import {
+  HandleExcelExport,
+  filterExportExcel
+} from '@/components/pages/dashboard/postExportRateAndFeedback.js'
 
+const pageLimit = ref(10)
+//calendar
+
+const range = ref({})
+
+//calendar
 const selectedRatings = ref([1, 2, 3, 4])
+const selectedCategoryDate = ref('today')
+
+const filteringDate = ref({
+  category: 'today',
+  start_date: null,
+  end_date: null
+})
 
 const checkBoxChange = () => {
-  const stringResult = selectedRatings.value.join(',') // Output: "1,2,3,4"
-
+  const stringResult = selectedRatings.value.join(',')
   fetchRate(stringResult)
+  fetchExportExcel(stringResult)
 }
+
+const formatDate = (createdAt) => {
+  const date = new Date(createdAt)
+  const day = String(date.getDate()).padStart(2, '0')
+  const monthNames = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec'
+  ]
+  const monthIndex = date.getMonth()
+  const year = date.getFullYear()
+  return `${day}-${monthNames[monthIndex]}-${year} `
+}
+
+function convertToTitleCase(inputString) {
+  return inputString
+    .split('_')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
+}
+
 const fetchRate = async (ratings) => {
   try {
-    filter.value.filter_date = dateFilter.value
-    filter.value.start_date = null
-    filter.value.end_date = null
+    filter.value.filter_date = filteringDate.value.category
+
+    filter.value.start_date = filteringDate.value.start_date
+    filter.value.end_date = filteringDate.value.end_date
     filter.value.rating = ratings
-    filter.value.page_limit = '10'
-    filter.value.current_page = '1'
+    filter.value.page_limit = pageLimit.value
+    filter.value.current_page = 1
     await GetRateAndFeedbackByFilter()
-    rate_and_feedback.value.forEach((rate) => {
-      rate.create_at = formatCreatedAt(rate.create_at)
-    })
   } catch (error) {
     console.error('Error fetching content:', error)
   }
 }
 
-onMounted(async () => {
-  checkBoxChange()
-})
-
-const formatCreatedAt = (createdAt) => {
-  const date = new Date(createdAt)
-  const day = String(date.getDate()).padStart(2, '0')
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const year = date.getFullYear()
-  const hours = String(date.getHours()).padStart(2, '0')
-  const minutes = String(date.getMinutes()).padStart(2, '0')
-  return `${day}-${month}-${year} ${hours}:${minutes}`
+const fetchExportExcel = async (ratings) => {
+  try {
+    filterExportExcel.value.filter_date = filteringDate.value.category
+      ? filteringDate.value.category
+      : null
+    filterExportExcel.value.start_date = filteringDate.value.start_date
+    filterExportExcel.value.end_date = filteringDate.value.end_date
+    filterExportExcel.value.rating = ratings
+    filterExportExcel.value.page_limit = pageLimit.value
+    filterExportExcel.value.current_page = 1
+  } catch (error) {
+    console.error('Error fetching content:', error)
+  }
 }
+
+const exportExcel = async () => {
+  try {
+    await HandleExcelExport()
+  } catch (error) {
+    console.error('Error fetching content:', error)
+  }
+}
+
+const applyDateFilter = async () => {
+  if (selectedCategoryDate.value != null) {
+    filteringDate.value.category = selectedCategoryDate.value
+    filteringDate.value.start_date = null
+    filteringDate.value.end_date = null
+    range.value = {}
+    checkBoxChange()
+  } else if (selectedCategoryDate.value == null) {
+    filteringDate.value.start_date = range.value.start
+    filteringDate.value.end_date = range.value.end
+    filteringDate.value.category = null
+    checkBoxChange()
+  }
+}
+
+const closePopover = () => {
+  // Mengatur nilai open menjadi false untuk menutup popover
+  open.value = false
+}
+
+onMounted(async () => {
+  try {
+    await checkBoxChange()
+  } catch (error) {
+    console.error('Error in onMounted:', error)
+  }
+})
 </script>
+
 <template>
   <div class="flex items-center align-middle gap-3 mb-3 bg-tea">
     <p class="text-sm">Setup</p>
@@ -68,7 +159,110 @@ const formatCreatedAt = (createdAt) => {
         <h1 class="basis-[100%] text-2xl font-bold text-green-800">Rate & Feedback</h1>
       </div>
       <div class="flex items-end space-x-2">
-        <SecondaryButton class="text-green-700">{{ dateFilter }}</SecondaryButton>
+        <Popover class="relative" v-slot="{ open }">
+          <PopoverButton
+            class="min-w-fit flex p-2 border border-green-800 text-green-800 items-center justify-center gap-2 focus:outline-none"
+            :class="[
+              open ? 'rounded-tr-3xl rounded-tl-3xl text-white bg-green-800 ' : 'rounded-3xl'
+            ]"
+          >
+            <span>
+              <slot name="default" v-if="filteringDate.category != null">{{
+                convertToTitleCase(filteringDate.category)
+              }}</slot>
+              <slot
+                name="default"
+                v-else-if="
+                  filteringDate.category == null &&
+                  filteringDate.end_date != null &&
+                  filteringDate.start_date != null
+                "
+                >{{
+                  formatDate(filteringDate.start_date) + ' - ' + formatDate(filteringDate.end_date)
+                }}</slot
+              >
+            </span>
+            <IconDropdown :class="[open ? 'fill-white' : 'fill-green-800']" />
+          </PopoverButton>
+
+          <PopoverPanel class="absolute z-10 right-0">
+            <div
+              class="grid p-3 bg-white border border-green-800 rounded-2xl rounded-tr-none min-w-fit text-green-800 select-none"
+            >
+              <slot name="options">
+                <div class="flex w-full gap-10">
+                  <div class="flex flex-col">
+                    <div class="flex flex-col">
+                      <button
+                        class="text-yellow pl-2 pr-2 pt-1 pb-1 rounded-lg text-left"
+                        :class="{ 'bg-green-200': selectedCategoryDate == 'today' }"
+                        @click="selectedCategoryDate = 'today'"
+                      >
+                        Today
+                      </button>
+                      <button
+                        class="text-yellow pl-2 pr-2 pt-1 pb-1 rounded-lg text-left"
+                        :class="{ 'bg-green-200': selectedCategoryDate == 'yesterday' }"
+                        @click="selectedCategoryDate = 'yesterday'"
+                      >
+                        Yesterday
+                      </button>
+                      <button
+                        class="text-yellow pl-2 pr-2 pt-1 pb-1 rounded-lg text-left"
+                        :class="{ 'bg-green-200': selectedCategoryDate == 'last_week' }"
+                        @click="selectedCategoryDate = 'last_week'"
+                      >
+                        Last 7 Day
+                      </button>
+                      <button
+                        class="text-yellow pl-2 pr-2 pt-1 pb-1 rounded-lg text-left"
+                        :class="{ 'bg-green-200': selectedCategoryDate == 'last_three_months' }"
+                        @click="selectedCategoryDate = 'last_three_months'"
+                      >
+                        Last 3 Months
+                      </button>
+                      <button
+                        class="text-yellow pl-2 pr-2 pt-1 pb-1 rounded-lg text-left"
+                        :class="{ 'bg-green-200': selectedCategoryDate == 'last_year' }"
+                        @click="selectedCategoryDate = 'last_year'"
+                      >
+                        Last 1 Year
+                      </button>
+                    </div>
+                    <div class="flex mt-20 items-start gap-2">
+                      <PopoverButton>
+                        <button
+                          @click="closePopover"
+                          class="bg-green-200 text-green-800 pl-2 pr-2 pt-1 pb-1 rounded-lg"
+                        >
+                          Cancel
+                        </button></PopoverButton
+                      >
+                      <button
+                        class="bg-green-700 text-white pl-2 pr-2 pt-1 pb-1 rounded-lg"
+                        @click="applyDateFilter"
+                      >
+                        Apply
+                      </button>
+                    </div>
+                  </div>
+                  <div class="flex">
+                    <DatePicker
+                      :color="'green'"
+                      transparent
+                      borderless
+                      v-model.range="range"
+                      mode="date"
+                      @click="range.start ? (selectedCategoryDate = null) : selectedCategoryDate"
+                    >
+                    </DatePicker>
+                  </div>
+                </div>
+              </slot>
+            </div>
+          </PopoverPanel>
+        </Popover>
+        <!-- <SecondaryButton class="text-green-700">{{ dateFilter }}</SecondaryButton> -->
       </div>
     </div>
     <div class="pr-10 pl-10 pt-4 grid grid-cols-1 sm:grid-cols-2 gap-10">
@@ -243,7 +437,18 @@ const formatCreatedAt = (createdAt) => {
       </div>
     </div>
     <div class="pr-8 pt-4 pb-4 gap-5 flex justify-end items-end">
-      <SecondaryButton class="text-green-700">Export To Excel</SecondaryButton>
+      <SecondaryButton
+        class="text-green-700"
+        @click="exportExcel"
+        v-if="rate_and_feedback.length > 0"
+        >Export To Excel</SecondaryButton
+      >
+      <button
+        v-else
+        class="min-w-32 font-semibold rounded-3xl border bg-green-200 border-green-800 text-green-800 p-2 active:scale-95"
+      >
+        Export To Excel
+      </button>
       <Popover class="relative" v-slot="{ open }">
         <PopoverButton
           class="min-w-32 flex p-2 border border-green-800 text-green-800 items-center justify-center gap-2 focus:outline-none"
@@ -257,73 +462,76 @@ const formatCreatedAt = (createdAt) => {
 
         <PopoverPanel class="absolute z-10 right-0">
           <div
-            class="grid grid-cols-1 p-3 gap-2.5 bg-green-100 border border-green-800 rounded-2xl rounded-tr-none min-w-44 text-green-800 select-none"
+            class="grid grid-cols-1 p-3 gap-2.5 bg-white border border-green-800 rounded-2xl rounded-tr-none min-w-44 text-green-800 select-none"
           >
             <slot name="options">
-              <label class="flex items-center">
-                <input
-                  type="checkbox"
-                  name="rating1"
-                  v-model="selectedRatings"
-                  :value="1"
-                  @change="checkBoxChange()"
-                />
-                <span class="ml-3 flex items-center">
-                  <span v-for="star in 1" :key="star">
-                    <span aria-hidden="true">
-                      <starFull class="h-5 w-5 fill-yellow-400" />
+              <div class="flex flex-col">
+                <label class="flex items-center">
+                  <input
+                    type="checkbox"
+                    name="rating1"
+                    v-model="selectedRatings"
+                    :value="1"
+                    @change="checkBoxChange()"
+                  />
+                  <span class="ml-3 flex items-center">
+                    <span v-for="star in 1" :key="star">
+                      <span aria-hidden="true">
+                        <starFull class="h-5 w-5 fill-yellow-400" />
+                      </span>
                     </span>
                   </span>
-                </span>
-              </label>
-              <label class="flex items-center">
-                <input
-                  type="checkbox"
-                  name="rating1"
-                  v-model="selectedRatings"
-                  :value="2"
-                  @change="checkBoxChange()"
-                />
-                <span class="ml-3 flex items-center">
-                  <span v-for="star in 2" :key="star">
-                    <span aria-hidden="true">
-                      <starFull class="h-5 w-5 fill-yellow-400" />
+                </label>
+                <label class="flex items-center">
+                  <input
+                    type="checkbox"
+                    name="rating1"
+                    v-model="selectedRatings"
+                    :value="2"
+                    @change="checkBoxChange()"
+                  />
+                  <span class="ml-3 flex items-center">
+                    <span v-for="star in 2" :key="star">
+                      <span aria-hidden="true">
+                        <starFull class="h-5 w-5 fill-yellow-400" />
+                      </span>
                     </span>
                   </span>
-                </span>
-              </label>
-              <label class="flex items-center">
-                <input
-                  type="checkbox"
-                  name="rating1"
-                  v-model="selectedRatings"
-                  :value="3"
-                  @change="checkBoxChange()"
-                />
-                <span class="ml-3 flex items-center">
-                  <span v-for="star in 3" :key="star">
-                    <span aria-hidden="true">
-                      <starFull class="h-5 w-5 fill-yellow-400" />
+                </label>
+                <label class="flex items-center">
+                  <input
+                    type="checkbox"
+                    name="rating1"
+                    v-model="selectedRatings"
+                    :value="3"
+                    @change="checkBoxChange()"
+                  />
+                  <span class="ml-3 flex items-center">
+                    <span v-for="star in 3" :key="star">
+                      <span aria-hidden="true">
+                        <starFull class="h-5 w-5 fill-yellow-400" />
+                      </span>
                     </span>
                   </span>
-                </span>
-              </label>
-              <label class="flex items-center">
-                <input
-                  type="checkbox"
-                  name="rating1"
-                  v-model="selectedRatings"
-                  :value="4"
-                  @change="checkBoxChange()"
-                />
-                <span class="ml-3 flex items-center">
-                  <span v-for="star in 4" :key="star">
-                    <span aria-hidden="true">
-                      <starFull class="h-5 w-5 fill-yellow-400" />
+                </label>
+                <label class="flex items-center">
+                  <input
+                    type="checkbox"
+                    name="rating1"
+                    v-model="selectedRatings"
+                    :value="4"
+                    @change="checkBoxChange()"
+                  />
+                  <span class="ml-3 flex items-center">
+                    <span v-for="star in 4" :key="star">
+                      <span aria-hidden="true">
+                        <starFull class="h-5 w-5 fill-yellow-400" />
+                      </span>
                     </span>
                   </span>
-                </span>
-              </label>
+                </label>
+                <!-- <button class="mt-4 bg-green-800 text-white rounded-lg">Ok</button> -->
+              </div>
             </slot>
           </div>
         </PopoverPanel>
@@ -337,8 +545,8 @@ const formatCreatedAt = (createdAt) => {
         <div class="flex items-end space-x-2"></div>
       </div>
     </div>
-    <div class="px-8 overflow-y-auto">
-      <div class="bg-gray-50 flex flex-col gap-4 px-8">
+    <div v-if="rate_and_feedback.length > 0" class="px-8 overflow-y-auto">
+      <div class="bg-gray-50 flex flex-col gap-4 px-8 h-[100%]">
         <div v-for="rate in rate_and_feedback" :key="rate" class="px-4 flex-wrap">
           <div>{{ rate.create_by }}</div>
           <div class="flex items-center">
@@ -357,10 +565,89 @@ const formatCreatedAt = (createdAt) => {
         </div>
       </div>
     </div>
+    <div v-else class="px-8 overflow-y-auto">
+      <div class="min-h-[80px]">
+        <p class="text-gray-500 items-center justify-center flex min-h-[80px]">Data Not Found</p>
+      </div>
+    </div>
     <div class="px-8">
       <div class="flex justify-between border-t-2 border-gray-300 py-2">
-        <div class="flex text-sm items-start space-x-2 px-2">Pagination start</div>
-        <div class="flex text-sm items-end space-x-2">Pagination End</div>
+        <nav
+          v-show="rate_and_feedback.length > 0"
+          class="flex flex-row justify-between items-start md:items-center space-y-5 md:space-y-0 p-4"
+        >
+          <div class="space-x-2">
+            <select
+              class="border rounded border-green-500"
+              v-model="pageLimit"
+              @change="HandlingPageLimit(pageLimit)"
+            >
+              <option :value="10">10</option>
+              <option :value="20">20</option>
+              <option :value="50">50</option>
+            </select>
+
+            <span class="text-sm text-green-500 pl-2 pr-2">
+              {{ navigation.show }}
+            </span>
+          </div>
+
+          <ul class="inline-flex items-stretch -space-x-px">
+            <li v-if="navigation.current > 1">
+              <button
+                @click="HandlePagination(1)"
+                class="rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-orange-100 h-full"
+              >
+                <IconPrevious class="fill-green-700" />
+              </button>
+            </li>
+            <li v-else>
+              <button
+                class="rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-orange-100 h-full"
+              >
+                <IconPrevious class="fill-green-700" />
+              </button>
+            </li>
+            <li v-show="navigation.previous !== 0">
+              <button
+                @click="HandlePagination(navigation.previous)"
+                class="px-3.5 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-orange-100"
+              >
+                <span class="text-sm">{{ navigation.previous }}</span>
+              </button>
+            </li>
+            <li v-show="navigation.current !== 0">
+              <button
+                class="px-3.5 py-2 bg-green-500 text-white font-bold ring-1 ring-inset ring-gray-300"
+              >
+                <span class="text-sm">{{ navigation.current }}</span>
+              </button>
+            </li>
+            <li v-show="navigation.next !== 0">
+              <button
+                @click="HandlePagination(navigation.next)"
+                class="px-3.5 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-orange-100"
+              >
+                <span class="text-sm">{{ navigation.next }}</span>
+              </button>
+            </li>
+            <li v-if="navigation.max !== 0 && navigation.next !== 0">
+              <button
+                @click="HandlePagination(navigation.max)"
+                class="rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-orange-100 h-full"
+              >
+                <IconNext class="fill-green-700" />
+              </button>
+            </li>
+            <li v-else>
+              <button
+                class="rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-orange-100 h-full"
+              >
+                <IconNext class="fill-green-700" />
+              </button>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
   </div>

@@ -21,6 +21,16 @@ const navigation = ref({
   total: 0
 })
 
+const HandleFormatDate = (createdAt) => {
+  const date = new Date(createdAt)
+  const day = String(date.getDate()).padStart(2, '0')
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const year = date.getFullYear()
+  const hours = String(date.getHours()).padStart(2, '0')
+  const minutes = String(date.getMinutes()).padStart(2, '0')
+  return `${day}-${month}-${year} ${hours}:${minutes}`
+}
+
 async function GetRateAndFeedbackByFilter() {
   const result = await GetRateAndFeedbackAsync(
     filter.value.filter_date,
@@ -30,8 +40,10 @@ async function GetRateAndFeedbackByFilter() {
     filter.value.page_limit,
     filter.value.current_page
   )
+  
 
   if (result.is_success) {
+    
     rate_and_feedback.value = result.rate_and_feedback.items
     summary.value = result.rate_and_feedback.summary
     navigation.value.current = result.rate_and_feedback.curr_page
@@ -39,7 +51,9 @@ async function GetRateAndFeedbackByFilter() {
     navigation.value.next = result.rate_and_feedback.next_page
     navigation.value.max = result.rate_and_feedback.max_page
     navigation.value.total = result.rate_and_feedback.total_row
-
+    rate_and_feedback.value.forEach((rate) => {
+      rate.create_at = HandleFormatDate(rate.create_at)
+    })
     let startRow =
       result.rate_and_feedback.curr_page === 1
         ? 1
@@ -67,12 +81,12 @@ async function HandleCheck(isCheck, value) {
 }
 
 async function HandlePagination(nextPage) {
-  filter.value.page = nextPage
+  filter.value.current_page = nextPage
   return await GetRateAndFeedbackByFilter()
 }
 
 async function HandlingPageLimit(limit) {
-  filter.value.limit = limit
+  filter.value.page_limit = limit
   return await GetRateAndFeedbackByFilter()
 }
 
@@ -84,5 +98,6 @@ export {
   GetRateAndFeedbackByFilter,
   HandleCheck,
   HandlePagination,
-  HandlingPageLimit
+  HandlingPageLimit,
+ 
 }
