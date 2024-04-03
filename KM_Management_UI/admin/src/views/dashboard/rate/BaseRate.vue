@@ -209,22 +209,29 @@ onMounted(async () => {
                       </button>
                       <button
                         class="text-yellow pl-2 pr-2 pt-1 pb-1 rounded-lg text-left"
-                        :class="{ 'bg-green-200': selectedCategoryDate == 'last_week' }"
-                        @click="selectedCategoryDate = 'last_week'"
+                        :class="{ 'bg-green-200': selectedCategoryDate == 'last_7_days' }"
+                        @click="selectedCategoryDate = 'last_7_days'"
+                      >
+                        Last 30 Days
+                      </button>
+                      <button
+                        class="text-yellow pl-2 pr-2 pt-1 pb-1 rounded-lg text-left"
+                        :class="{ 'bg-green-200': selectedCategoryDate == 'last_30_days' }"
+                        @click="selectedCategoryDate = 'last_30_days'"
                       >
                         Last 7 Day
                       </button>
                       <button
                         class="text-yellow pl-2 pr-2 pt-1 pb-1 rounded-lg text-left"
-                        :class="{ 'bg-green-200': selectedCategoryDate == 'last_three_months' }"
-                        @click="selectedCategoryDate = 'last_three_months'"
+                        :class="{ 'bg-green-200': selectedCategoryDate == 'last_3_months' }"
+                        @click="selectedCategoryDate = 'last_3_months'"
                       >
                         Last 3 Months
                       </button>
                       <button
                         class="text-yellow pl-2 pr-2 pt-1 pb-1 rounded-lg text-left"
-                        :class="{ 'bg-green-200': selectedCategoryDate == 'last_year' }"
-                        @click="selectedCategoryDate = 'last_year'"
+                        :class="{ 'bg-green-200': selectedCategoryDate == 'last_1_year' }"
+                        @click="selectedCategoryDate = 'last_1_year'"
                       >
                         Last 1 Year
                       </button>
@@ -373,7 +380,10 @@ onMounted(async () => {
                 <starFull class="h-5 w-5 fill-yellow-400"> </starFull>
                 <!-- Bintang keempat -->
               </div>
-              <div class="w-[40%] h-3">
+              <div
+                :style="{ width: `${(summary.rating_four / summary.total_feedback) * 100}%` }"
+                class="h-3 bg-yellow-400 rounded-full"
+              >
                 <div class="h-3 bg-yellow-400 rounded-full"></div>
               </div>
               <div class="relative text-yellow-400">{{ summary.rating_four }}</div>
@@ -391,7 +401,10 @@ onMounted(async () => {
                 <starEmpty class="h-5 w-5 fill-yellow-400"> </starEmpty>
                 <!-- Bintang keempat -->
               </div>
-              <div class="w-[20%] h-3">
+              <div
+                :style="{ width: `${(summary.rating_three / summary.total_feedback) * 100}%` }"
+                class="h-3 bg-yellow-400 rounded-full"
+              >
                 <div class="h-3 bg-yellow-400 rounded-full"></div>
               </div>
               <div class="relative text-yellow-400">{{ summary.rating_three }}</div>
@@ -409,7 +422,10 @@ onMounted(async () => {
                 <starEmpty class="h-5 w-5 fill-yellow-400"> </starEmpty>
                 <!-- Bintang keempat -->
               </div>
-              <div class="w-[10%] h-3">
+              <div
+                :style="{ width: `${(summary.rating_two / summary.total_feedback) * 100}%` }"
+                class="h-3 bg-yellow-400 rounded-full"
+              >
                 <div class="h-3 bg-yellow-400 rounded-full"></div>
               </div>
               <div class="relative text-yellow-400">{{ summary.rating_two }}</div>
@@ -427,7 +443,10 @@ onMounted(async () => {
                 <starEmpty class="h-5 w-5 fill-yellow-400"> </starEmpty>
                 <!-- Bintang keempat -->
               </div>
-              <div class="w-[5%] h-3">
+              <div
+                :style="{ width: `${(summary.rating_one / summary.total_feedback) * 100}%` }"
+                class="h-3 bg-yellow-400 rounded-full"
+              >
                 <div class="h-3 bg-yellow-400 rounded-full"></div>
               </div>
               <div class="relative text-yellow-400">{{ summary.rating_one }}</div>
@@ -524,8 +543,12 @@ onMounted(async () => {
       </div>
     </div>
     <div v-if="rate_and_feedback.length > 0" class="px-8 overflow-y-auto">
-      <div class="bg-gray-50 flex flex-col gap-4 px-8 h-[100%]">
-        <div v-for="rate in rate_and_feedback" :key="rate" class="px-4 flex-wrap">
+      <div class="bg-gray-50 flex flex-col gap-4 h-[100%]">
+        <div
+          v-for="rate in rate_and_feedback"
+          :key="rate"
+          class="px-16 flex-wrap border-b-2 border-gray-300 pt-2 pb-2"
+        >
           <div>{{ rate.create_by }}</div>
           <div class="flex items-center">
             <div class="flex items-center">
@@ -538,94 +561,96 @@ onMounted(async () => {
             </div>
           </div>
           <div>{{ rate.create_at }}</div>
-          <div><span class="font-medium text-gray-400">Feedback :</span> {{ rate.remark }}</div>
-          <div class="pt-2 pb-2 justify-between border-b-2 border-gray-300"></div>
+          <div>
+            <span class="font-medium text-gray-400">Feedback :</span>
+            <p>{{ rate.remark }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="px-8">
+        <div class="min-h-[100%] flex justify-between py-2">
+          <nav
+            v-show="rate_and_feedback.length > 0"
+            class="flex flex-row w-full justify-between items-start md:items-center space-y-5 md:space-y-0"
+          >
+            <div class="space-x-2">
+              <select
+                class="border rounded border-green-500"
+                v-model="pageLimit"
+                @change="HandlingPageLimit(pageLimit)"
+              >
+                <option :value="10">10</option>
+                <option :value="20">20</option>
+                <option :value="50">50</option>
+              </select>
+
+              <span class="text-sm text-gray-500 pl-2 pr-2">
+                {{ navigation.show }}
+              </span>
+            </div>
+
+            <ul class="inline-flex items-stretch -space-x-px">
+              <li v-if="navigation.current > 1">
+                <button
+                  @click="HandlePagination(1)"
+                  class="rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-orange-100 h-full"
+                >
+                  <IconPrevious class="fill-green-700" />
+                </button>
+              </li>
+              <li v-else>
+                <button
+                  class="rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-orange-100 h-full"
+                >
+                  <IconPrevious class="fill-green-700" />
+                </button>
+              </li>
+              <li v-show="navigation.previous !== 0">
+                <button
+                  @click="HandlePagination(navigation.previous)"
+                  class="px-3.5 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-orange-100"
+                >
+                  <span class="text-sm">{{ navigation.previous }}</span>
+                </button>
+              </li>
+              <li v-show="navigation.current !== 0">
+                <button
+                  class="px-3.5 py-2 bg-green-700 text-white font-bold ring-1 ring-inset ring-gray-300"
+                >
+                  <span class="text-sm">{{ navigation.current }}</span>
+                </button>
+              </li>
+              <li v-show="navigation.next !== 0">
+                <button
+                  @click="HandlePagination(navigation.next)"
+                  class="px-3.5 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-orange-100"
+                >
+                  <span class="text-sm">{{ navigation.next }}</span>
+                </button>
+              </li>
+              <li v-if="navigation.max !== 0 && navigation.next !== 0">
+                <button
+                  @click="HandlePagination(navigation.max)"
+                  class="rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-orange-100 h-full"
+                >
+                  <IconNext class="fill-green-700" />
+                </button>
+              </li>
+              <li v-else>
+                <button
+                  class="rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-orange-100 h-full"
+                >
+                  <IconNext class="fill-green-700" />
+                </button>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
     </div>
     <div v-else class="px-8 overflow-y-auto">
       <div class="min-h-[80px]">
         <p class="text-gray-500 items-center justify-center flex min-h-[80px]">Data Not Found</p>
-      </div>
-    </div>
-    <div class="px-8">
-      <div class="min-h-[80px] flex justify-between border-t-2 border-gray-300 py-2">
-        <nav
-          v-show="rate_and_feedback.length > 0"
-          class="flex flex-row justify-between items-start md:items-center space-y-5 md:space-y-0 p-4"
-        >
-          <div class="space-x-2">
-            <select
-              class="border rounded border-green-500"
-              v-model="pageLimit"
-              @change="HandlingPageLimit(pageLimit)"
-            >
-              <option :value="10">10</option>
-              <option :value="20">20</option>
-              <option :value="50">50</option>
-            </select>
-
-            <span class="text-sm text-green-500 pl-2 pr-2">
-              {{ navigation.show }}
-            </span>
-          </div>
-
-          <ul class="inline-flex items-stretch -space-x-px">
-            <li v-if="navigation.current > 1">
-              <button
-                @click="HandlePagination(1)"
-                class="rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-orange-100 h-full"
-              >
-                <IconPrevious class="fill-green-700" />
-              </button>
-            </li>
-            <li v-else>
-              <button
-                class="rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-orange-100 h-full"
-              >
-                <IconPrevious class="fill-green-700" />
-              </button>
-            </li>
-            <li v-show="navigation.previous !== 0">
-              <button
-                @click="HandlePagination(navigation.previous)"
-                class="px-3.5 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-orange-100"
-              >
-                <span class="text-sm">{{ navigation.previous }}</span>
-              </button>
-            </li>
-            <li v-show="navigation.current !== 0">
-              <button
-                class="px-3.5 py-2 bg-green-500 text-white font-bold ring-1 ring-inset ring-gray-300"
-              >
-                <span class="text-sm">{{ navigation.current }}</span>
-              </button>
-            </li>
-            <li v-show="navigation.next !== 0">
-              <button
-                @click="HandlePagination(navigation.next)"
-                class="px-3.5 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-orange-100"
-              >
-                <span class="text-sm">{{ navigation.next }}</span>
-              </button>
-            </li>
-            <li v-if="navigation.max !== 0 && navigation.next !== 0">
-              <button
-                @click="HandlePagination(navigation.max)"
-                class="rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-orange-100 h-full"
-              >
-                <IconNext class="fill-green-700" />
-              </button>
-            </li>
-            <li v-else>
-              <button
-                class="rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-orange-100 h-full"
-              >
-                <IconNext class="fill-green-700" />
-              </button>
-            </li>
-          </ul>
-        </nav>
       </div>
     </div>
   </div>
