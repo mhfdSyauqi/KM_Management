@@ -579,7 +579,7 @@ onMounted(async () => {
           >
             <div class="space-x-2">
               <select
-                class="border rounded border-green-500"
+                class="border rounded border-gray-500"
                 v-model="pageLimit"
                 @change="HandlingPageLimit(pageLimit)"
               >
