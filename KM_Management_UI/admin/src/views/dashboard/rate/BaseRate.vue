@@ -194,43 +194,43 @@ onMounted(async () => {
                   <div class="flex flex-col">
                     <div class="flex flex-col">
                       <button
-                        class="text-yellow pl-2 pr-2 pt-1 pb-1 rounded-lg text-left"
-                        :class="{ 'bg-green-200': selectedCategoryDate == 'today' }"
+                        class="hover:bg-[#d3eedb] text-[#293050] pl-2 pr-2 pt-1 pb-1 rounded-lg text-left"
+                        :class="{ 'bg-[#d3eedb]': selectedCategoryDate == 'today' }"
                         @click="selectedCategoryDate = 'today'"
                       >
                         Today
                       </button>
                       <button
-                        class="text-yellow pl-2 pr-2 pt-1 pb-1 rounded-lg text-left"
-                        :class="{ 'bg-green-200': selectedCategoryDate == 'yesterday' }"
+                        class="hover:bg-[#d3eedb] text-[#293050] pl-2 pr-2 pt-1 pb-1 rounded-lg text-left"
+                        :class="{ 'bg-[#d3eedb]': selectedCategoryDate == 'yesterday' }"
                         @click="selectedCategoryDate = 'yesterday'"
                       >
                         Yesterday
                       </button>
                       <button
-                        class="text-yellow pl-2 pr-2 pt-1 pb-1 rounded-lg text-left"
-                        :class="{ 'bg-green-200': selectedCategoryDate == 'last_7_days' }"
+                        class="hover:bg-[#d3eedb] text-[#293050] pl-2 pr-2 pt-1 pb-1 rounded-lg text-left"
+                        :class="{ 'bg-[#d3eedb]': selectedCategoryDate == 'last_7_days' }"
                         @click="selectedCategoryDate = 'last_7_days'"
+                      >
+                        Last 7 Days
+                      </button>
+                      <button
+                        class="hover:bg-[#d3eedb] text-[#293050] pl-2 pr-2 pt-1 pb-1 rounded-lg text-left"
+                        :class="{ 'bg-[#d3eedb]': selectedCategoryDate == 'last_30_days' }"
+                        @click="selectedCategoryDate = 'last_30_days'"
                       >
                         Last 30 Days
                       </button>
                       <button
-                        class="text-yellow pl-2 pr-2 pt-1 pb-1 rounded-lg text-left"
-                        :class="{ 'bg-green-200': selectedCategoryDate == 'last_30_days' }"
-                        @click="selectedCategoryDate = 'last_30_days'"
-                      >
-                        Last 7 Day
-                      </button>
-                      <button
-                        class="text-yellow pl-2 pr-2 pt-1 pb-1 rounded-lg text-left"
-                        :class="{ 'bg-green-200': selectedCategoryDate == 'last_3_months' }"
+                        class="hover:bg-[#d3eedb] text-[#293050] pl-2 pr-2 pt-1 pb-1 rounded-lg text-left"
+                        :class="{ 'bg-[#d3eedb]': selectedCategoryDate == 'last_3_months' }"
                         @click="selectedCategoryDate = 'last_3_months'"
                       >
                         Last 3 Months
                       </button>
                       <button
-                        class="text-yellow pl-2 pr-2 pt-1 pb-1 rounded-lg text-left"
-                        :class="{ 'bg-green-200': selectedCategoryDate == 'last_1_year' }"
+                        class="hover:bg-[#d3eedb] text-[#293050] pl-2 pr-2 pt-1 pb-1 rounded-lg text-left"
+                        :class="{ 'bg-[#d3eedb]': selectedCategoryDate == 'last_1_year' }"
                         @click="selectedCategoryDate = 'last_1_year'"
                       >
                         Last 1 Year
@@ -240,17 +240,19 @@ onMounted(async () => {
                       <PopoverButton>
                         <button
                           @click="closePopover"
-                          class="bg-green-200 text-green-800 pl-2 pr-2 pt-1 pb-1 rounded-lg"
+                          class="hover:bg-[#c4ddcc] bg-[#d3eedb] text-[#293050] pl-2 pr-2 pt-1 pb-1 rounded-lg"
                         >
                           Cancel
                         </button></PopoverButton
                       >
-                      <button
-                        class="bg-green-700 text-white pl-2 pr-2 pt-1 pb-1 rounded-lg"
-                        @click="applyDateFilter"
-                      >
-                        Apply
-                      </button>
+                      <PopoverButton>
+                        <button
+                          class="bg-green-700 hover:bg-green-800 text-white pl-2 pr-2 pt-1 pb-1 rounded-lg"
+                          @click="applyDateFilter"
+                        >
+                          Apply
+                        </button>
+                      </PopoverButton>
                     </div>
                   </div>
                   <div class="flex">
@@ -284,13 +286,13 @@ onMounted(async () => {
               <div class="flex space-x-2 items-center">
                 <div class="bg-gray-200 px-1 py-1 rounded-lg flex items-center justify-center">
                   <!-- Tambahkan ikon di sini -->
-                  <iconPerson class="fill-gray-600" />
+                  <iconPerson class="fill-[#4a5449]" />
                 </div>
-                <h1 class="font-bold text-green-800">User Preview</h1>
+                <h1 class="font-bold text-green-700">User Preview</h1>
               </div>
             </div>
             <div class="flex w-full p-2 items-center justify-center">
-              <p class="text-gray-700 text-5xl font-semibold">
+              <p class="text-[#4a5449] text-5xl font-semibold">
                 {{ summary.user_preview }}
               </p>
             </div>
@@ -304,13 +306,13 @@ onMounted(async () => {
               <div class="flex space-x-2 items-center">
                 <div class="bg-gray-200 px-1 py-1 rounded-lg flex items-center justify-center">
                   <!-- Tambahkan ikon di sini -->
-                  <iconPaper class="fill-gray-600" />
+                  <iconPaper class="fill-[#4a5449]" />
                 </div>
-                <h1 class="font-bold text-green-800">Total Feedback</h1>
+                <h1 class="font-bold text-green-700">Total Feedback</h1>
               </div>
             </div>
             <div class="flex w-full p-2 items-center justify-center">
-              <p class="text-gray-700 text-5xl font-semibold">
+              <p class="text-[#4a5449] text-5xl font-semibold">
                 {{ summary.total_feedback }}
               </p>
             </div>
@@ -326,13 +328,13 @@ onMounted(async () => {
             <div class="flex space-x-2 items-center">
               <div class="bg-gray-200 px-1 py-1 rounded-lg flex items-center justify-center">
                 <!-- Tambahkan ikon di sini -->
-                <iconChart class="fill-gray-600" />
+                <iconChart class="fill-[#4a5449]" />
               </div>
-              <h1 class="font-bold text-green-800">Overall Rating</h1>
+              <h1 class="font-bold text-green-700">Overall Rating</h1>
             </div>
           </div>
           <div class="flex w-full p-2 items-center justify-center">
-            <p class="text-gray-700 text-5xl font-semibold">
+            <p class="text-[#4a5449] text-5xl font-semibold">
               {{ summary.overall_rating }}
             </p>
           </div>
@@ -456,12 +458,13 @@ onMounted(async () => {
       </div>
     </div>
     <div class="pr-8 pt-4 pb-4 gap-5 flex justify-end items-end">
-      <SecondaryButton
-        class="text-green-700"
+      <button
+        class="hover:bg-[#d3eedb] rounded-3xl border font-semibold text-green-800 border-green-800 p-2 active:scale-95"
         @click="exportExcel"
         v-if="rate_and_feedback.length > 0"
-        >Export To Excel</SecondaryButton
       >
+        Export To Excel
+      </button>
       <button
         v-else
         class="min-w-32 font-semibold rounded-3xl border bg-green-200 border-green-800 text-green-800 p-2 active:scale-95"
@@ -561,8 +564,9 @@ onMounted(async () => {
             </div>
           </div>
           <div>{{ rate.create_at }}</div>
-          <div>
+          <div style="word-wrap: break-word">
             <span class="font-medium text-gray-400">Feedback :</span>
+            <!-- Teks rate.remark akan mengikuti lebar div dan tidak keluar dari batasnya saat zoom in atau zoom out -->
             <p>{{ rate.remark }}</p>
           </div>
         </div>
@@ -593,29 +597,29 @@ onMounted(async () => {
               <li v-if="navigation.current > 1">
                 <button
                   @click="HandlePagination(1)"
-                  class="rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-orange-100 h-full"
+                  class="rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-300 h-full"
                 >
-                  <IconPrevious class="fill-green-700" />
+                  <IconPrevious class="fill-gray-500" />
                 </button>
               </li>
               <li v-else>
                 <button
-                  class="rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-orange-100 h-full"
+                  class="rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-300 h-full"
                 >
-                  <IconPrevious class="fill-green-700" />
+                  <IconPrevious class="fill-gray-500" />
                 </button>
               </li>
               <li v-show="navigation.previous !== 0">
                 <button
                   @click="HandlePagination(navigation.previous)"
-                  class="px-3.5 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-orange-100"
+                  class="px-3.5 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-300"
                 >
                   <span class="text-sm">{{ navigation.previous }}</span>
                 </button>
               </li>
               <li v-show="navigation.current !== 0">
                 <button
-                  class="px-3.5 py-2 bg-green-700 text-white font-bold ring-1 ring-inset ring-gray-300"
+                  class="px-3.5 py-2 bg-gray-500 text-white font-bold ring-1 ring-inset ring-gray-300"
                 >
                   <span class="text-sm">{{ navigation.current }}</span>
                 </button>
@@ -623,7 +627,7 @@ onMounted(async () => {
               <li v-show="navigation.next !== 0">
                 <button
                   @click="HandlePagination(navigation.next)"
-                  class="px-3.5 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-orange-100"
+                  class="px-3.5 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-300"
                 >
                   <span class="text-sm">{{ navigation.next }}</span>
                 </button>
@@ -631,16 +635,16 @@ onMounted(async () => {
               <li v-if="navigation.max !== 0 && navigation.next !== 0">
                 <button
                   @click="HandlePagination(navigation.max)"
-                  class="rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-orange-100 h-full"
+                  class="rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-300 h-full"
                 >
-                  <IconNext class="fill-green-700" />
+                  <IconNext class="fill-gray-500" />
                 </button>
               </li>
               <li v-else>
                 <button
-                  class="rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-orange-100 h-full"
+                  class="rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-300 h-full"
                 >
-                  <IconNext class="fill-green-700" />
+                  <IconNext class="fill-gray-500" />
                 </button>
               </li>
             </ul>
