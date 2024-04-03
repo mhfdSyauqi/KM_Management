@@ -467,13 +467,7 @@ onMounted(async () => {
             <slot name="options">
               <div class="flex flex-col">
                 <label class="flex items-center">
-                  <input
-                    type="checkbox"
-                    name="rating1"
-                    v-model="selectedRatings"
-                    :value="1"
-                    @change="checkBoxChange()"
-                  />
+                  <input type="checkbox" name="rating1" v-model="selectedRatings" :value="1" />
                   <span class="ml-3 flex items-center">
                     <span v-for="star in 1" :key="star">
                       <span aria-hidden="true">
@@ -483,13 +477,7 @@ onMounted(async () => {
                   </span>
                 </label>
                 <label class="flex items-center">
-                  <input
-                    type="checkbox"
-                    name="rating1"
-                    v-model="selectedRatings"
-                    :value="2"
-                    @change="checkBoxChange()"
-                  />
+                  <input type="checkbox" name="rating1" v-model="selectedRatings" :value="2" />
                   <span class="ml-3 flex items-center">
                     <span v-for="star in 2" :key="star">
                       <span aria-hidden="true">
@@ -499,13 +487,7 @@ onMounted(async () => {
                   </span>
                 </label>
                 <label class="flex items-center">
-                  <input
-                    type="checkbox"
-                    name="rating1"
-                    v-model="selectedRatings"
-                    :value="3"
-                    @change="checkBoxChange()"
-                  />
+                  <input type="checkbox" name="rating1" v-model="selectedRatings" :value="3" />
                   <span class="ml-3 flex items-center">
                     <span v-for="star in 3" :key="star">
                       <span aria-hidden="true">
@@ -515,13 +497,7 @@ onMounted(async () => {
                   </span>
                 </label>
                 <label class="flex items-center">
-                  <input
-                    type="checkbox"
-                    name="rating1"
-                    v-model="selectedRatings"
-                    :value="4"
-                    @change="checkBoxChange()"
-                  />
+                  <input type="checkbox" name="rating1" v-model="selectedRatings" :value="4" />
                   <span class="ml-3 flex items-center">
                     <span v-for="star in 4" :key="star">
                       <span aria-hidden="true">
@@ -530,7 +506,9 @@ onMounted(async () => {
                     </span>
                   </span>
                 </label>
-                <!-- <button class="mt-4 bg-green-800 text-white rounded-lg">Ok</button> -->
+                <button @click="checkBoxChange" class="mt-4 bg-green-800 text-white rounded-lg">
+                  Ok
+                </button>
               </div>
             </slot>
           </div>
