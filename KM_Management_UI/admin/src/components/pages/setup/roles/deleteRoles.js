@@ -21,7 +21,7 @@ async function HandleDelete(user) {
   notificationStore.set('reload')
   return await ToastSwal.fire({
     icon: 'success',
-    text: 'success edit account'
+    text: 'success delete account'
   })
 }
 
