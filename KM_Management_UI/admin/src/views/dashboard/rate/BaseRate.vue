@@ -549,7 +549,7 @@ onMounted(async () => {
       </div>
     </div>
     <div class="px-8">
-      <div class="flex justify-between border-t-2 border-gray-300 py-2">
+      <div class="min-h-[80px] flex justify-between border-t-2 border-gray-300 py-2">
         <nav
           v-show="rate_and_feedback.length > 0"
           class="flex flex-row justify-between items-start md:items-center space-y-5 md:space-y-0 p-4"
