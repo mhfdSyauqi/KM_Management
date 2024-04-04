@@ -81,7 +81,7 @@ const inputNameOntyping = () => {
 
 <template>
   <div class="flex items-center align-middle gap-3 mb-3 bg-tea">
-    <p class="text-sm">Setup</p>
+    <p class="text-sm text-[#999999]">Setup</p>
 
     <span> > </span>
     <p class="text-sm text-orange-400">Assistant Profile</p>
@@ -94,8 +94,8 @@ const inputNameOntyping = () => {
       </div>
       <div class="flex items-end space-x-2">
         <button
-          class="group bg-[#2c7b4b] flex items-center border text-white hover:bg-[#2c4233] rounded-3xl pt-2 pb-2 pl-5 pr-5"
-          :class="[disabledButton ? 'bg-[#62ac7f]' : 'bg-[#2c7b4b]']"
+          class="group bg-[#2c7b4b] flex items-center border text-white rounded-3xl pt-2 pb-2 pl-5 pr-5"
+          :class="[disabledButton ? 'bg-[#62ac7f]' : 'bg-[#2c7b4b] hover:bg-[#2c4233]']"
           @click="onPublish()"
           :disabled="disabledButton"
         >
@@ -115,7 +115,10 @@ const inputNameOntyping = () => {
         </div>
 
         <div class="mb-4 ml-10 flex - flex-col">
-          <label :for="errorInput" class="pb-2 block font-bold text-[#2c7b4b]">Virtual Name </label>
+          <label :for="errorInput" class="pb-2 block font-bold text-[#2c7b4b]"
+            >Virtual Name
+            <span class="text-[#da1e28]">*</span>
+          </label>
           <input
             type="text"
             v-model="appName"
