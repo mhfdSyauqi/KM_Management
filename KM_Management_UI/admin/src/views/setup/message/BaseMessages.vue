@@ -22,6 +22,11 @@ const isDropDownLayerTwoOpened = ref([])
 const editModeLayerTwo = ref([])
 const updateTextLayerTwo = ref([])
 
+const layerThreeMessage = ref([])
+const isDropDownLayerThreeOpened = ref([])
+const editModeLayerThree = ref([])
+const updateTextLayerThree = ref([])
+
 const solvedMessage = ref([])
 const isDropDownSolvedOpened = ref([])
 const editModeSolved = ref([])
@@ -66,6 +71,7 @@ onMounted(() => {
   fetchOpening()
   fetchLayerOne()
   fetchLayerTwo()
+  fetchLayerThree()
   fetchSolved()
   fetchNotFound()
   fetchReasked()
@@ -98,6 +104,14 @@ const fetchLayerTwo = async () => {
   isDropDownLayerTwoOpened.value = Array(layerTwoMessage.value.length).fill(false)
   editModeLayerTwo.value = Array(layerTwoMessage.value.length).fill(false)
   updateTextLayerTwo.value = layerTwoMessage.value.map((layerTwo) => layerTwo.contents)
+}
+
+const fetchLayerThree = async () => {
+  await GetActiveMessage('LAYER_THREE')
+  layerThreeMessage.value = active_message.value
+  isDropDownLayerThreeOpened.value = Array(layerThreeMessage.value.length).fill(false)
+  editModeLayerThree.value = Array(layerThreeMessage.value.length).fill(false)
+  updateTextLayerThree.value = layerThreeMessage.value.map((layerThree) => layerThree.contents)
 }
 
 const fetchSolved = async () => {
@@ -177,20 +191,22 @@ const toggleExpand = (index) => {
 
 <template>
   <div class="flex items-center align-middle gap-3 mb-3">
-    <p class="text-sm">Setup</p>
+    <p class="text-sm text-[#999999]">Setup</p>
 
     <span> > </span>
     <p class="text-sm text-orange-400">Message</p>
   </div>
 
-  <div class="w-full rounded-lg bg-white min-h-[25%] max-h-[96%] box-border flex flex-col">
-    <div class="flex gap-2.5 items-center border-b-2 py-5 px-8">
+  <div
+    class="w-full rounded-lg bg-white min-h-[25%] max-h-[96%] overflow-auto box-border flex flex-col"
+  >
+    <div class="flex gap-2.5 items-center py-5 px-8">
       <div class="basis-[84%] flex gap-3 items-center">
         <div class="w-full">
           <div class="flex items-start space-x-2 pb-8">
             <h1 class="text-2xl font-bold text-green-800">Messages</h1>
           </div>
-          <div class="rounded-tr-3xl bg-red-50 p-4 mb-4 w-fit">
+          <div class="rounded-tr-3xl bg-red-50 p-4 w-fit">
             <span class="text-gray-500 flex items-center">
               Use
               <span class="font-bold text-orange-500 ml-2"> @username </span>
@@ -214,8 +230,8 @@ const toggleExpand = (index) => {
       </div>
     </div>
 
-    <div class="overflow-y-auto max-h-[80%]">
-      <div class="p-10">
+    <div class="flex flex-col">
+      <div class="pl-10 pr-10 pb-10 pt-5">
         <dynamicInput
           :nameInput="'Opening'"
           :messageData="openingMessage"
@@ -233,7 +249,7 @@ const toggleExpand = (index) => {
           :messageData="layerOneMessage"
           :updateText="updateTextLayerOne"
           :editMode="editModeLayerOne"
-          :typeMessage="'LAYER ONE'"
+          :typeMessage="'LAYER_ONE'"
           :isDropDownOpen="isDropDownLayerOneOpened"
           :fetchData="fetchLayerOne"
           :expanded="expanded[1]"
@@ -241,15 +257,27 @@ const toggleExpand = (index) => {
         />
 
         <dynamicInput
-          :nameInput="'Choose Sub Menu'"
+          :nameInput="'Choose Sub Menu - Layer 2'"
           :messageData="layerTwoMessage"
           :updateText="updateTextLayerTwo"
           :editMode="editModeLayerTwo"
-          :typeMessage="'LAYER TWO'"
+          :typeMessage="'LAYER_TWO'"
           :isDropDownOpen="isDropDownLayerTwoOpened"
           :fetchData="fetchLayerTwo"
           :expanded="expanded[2]"
           @toggleExpand="toggleExpand(2)"
+        />
+
+        <dynamicInput
+          :nameInput="'Choose Sub Menu - Layer 3'"
+          :messageData="layerThreeMessage"
+          :updateText="updateTextLayerThree"
+          :editMode="editModeLayerThree"
+          :typeMessage="'LAYER_THREE'"
+          :isDropDownOpen="isDropDownLayerThreeOpened"
+          :fetchData="fetchLayerThree"
+          :expanded="expanded[3]"
+          @toggleExpand="toggleExpand(3)"
         />
 
         <dynamicInput
@@ -260,8 +288,8 @@ const toggleExpand = (index) => {
           :typeMessage="'SOLVED'"
           :isDropDownOpen="isDropDownSolvedOpened"
           :fetchData="fetchSolved"
-          :expanded="expanded[3]"
-          @toggleExpand="toggleExpand(3)"
+          :expanded="expanded[4]"
+          @toggleExpand="toggleExpand(4)"
         />
 
         <dynamicInput
@@ -272,8 +300,8 @@ const toggleExpand = (index) => {
           :typeMessage="'NOT_FOUND'"
           :isDropDownOpen="isDropDownNotFoundOpened"
           :fetchData="fetchNotFound"
-          :expanded="expanded[4]"
-          @toggleExpand="toggleExpand(4)"
+          :expanded="expanded[5]"
+          @toggleExpand="toggleExpand(5)"
         />
 
         <dynamicInput
@@ -284,8 +312,8 @@ const toggleExpand = (index) => {
           :typeMessage="'REASKED'"
           :isDropDownOpen="isDropDownReAskedOpened"
           :fetchData="fetchReasked"
-          :expanded="expanded[5]"
-          @toggleExpand="toggleExpand(5)"
+          :expanded="expanded[6]"
+          @toggleExpand="toggleExpand(6)"
         />
 
         <dynamicInput
@@ -296,8 +324,8 @@ const toggleExpand = (index) => {
           :typeMessage="'SUGGESTION'"
           :isDropDownOpen="isDropDownSuggestionOpened"
           :fetchData="fetchSuggestion"
-          :expanded="expanded[6]"
-          @toggleExpand="toggleExpand(6)"
+          :expanded="expanded[7]"
+          @toggleExpand="toggleExpand(7)"
         />
 
         <dynamicInput
@@ -308,8 +336,8 @@ const toggleExpand = (index) => {
           :typeMessage="'IDLE'"
           :isDropDownOpen="isDropDownIdleOpened"
           :fetchData="fetchIdle"
-          :expanded="expanded[7]"
-          @toggleExpand="toggleExpand(7)"
+          :expanded="expanded[8]"
+          @toggleExpand="toggleExpand(8)"
         />
 
         <dynamicInput
@@ -320,20 +348,20 @@ const toggleExpand = (index) => {
           :typeMessage="'CLOSING'"
           :isDropDownOpen="isDropDownClosingOpened"
           :fetchData="fetchClosing"
-          :expanded="expanded[8]"
-          @toggleExpand="toggleExpand(8)"
+          :expanded="expanded[9]"
+          @toggleExpand="toggleExpand(9)"
         />
 
         <dynamicInput
-          :nameInput="'Feedback'"
+          :nameInput="'Closing After Given Feedback'"
           :messageData="feedbackMessage"
           :updateText="updateTextFeedback"
           :editMode="editModeFeedback"
           :typeMessage="'FEEDBACK'"
           :isDropDownOpen="isDropDownFeedbackOpened"
           :fetchData="fetchFeedBack"
-          :expanded="expanded[9]"
-          @toggleExpand="toggleExpand(9)"
+          :expanded="expanded[10]"
+          @toggleExpand="toggleExpand(10)"
         />
 
         <dynamicInput
@@ -344,8 +372,8 @@ const toggleExpand = (index) => {
           :typeMessage="'MAIL_SENDED'"
           :isDropDownOpen="isDropDownMailSendedOpened"
           :fetchData="fetchMailSended"
-          :expanded="expanded[10]"
-          @toggleExpand="toggleExpand(10)"
+          :expanded="expanded[11]"
+          @toggleExpand="toggleExpand(11)"
         />
       </div>
     </div>

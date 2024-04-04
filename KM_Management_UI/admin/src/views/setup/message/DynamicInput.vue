@@ -1,9 +1,10 @@
 <template>
   <div class="mb-4">
     <div
+      class="cursor-pointer"
       :class="{
         'h-10 bg-white w-full pl-4 pr-4 flex items-center relative': true,
-        'rounded-t-2xl border-t border-l border-r border-gray-300': expanded,
+        'rounded-t-2xl border-t border-l border-r border-[#E99300]': expanded,
         'rounded-2xl border border-gray-300': !expanded
       }"
       @click="toggleExpand"
@@ -13,10 +14,10 @@
           <h1>
             <span
               :class="{
-                'text-gray-500 ': !expanded,
-                'text-[#8dc39c] ': expanded
+                'text-[#888888] ': !expanded,
+                'text-[#2C7B4B] ': expanded
               }"
-              class="font-bold"
+              class="font-medium"
               >{{ nameInput }}</span
             >
           </h1>
@@ -32,7 +33,7 @@
     <div v-if="expanded" class="flex items-center justify-center" @click="toggleExpand">
       <div class="w-screen">
         <div
-          :class="'h-fit bg-white w-full pl-4 pr-4 flex items-center relative border-l border-r border-gray-300'"
+          :class="'h-fit bg-white w-full pl-4 pr-4 flex items-center relative border-l border-r border-[#E99300]'"
         >
           <div class="w-full">
             <div
@@ -51,7 +52,7 @@
                 class="bg-orange-100 h-14 w-8 rounded-xl flex items-center justify-center"
                 style="margin-right: 10px"
               >
-                <span class="text-[#8dc39c]">{{ msg.sequence }}</span>
+                <span class="text-[#4A5449]">{{ msg.sequence }}.</span>
               </div>
               <div class="w-[70%] relative">
                 <div style="position: relative">
@@ -59,7 +60,7 @@
                     :readonly="!editMode[index]"
                     v-model="localUpdateText[index]"
                     v-if="expanded"
-                    maxlength="150"
+                    maxlength="360"
                     @click.stop
                     class="w-full pt-1 pb-1 pl-2 pr-2 border rounded-xl focus:outline focus:outline-orange-500 border-gray-300"
                   ></textarea>
@@ -67,7 +68,7 @@
                     v-if="editMode[index]"
                     style="position: absolute; bottom: 5px; right: 5px"
                     class="text-gray-500 text-sm bg-opacity-50 bg-slate-300 pl-1 pr-1"
-                    >Limit {{ updateText[index].length }} / 150</span
+                    >Limit {{ updateText[index].length }} / 360</span
                   >
                 </div>
                 <div v-if="errorUpdateMessage[index]" class="relative text-red-500 mt-2 ml-2">
@@ -77,7 +78,7 @@
               <div class="relative">
                 <button
                   v-if="!editMode[index]"
-                  class="px-2 py-2 ml-2 mr-2 bg-gray-500 text-white rounded-xl hover:bg-[#8dc39c]"
+                  class="px-2 py-2 ml-2 mr-2 bg-[#888888] text-white rounded-xl hover:bg-[#2C7B4B]"
                   @click="editModeMessage(index)"
                   @click.stop
                 >
@@ -85,7 +86,7 @@
                 </button>
                 <button
                   v-if="editMode[index]"
-                  class="px-2 py-2 ml-2 mr-2 bg-[#8dc39c] text-white rounded-xl hover:bg-[#77a383]"
+                  class="px-2 py-2 ml-2 mr-2 bg-[#56956f] text-white rounded-xl hover:bg-[#2C7B4B]"
                   @click.stop
                   @click="
                     updateSetupMessage(typeMessage, msg.sequence, updateText[index], true, index)
@@ -104,7 +105,7 @@
               </div>
               <Popover class="relative" v-slot="{ open }">
                 <PopoverButton
-                  class="border px-2 py-2 ml-2 mr-2 bg-gray-500 hover:bg-[#77a383] text-green-800 items-center justify-center focus:outline-none"
+                  class="border px-2 py-2 ml-2 mr-2 bg-[#888888] hover:bg-[#2C7B4B] text-green-800 items-center justify-center focus:outline-none"
                   :class="[
                     open ? 'rounded-tr-xl rounded-tl-xl text-white bg-green-800 ' : 'rounded-xl'
                   ]"
@@ -120,6 +121,7 @@
                   >
                     <slot name="options">
                       <div
+                        v-show="messageData.length > 1"
                         class="py-2 px-4 cursor-pointer rounded-3xl hover:bg-gray-200 flex items-center"
                         @click="
                           updateSequenceSetupMessage(
@@ -136,6 +138,7 @@
                         Move Up
                       </div>
                       <div
+                        v-show="messageData.length > 1"
                         class="py-2 px-4 cursor-pointer rounded-3xl hover:bg-gray-200 flex items-center"
                         @click="
                           updateSequenceSetupMessage(
@@ -175,7 +178,7 @@
     <div v-if="expanded && showAddMessage" class="flex items-center justify-center">
       <div class="w-screen">
         <div
-          :class="'h-fit bg-white w-full pl-4 pr-4 flex items-center relative border-l border-r border-gray-300'"
+          :class="'h-fit bg-white w-full pl-4 pr-4 flex items-center relative border-l border-r border-[#E99300]'"
         >
           <div class="w-full">
             <div
@@ -188,7 +191,7 @@
                 class="bg-orange-100 h-14 w-8 rounded-xl flex items-center justify-center"
                 style="margin-right: 10px"
               >
-                <span class="text-[#8dc39c]">{{ messageData.length + index + 1 }}</span>
+                <span class="text-[#4A5449]">{{ messageData.length + index + 1 }}.</span>
               </div>
               <div class="w-[70%] relative">
                 <div style="position: relative">
@@ -197,12 +200,12 @@
                     v-if="expanded"
                     @click.stop
                     class="w-full pt-1 pb-1 pl-2 pr-2 border rounded-xl focus:outline focus:outline-orange-500 border-gray-300"
-                    maxlength="150"
+                    maxlength="360"
                   ></textarea>
                   <span
                     style="position: absolute; bottom: 5px; right: 5px"
                     class="text-gray-500 text-sm bg-opacity-50 bg-slate-300 pl-1 pr-1"
-                    >Limit {{ addText[index].length }} / 150</span
+                    >Limit {{ addText[index].length }} / 360</span
                   >
                 </div>
                 <div v-show="errorAddMessage[index]" class="relative text-red-500 mt-2 ml-2">
@@ -211,7 +214,7 @@
               </div>
               <div class="relative">
                 <button
-                  class="ml-2 mr-2 px-2 py-2 bg-[#8dc39c] text-white rounded-xl hover:bg-[#77a383]"
+                  class="ml-2 mr-2 px-2 py-2 bg-[#56956f] text-white rounded-xl hover:bg-[#2C7B4B]"
                   style="margin-top: -25px"
                   @click="addNewMessage(typeMessage, addText[index], index)"
                   @click.stop
@@ -236,7 +239,7 @@
     <div v-if="expanded" class="flex items-center justify-center" @click="toggleExpand">
       <div class="w-screen">
         <div
-          class="h-10 bg-white w-full pl-4 pr-4 flex items-center relative rounded-b-xl border-b border-l border-r border-gray-300"
+          class="h-10 bg-white w-full pl-4 pr-4 flex items-center relative rounded-b-xl border-b border-l border-r border-[#E99300]"
         >
           <div class="w-full">
             <div
@@ -244,10 +247,12 @@
               @click.stop
               class="flex items-center w-fit pb-2"
             >
-              <button class="bg-gray-500 text-white px-2 py-2 rounded-xl hover:bg-[#8dc39c]">
+              <button class="bg-[#888888] text-white px-2 py-2 rounded-xl hover:bg-[#56956f]">
                 <div v-html="plusIcon"></div>
               </button>
-              <label class="p-2 text-sm text-gray-500 hover:text-[#8dc39c]">Add Message</label>
+              <label class="cursor-pointer p-2 text-sm text-[#888888] hover:text-[#2C7B4B]"
+                >Add Message</label
+              >
             </div>
           </div>
         </div>
@@ -671,5 +676,9 @@ const fetchData = async () => {
 }
 .isDropdown {
   z-index: 1001;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 </style>
