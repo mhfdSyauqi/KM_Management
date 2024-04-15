@@ -14,5 +14,6 @@ public class FilterConfigGeneral
     public string Helpdesk_To { get; set; }
     public string Helpdesk_Subject { get; set; }
     public string Helpdesk_Content { get; set; }
+    public string Helpdesk_Content_Html { get; set; }
     public int Keywords { get; set; }
 }

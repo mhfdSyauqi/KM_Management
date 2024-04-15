@@ -18,7 +18,7 @@ public class PatchConfigGeneralValidator : AbstractValidator<PatchConfigGeneralC
         RuleFor(key => key.Argument.Category.SUGGESTION_LIMIT).GreaterThan(0).WithMessage("Value cannot less than 1");
 
         RuleFor(key => key.Argument.Timing.DELAY_TYPING)
-            .GreaterThan(500).WithMessage("Value cannot less than 0.5 sec")
+            .GreaterThan(499).WithMessage("Value cannot less than 0.5 sec")
             .LessThan(2000).WithMessage("Value cannot more than 2 sec");
         RuleFor(key => key.Argument.Timing.IDLE_DURATION)
             .GreaterThan(59999).WithMessage("Value cannot less than 1 min");
@@ -30,6 +30,7 @@ public class PatchConfigGeneralValidator : AbstractValidator<PatchConfigGeneralC
         RuleFor(key => key.Argument.Helpdesk.MAIL_HELPDESK_TO).NotEmpty();
         RuleFor(key => key.Argument.Helpdesk.MAIL_HELPDESK_SUBJECT).NotEmpty();
         RuleFor(key => key.Argument.Helpdesk.MAIL_HELPDESK_CONTENT).NotEmpty();
+        RuleFor(key => key.Argument.Helpdesk.MAIL_HELPDESK_CONTENT_HTML).NotEmpty();
 
         RuleFor(key => key.Argument.Others.KEYWORDS).NotEmpty().GreaterThanOrEqualTo(3).WithMessage("Value cannot less than 3");
     }
@@ -73,6 +74,7 @@ public class PatchConfigGeneralHandler : ICommandHandler<PatchConfigGeneralComma
             Helpdesk_To = request.Argument.Helpdesk.MAIL_HELPDESK_TO,
             Helpdesk_Subject = request.Argument.Helpdesk.MAIL_HELPDESK_SUBJECT,
             Helpdesk_Content = request.Argument.Helpdesk.MAIL_HELPDESK_CONTENT,
+            Helpdesk_Content_Html = request.Argument.Helpdesk.MAIL_HELPDESK_CONTENT_HTML,
 
             Keywords = request.Argument.Others.KEYWORDS
         };

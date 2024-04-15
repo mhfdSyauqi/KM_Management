@@ -29,10 +29,10 @@ public class GeneralRepository : IGeneralRepository
                 ,[KEYWORDS]
                 ,[MAIL_HISTORY_FROM]
                 ,[MAIL_HISTORY_SUBJECT]
-                ,[HELPDESK_MAIL_FROM]
-                ,[HELPDESK_MAIL_TO]
-                ,[HELPDESK_MAIL_SUBJECT]
-                ,[HELPDESK_MAIL_CONTENT]
+                ,[MAIL_HELPDESK_FROM]
+                ,[MAIL_HELPDESK_TO]
+                ,[MAIL_HELPDESK_SUBJECT]
+                ,[MAIL_HELPDESK_CONTENT]
               FROM [dbo].[View_Configuration_General]
         ";
         var command = new CommandDefinition(query, cancellationToken: cancellationToken);
