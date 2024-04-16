@@ -26,17 +26,19 @@ public class First_Layers
 
 public class Second_Layers
 {
-    public string? Layer_One { get; set; }
+
     public string? Layer_Two { get; set; }
+    public string? Layer_One { get; set; }
     public string? Status { get; set; }
     public string? Publication { get; set; }
 }
 
 public class Third_Layers
 {
-    public string? Layer_One { get; set; }
-    public string? Layer_Two { get; set; }
+
     public string? Layer_Three { get; set; }
+    public string? Layer_Two { get; set; }
+    public string? Layer_One { get; set; }
     public string? Status { get; set; }
     public string? Publication { get; set; }
 }

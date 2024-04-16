@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.Common;
+using System.Drawing;
 
 namespace KM_Management.Helper
 {
@@ -83,7 +84,7 @@ namespace KM_Management.Helper
             using (var range = worksheet.Cells["A6:F6"])
             {
                 range.Style.Fill.PatternType = ExcelFillStyle.Solid;
-                range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightBlue);
+                range.Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#efefef"));
                 range.Style.Font.Bold = true;
                 range.Style.Border.Top.Style = ExcelBorderStyle.Thin;
                 range.Style.Border.Left.Style = ExcelBorderStyle.Thin;
@@ -121,6 +122,8 @@ namespace KM_Management.Helper
         public static byte[] ExportExcelCategories<T,U,X>(List<T> firstData, List<U> secondData, List<X> thirdData)
         {
 
+
+
             ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
             using (var excelFile = new ExcelPackage())
             {
@@ -145,6 +148,7 @@ namespace KM_Management.Helper
                     firstWorksheet.Cells[$"A{6 + i}:D{6 + i}"].Style.Border.Left.Style = ExcelBorderStyle.Thin;
                     firstWorksheet.Cells[$"A{6 + i}:D{6 + i}"].Style.Border.Right.Style = ExcelBorderStyle.Thin;
                     firstWorksheet.Cells[$"A{6 + i}:B{6 + i}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    firstWorksheet.Cells[$"A{6 + i}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     firstWorksheet.Cells[$"C{6 + i}:D{6 + i}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     firstWorksheet.Cells[$"B{6 + i}:D{6 + i}"].Calculate();
                     firstWorksheet.Cells[$"A{6 + i}"].Value = i;
@@ -156,7 +160,7 @@ namespace KM_Management.Helper
                 using (var range = firstWorksheet.Cells["A6:D6"])
                 {
                     range.Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightBlue);
+                    range.Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#efefef"));
                     range.Style.Font.Bold = true;
                     range.Style.Border.Top.Style = ExcelBorderStyle.Thin;
                     range.Style.Border.Left.Style = ExcelBorderStyle.Thin;
@@ -205,12 +209,16 @@ namespace KM_Management.Helper
                 secondWorksheet.Cells[$"A2:E2"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 secondData.ForEach(x =>
                 {
+
+                    secondWorksheet.Cells[$"B{6 + y}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    secondWorksheet.Cells[$"B{6 + y}"].Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#cfe2f3"));
                     secondWorksheet.Cells[$"A{6 + y}:E{6 + y}"].Style.Border.Top.Style = ExcelBorderStyle.Thin;
                     secondWorksheet.Cells[$"A{6 + y}:E{6 + y}"].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     secondWorksheet.Cells[$"A{6 + y}:E{6 + y}"].Style.Border.Left.Style = ExcelBorderStyle.Thin;
                     secondWorksheet.Cells[$"A{6 + y}:E{6 + y}"].Style.Border.Right.Style = ExcelBorderStyle.Thin;
                     secondWorksheet.Cells[$"A{6 + y}:C{6 + y}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                     secondWorksheet.Cells[$"D{6 + y}:E{6 + y}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    secondWorksheet.Cells[$"A{6 + y}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     secondWorksheet.Cells[$"B{6 + y}:E{6 + y}"].Calculate();
                     secondWorksheet.Cells[$"A{6 + y}"].Value = y;
                     y++;
@@ -218,10 +226,11 @@ namespace KM_Management.Helper
 
                 secondWorksheet.Column(1).Width = 5;
 
+                
                 using (var range = secondWorksheet.Cells["A6:E6"])
                 {
                     range.Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightBlue);
+                    range.Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#efefef"));
                     range.Style.Font.Bold = true;
                     range.Style.Border.Top.Style = ExcelBorderStyle.Thin;
                     range.Style.Border.Left.Style = ExcelBorderStyle.Thin;
@@ -229,7 +238,7 @@ namespace KM_Management.Helper
                     range.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 }
-
+                secondWorksheet.Cells[$"B6"].Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#cfe2f3"));
                 secondWorksheet.Cells["B6"].LoadFromCollection(secondData, true);
                 secondWorksheet.Cells["A2:E2"].Merge = true;
                 secondWorksheet.Cells["A2"].Style.Font.Bold = true;
@@ -270,23 +279,25 @@ namespace KM_Management.Helper
                 thirdWorksheet.Cells[$"A2:F2"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 thirdData.ForEach(x =>
                 {
+                    thirdWorksheet.Cells[$"B{6 + j}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    thirdWorksheet.Cells[$"B{6 + j}"].Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#d9ead3"));
                     thirdWorksheet.Cells[$"A{6 + j}:F{6 + j}"].Style.Border.Top.Style = ExcelBorderStyle.Thin;
                     thirdWorksheet.Cells[$"A{6 + j}:F{6 + j}"].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     thirdWorksheet.Cells[$"A{6 + j}:F{6 + j}"].Style.Border.Left.Style = ExcelBorderStyle.Thin;
                     thirdWorksheet.Cells[$"A{6 + j}:F{6 + j}"].Style.Border.Right.Style = ExcelBorderStyle.Thin;
                     thirdWorksheet.Cells[$"A{6 + j}:D{6 + j}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    thirdWorksheet.Cells[$"A{6 + j}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     thirdWorksheet.Cells[$"E{6 + j}:F{6 + j}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     thirdWorksheet.Cells[$"B{6 + j}:F{6 + j}"].Calculate();
                     thirdWorksheet.Cells[$"A{6 + j}"].Value = j;
                     j++;
                 });
-
                 thirdWorksheet.Column(1).Width = 5;
 
                 using (var range = thirdWorksheet.Cells["A6:F6"])
                 {
                     range.Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightBlue);
+                    range.Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#efefef"));
                     range.Style.Font.Bold = true;
                     range.Style.Border.Top.Style = ExcelBorderStyle.Thin;
                     range.Style.Border.Left.Style = ExcelBorderStyle.Thin;
@@ -294,7 +305,7 @@ namespace KM_Management.Helper
                     range.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 }
-
+                thirdWorksheet.Cells[$"B6"].Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#d9ead3"));
                 thirdWorksheet.Cells["B6"].LoadFromCollection(thirdData, true);
                 thirdWorksheet.Cells["A2:F2"].Merge = true;
                 thirdWorksheet.Cells["A2"].Style.Font.Bold = true;

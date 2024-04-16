@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, watchEffect } from 'vue'
+import { onMounted, ref } from 'vue'
 import iconPerson from '@/components/icons/IconPerson.vue'
 import iconPaper from '@/components/icons/IconPaper.vue'
 import { DatePicker } from 'v-calendar'
@@ -8,7 +8,6 @@ import 'v-calendar/style.css'
 import iconChart from '@/components/icons/IconChart.vue'
 import starFull from '@/components/icons/IconStarFull.vue'
 import starEmpty from '@/components/icons/IconStarEmpty.vue'
-import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import IconDropdown from '@/components/icons/IconDropdown.vue'
 

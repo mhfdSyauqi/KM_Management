@@ -51,17 +51,17 @@ public class GetExportCategoryListHandler : IQueryHandler<GetExportCategoryListQ
             }).ToList(),
             Second_Layer = SecondCategories.Select(col => new Second_Layers()
             {
-                Layer_One = col.Layer_One,
                 Layer_Two = col.Layer_Two,
+                Layer_One = col.Layer_One,
                 Status = col.Status,
                 Publication = col.Publication,
             }).ToList(),
 
             Third_Layer = ThirdCategories.Select(col => new Third_Layers()
             {
-                Layer_One = col.Layer_One,
-                Layer_Two = col.Layer_Two,
                 Layer_Three = col.Layer_Three,
+                Layer_Two = col.Layer_Two,
+                Layer_One = col.Layer_One,
                 Status = col.Status,
                 Publication = col.Publication,
             }).ToList(),

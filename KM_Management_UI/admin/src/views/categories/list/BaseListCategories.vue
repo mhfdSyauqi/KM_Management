@@ -2,6 +2,7 @@
 import Swal from 'sweetalert2'
 
 import { ref, onMounted, computed, watchEffect } from 'vue'
+import { ToastSwal } from '@/extension/SwalExt.js'
 import {
   GetCategoryListByFilter,
   category_list,
@@ -12,6 +13,7 @@ import SearchModalCategories from '@/views/categories/list/SearchModalCategories
 import ContainerModal from '@/components/modal/ContainerModal.vue'
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import OptionButton from '@/components/buttons/OptionButton.vue'
+import IconEdit from '@/components/icons/IconEdit.vue'
 import IconSearch from '@/components/icons/IconSearch.vue'
 import {
   HandlePublish,
@@ -105,24 +107,31 @@ const updateCategory = async (uid, name, is_Active) => {
     editCategory.value.Name = name
     editCategory.value.Is_Active = is_Active
     const result = await Swal.fire({
-      icon: 'question',
+      icon: 'info',
       title: 'Are you sure?',
+      text: 'want to update this category?',
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       confirmButtonColor: '#2c7b4b',
-      cancelButtonColor: '#d33'
+      cancelButtonColor: '#d33',
+      reverseButtons: true,
+      didOpen: () => {
+        const confirmButton = Swal.getConfirmButton()
+        confirmButton.style.borderRadius = '15px'
+        confirmButton.style.width = '70px'
+        const cancelButton = Swal.getCancelButton()
+        cancelButton.style.borderRadius = '15px'
+        cancelButton.style.width = '70px'
+      }
     })
+
     if (result.isConfirmed) {
       const response = await HandleRePublish()
       if (response !== 400) {
         checkBoxChange()
         closeEditModal()
-        Swal.fire({
-          icon: 'success',
-          title: 'Update category successful!',
-          confirmButtonColor: '#2c7b4b'
-        })
+        await ToastSwal.fire({ icon: 'success', text: 'Update category successful!' })
       } else {
         errorUpdateCategory.value = errorEdit.value.name.message
         Swal.fire({
@@ -133,11 +142,7 @@ const updateCategory = async (uid, name, is_Active) => {
         })
       }
     } else {
-      Swal.fire({
-        icon: 'info',
-        title: 'Update category canceled',
-        confirmButtonColor: '#2c7b4b'
-      })
+      await ToastSwal.fire({ icon: 'error', text: 'Update category canceled' })
     }
   } catch (error) {
     console.error('Terjadi Kesalahan :', error)
@@ -152,25 +157,32 @@ const addNewCategory = async (name, is_Active) => {
     newCategory.value.Layer = 1
     newCategory.value.Is_Active = is_Active
     newCategory.value.Uid_Reference = null
+
     const result = await Swal.fire({
-      icon: 'question',
+      icon: 'info',
       title: 'Are you sure?',
+      text: 'want to add this category?',
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       confirmButtonColor: '#2c7b4b',
-      cancelButtonColor: '#d33'
+      cancelButtonColor: '#d33',
+      reverseButtons: true,
+      didOpen: () => {
+        const confirmButton = Swal.getConfirmButton()
+        confirmButton.style.borderRadius = '15px'
+        confirmButton.style.width = '70px'
+        const cancelButton = Swal.getCancelButton()
+        cancelButton.style.borderRadius = '15px'
+        cancelButton.style.width = '70px'
+      }
     })
     if (result.isConfirmed) {
       const response = await HandlePublish()
       if (response !== 400) {
         checkBoxChange()
         closeCreateModal()
-        Swal.fire({
-          icon: 'success',
-          title: 'Add new category successful!',
-          confirmButtonColor: '#2c7b4b'
-        })
+        await ToastSwal.fire({ icon: 'success', text: 'Add new category successful!' })
       } else {
         errorAddCategory.value = errorInput.value.name.message
         Swal.fire({
@@ -181,11 +193,7 @@ const addNewCategory = async (name, is_Active) => {
         })
       }
     } else {
-      Swal.fire({
-        icon: 'info',
-        title: 'Add new category canceled',
-        confirmButtonColor: '#2c7b4b'
-      })
+      await ToastSwal.fire({ icon: 'error', text: 'Add new category canceled!' })
     }
   } catch (error) {
     console.error('Terjadi Kesalahan :', error)
@@ -254,6 +262,24 @@ watchEffect(() => {
   filterExportExcel()
 })
 
+const getRowSpan = (itemCount) => {
+  if (itemCount > 3) {
+    if (groupedFirstLayer.value.length <= 3) {
+      if (itemCount % 3 === 0) {
+        return itemCount
+      } else {
+        return Math.floor(itemCount) + 1
+      }
+    } else if (groupedFirstLayer.value.length > 3) {
+      if (itemCount % 3 === 0) {
+        return itemCount / 3
+      } else {
+        return Math.floor(itemCount / 3) + 1
+      }
+    }
+  }
+}
+
 onMounted(() => {
   checkBoxChange()
 })
@@ -261,7 +287,7 @@ onMounted(() => {
 
 <template>
   <div class="flex items-center align-middle gap-3 mb-3 bg-tea">
-    <p class="text-sm">Categories</p>
+    <p class="text-sm text-[#999999]">Categories</p>
 
     <span> > </span>
     <p class="text-sm text-orange-400">List</p>
@@ -276,7 +302,7 @@ onMounted(() => {
       <div class="flex items-end space-x-2">
         <button
           @click="openSearchModal"
-          class="min-w-40 flex items-center rounded-3xl border p-2 px-4 gap-2 text-green-700 bg-white border-green-700 hover:border-white hover:bg-teal-200 active:scale-95"
+          class="min-w-40 flex items-center rounded-3xl border p-2 px-4 gap-2 text-green-700 bg-white border-green-700 hover:border-white hover:bg-[#eeeeee] active:scale-95"
         >
           <IconSearch />
           Search
@@ -285,7 +311,7 @@ onMounted(() => {
         <button
           @click="exportExcel"
           :disabled="isActiveYesToggle == false && isActiveNoToggle == false"
-          class="min-w-36 font-semibold rounded-3xl border text-green-700 bg-white border-green-700 p-2 hover:border-white hover:bg-teal-200 active:scale-95"
+          class="min-w-36 rounded-3xl border text-green-700 bg-white border-green-700 p-2 hover:border-white hover:bg-[#eeeeee] active:scale-95"
           :class="{ 'bg-gray-300': isActiveYesToggle == false && isActiveNoToggle == false }"
         >
           Export to Excel
@@ -317,74 +343,63 @@ onMounted(() => {
       </div>
     </div>
 
-    <div class="overflow-y-auto max-h-[80%]">
+    <div class="overflow-y-auto max-h-[80%] grid grid-cols-2 md:grid-cols-3 gap-8 p-10">
       <div
-        v-if="groupedFirstLayer.length > 0"
-        class="p-10 overflow-y-scroll grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10"
-        style="max-height: 60vh"
+        v-show="groupedFirstLayer.length > 0"
+        class="bg-[#fef9f2] border border-orange-400 min-h-[180px] w-[100%] p-4 rounded-tr-3xl rounded-bl-3xl grid grid-cols-1"
+        v-for="(group, index) in groupedFirstLayer"
+        :key="index"
+        :style="{ gridRow: `span ${getRowSpan(group.items.length)}` }"
       >
-        <!-- Loop through groupedFirstLayer and display cards -->
+        <div v-for="(item, itemIndex) in group.items" :key="item.uid">
+          <h1 v-if="itemIndex === 0" class="flex text-xl font-semibold italic text-[#2c7b4b] mb-5">
+            {{ group.letter + '_' }}
+          </h1>
+          <div class="flex items-center pb-1">
+            <button class="mr-2" @click="openEditModal(item.uid, item.name, item.is_active)">
+              <!-- <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="14"
+                viewBox="0 -960 960 960"
+                width="14"
+                class="hover:fill-[#2c7b4b] fill-gray-500"
+              >
+                <path
+                  d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h357l-80 80H200v560h560v-278l80-80v358q0 33-23.5 56.5T760-120H200Zm280-360ZM360-360v-170l367-367q12-12 27-18t30-6q16 0 30.5 6t26.5 18l56 57q11 12 17 26.5t6 29.5q0 15-5.5 29.5T897-728L530-360H360Zm481-424-56-56 56 56ZM440-440h56l232-232-28-28-29-28-231 231v57Zm260-260-29-28 29 28 28 28-28-28Z"
+                />
+              </svg> -->
+              <IconEdit class="w-4 h-4 hover:fill-[#2c7b4b] fill-gray-500" />
+            </button>
 
-        <div v-for="group in groupedFirstLayer" :key="group.letter">
-          <div
-            class="bg-orange-100 w-[100%] min-h-[165px] h-full p-4 rounded-tr-3xl rounded-bl-3xl"
-          >
-            <!-- Display the first letter of the category in the top-left corner -->
-            <h1 class="text-xl font-semibold italic mb-2 text-[#2c7b4b]">
-              {{ group.letter + '_' }}
-            </h1>
-
-            <!-- Display items in the current card -->
-            <div v-for="item in group.items" :key="item.uid">
-              <div class="flex items-center pb-1">
-                <button class="mr-2" @click="openEditModal(item.uid, item.name, item.is_active)">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="14"
-                    viewBox="0 -960 960 960"
-                    width="14"
-                    class="hover:fill-[#2c7b4b] fill-gray-500"
-                  >
-                    <path
-                      d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h357l-80 80H200v560h560v-278l80-80v358q0 33-23.5 56.5T760-120H200Zm280-360ZM360-360v-170l367-367q12-12 27-18t30-6q16 0 30.5 6t26.5 18l56 57q11 12 17 26.5t6 29.5q0 15-5.5 29.5T897-728L530-360H360Zm481-424-56-56 56 56ZM440-440h56l232-232-28-28-29-28-231 231v57Zm260-260-29-28 29 28 28 28-28-28Z"
-                    />
-                  </svg>
-                </button>
-
-                <RouterLink
-                  :to="{ name: 'categories-second-layer', params: { secondLayer: item.name } }"
-                  @click="navigateToFirstUid(item.name, item.uid, item.is_active)"
-                >
-                  <!-- <router-link
+            <RouterLink
+              class="max-w-[90%] break-words"
+              :to="{ name: 'categories-second-layer', params: { secondLayer: item.name } }"
+              @click="navigateToFirstUid(item.name, item.uid, item.is_active)"
+            >
+              <!-- <router-link
                     :to="{ path: '/categories/list/' + item.name }"
                     @click="
                       navigateToFirstUid(item.name, item.uid, item.is_Active)
                     "
                   > -->
-                  <span
-                    :class="{
-                      'text-[14px] mr-2 text-gray-500 underline hover:text-[#2c7b4b]':
-                        item.is_active,
-                      'text-[14px] mr-2 line-through text-gray-500 hover:text-[#2c7b4b]':
-                        !item.is_active,
-                      'text-[14px] mr-2  text-gray-500 bg-yellow-300 pl-2 pr-2 rounded-2xl drop-shadow-2xl hover:text-slate-500':
-                        hightLightUid == item.uid
-                    }"
-                  >
-                    {{ item.name }}
-                  </span>
-                  <!-- </router-link> -->
-                </RouterLink>
-              </div>
-            </div>
+              <span
+                :class="{
+                  ' mr-2 text-gray-500 underline hover:text-[#2c7b4b]': item.is_active,
+                  ' mr-2 line-through text-gray-500 hover:text-[#2c7b4b]': !item.is_active,
+                  ' mr-2  text-gray-500 bg-yellow-300 pl-2 pr-2 rounded-2xl drop-shadow-2xl hover:text-slate-500':
+                    hightLightUid == item.uid
+                }"
+              >
+                {{ item.name }}
+              </span>
+              <!-- </router-link> -->
+            </RouterLink>
           </div>
         </div>
       </div>
-      <div v-else>
-        <div class="p-10 overflow-y-scroll grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
-          <div class="relative bg-orange-100 w-[100%] pl-6 pb-4 pt-4 rounded-tr-3xl rounded-bl-3xl">
-            <span class="text-[14px] italic mr-2 text-gray-500">Data Not Available</span>
-          </div>
+      <div v-show="groupedFirstLayer.length === 0">
+        <div class="relative bg-[#eeeeee] w-[100%] pl-6 pb-4 pt-4 rounded-tr-3xl rounded-bl-3xl">
+          <span class="italic mr-2 text-gray-500">Data Not Available</span>
         </div>
       </div>
     </div>
@@ -407,13 +422,9 @@ onMounted(() => {
         >
           Cancel
         </button>
-
-        <button
-          @click="addNewCategory(selectedCreateCategory, isToggledCreate)"
-          class="min-w-24 font-semibold rounded-3xl border text-white bg-green-700 p-2 hover:bg-teal-700 active:scale-95"
+        <PrimaryButton @click="addNewCategory(selectedCreateCategory, isToggledCreate)"
+          >Save</PrimaryButton
         >
-          Save
-        </button>
       </div>
     </div>
     <form class="w-full pt-5">
@@ -448,7 +459,7 @@ onMounted(() => {
               <!-- line -->
               <div
                 :class="{
-                  'bg-green-400': isToggledCreate,
+                  'bg-[#579D3F]': isToggledCreate,
                   'bg-gray-600': !isToggledCreate
                 }"
                 class="block w-14 h-8 rounded-full transition"
@@ -487,12 +498,9 @@ onMounted(() => {
         >
           Cancel
         </button>
-        <button
-          @click="updateCategory(selectedEditUid, selectedEditCategory, isToggledEdit)"
-          class="min-w-24 font-semibold rounded-3xl border text-white bg-green-700 p-2 hover:bg-teal-700 active:scale-95"
+        <PrimaryButton @click="updateCategory(selectedEditUid, selectedEditCategory, isToggledEdit)"
+          >Save</PrimaryButton
         >
-          Save
-        </button>
       </div>
     </div>
     <form class="w-full pt-5">
@@ -522,7 +530,7 @@ onMounted(() => {
               <!-- line -->
               <div
                 :class="{
-                  'bg-green-400': isToggledEdit,
+                  'bg-[#579D3F]': isToggledEdit,
                   'bg-gray-600': !isToggledEdit
                 }"
                 class="block w-14 h-8 rounded-full transition"
@@ -569,5 +577,9 @@ onMounted(() => {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(94, 109, 92, 1);
+}
+
+.swal2-confirm {
+  border-radius: 35px; /* Sesuaikan nilai border-radius sesuai kebutuhan Anda */
 }
 </style>

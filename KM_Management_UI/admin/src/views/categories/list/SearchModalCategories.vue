@@ -155,13 +155,13 @@ onMounted(() => {
               v-model="searchQueryCategory"
               @input.prevent="fetchSearchCategories(searchQueryCategory)"
               type="search"
-              class="block pt-2 pb-2 pl-10 pr-10 w-full z-20 text-sm text-gray-500 bg-gray-50 rounded-3xl border border-gray-300 outline-none"
+              class="block pt-2 pb-2 pl-10 pr-10 w-full z-20 text-gray-500 bg-gray-50 rounded-3xl border border-gray-300 outline-none"
               placeholder="Search..."
               required
             />
             <button
               type="submit"
-              class="absolute top-0 left-0 h-full p-2.5 text-sm font-medium text-white bg-transparent rounded-l-lg"
+              class="absolute top-0 left-0 h-full p-2.5 text-white bg-transparent rounded-l-lg"
             >
               <svg
                 class="w-5 h-5 text-gray-500 absolute left-3 top-1/2 transform -translate-y-1/2"
@@ -199,9 +199,7 @@ onMounted(() => {
               >
                 <span
                   :class="[
-                    search.is_active == true
-                      ? 'text-[14px] mr-2 '
-                      : 'text-[14px] mr-2 line-through ',
+                    search.is_active == true ? ' mr-2 ' : ' mr-2 line-through ',
                     'bg-orange-100 w-full p-1 pl-2 pr-2 text-gray-500 hover:bg-orange-200 hover:text-orange-500',
                     index === 0 ? 'rounded-t-xl' : '',
                     index === searchCategories.length - 1 ? 'rounded-b-xl' : ''
@@ -218,7 +216,7 @@ onMounted(() => {
               >
                 <span
                   :class="[
-                    search.is_active ? 'text-[14px] mr-2 ' : 'text-[14px] mr-2 line-through ',
+                    search.is_active ? ' mr-2 ' : ' mr-2 line-through ',
                     'bg-orange-100 w-full p-1 pl-2 pr-2 text-gray-500 hover:bg-orange-200 hover:text-orange-500',
                     index === 0 ? 'rounded-t-xl' : '',
                     index === searchCategories.length - 1 ? 'rounded-b-xl' : ''
@@ -252,9 +250,7 @@ onMounted(() => {
               >
                 <span
                   :class="[
-                    secondLayer.is_active == true
-                      ? 'text-[14px] mr-2 '
-                      : 'text-[14px] mr-2 line-through ',
+                    secondLayer.is_active == true ? ' mr-2 ' : ' mr-2 line-through ',
                     'bg-orange-100 w-full p-1 pl-2 pr-2 text-gray-500 hover:bg-orange-200 hover:text-orange-500',
                     secondIndex === 0 ? 'rounded-t-xl' : '',
                     secondIndex === secondResult.length - 1 ? 'rounded-b-xl' : ''
@@ -277,9 +273,7 @@ onMounted(() => {
               >
                 <span
                   :class="[
-                    secondLayer.is_active == true
-                      ? 'text-[14px] mr-2 '
-                      : 'text-[14px] mr-2 line-through ',
+                    secondLayer.is_active == true ? ' mr-2 ' : ' mr-2 line-through ',
                     'bg-orange-100 w-full p-1 pl-2 pr-2 text-gray-500 hover:bg-orange-200 hover:text-orange-500',
                     secondIndex === 0 ? 'rounded-t-xl' : '',
                     secondIndex === secondResult.length - 1 ? 'rounded-b-xl' : ''
@@ -320,9 +314,7 @@ onMounted(() => {
               >
                 <span
                   :class="[
-                    thirdLayer.is_active == true
-                      ? 'text-[14px] mr-2 '
-                      : 'text-[14px] mr-2 line-through ',
+                    thirdLayer.is_active == true ? ' mr-2 ' : ' mr-2 line-through ',
                     'bg-orange-100 w-full p-1 pl-2 pr-2 text-gray-500 hover:bg-orange-200 hover:text-orange-500',
                     thirdIndex === 0 ? 'rounded-t-xl' : '',
                     thirdIndex === thirdResult.length - 1 ? 'rounded-b-xl' : ''
@@ -348,9 +340,7 @@ onMounted(() => {
               >
                 <span
                   :class="[
-                    thirdLayer.is_active == true
-                      ? 'text-[14px] mr-2 '
-                      : 'text-[14px] mr-2 line-through ',
+                    thirdLayer.is_active == true ? ' mr-2 ' : ' mr-2 line-through ',
                     'bg-orange-100 w-full p-1 pl-2 pr-2 text-gray-500 hover:bg-orange-200 hover:text-orange-500',
                     thirdIndex === 0 ? 'rounded-t-xl' : '',
                     thirdIndex === thirdResult.length - 1 ? 'rounded-b-xl' : ''
