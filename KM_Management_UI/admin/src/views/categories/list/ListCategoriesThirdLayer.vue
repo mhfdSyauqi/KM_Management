@@ -123,6 +123,16 @@ const addNewCategory = async (name, is_Active) => {
         const cancelButton = Swal.getCancelButton()
         cancelButton.style.borderRadius = '15px'
         cancelButton.style.width = '70px'
+        cancelButton.style.backgroundColor = 'white'
+        cancelButton.style.color = 'red'
+        cancelButton.addEventListener('mouseover', () => {
+          cancelButton.style.backgroundColor = 'red'
+          cancelButton.style.color = 'white'
+        })
+        cancelButton.addEventListener('mouseout', () => {
+          cancelButton.style.backgroundColor = 'white'
+          cancelButton.style.color = 'red'
+        })
       }
     })
     if (result.isConfirmed) {
@@ -171,6 +181,16 @@ const updateCategory = async (uid, name, is_Active) => {
         const cancelButton = Swal.getCancelButton()
         cancelButton.style.borderRadius = '15px'
         cancelButton.style.width = '70px'
+        cancelButton.style.backgroundColor = 'white'
+        cancelButton.style.color = 'red'
+        cancelButton.addEventListener('mouseover', () => {
+          cancelButton.style.backgroundColor = 'red'
+          cancelButton.style.color = 'white'
+        })
+        cancelButton.addEventListener('mouseout', () => {
+          cancelButton.style.backgroundColor = 'white'
+          cancelButton.style.color = 'red'
+        })
       }
     })
     if (result.isConfirmed) {

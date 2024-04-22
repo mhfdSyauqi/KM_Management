@@ -12,7 +12,7 @@ const hover = ref(false)
       :class="[
         open
           ? 'rounded-tr-3xl rounded-tl-3xl text-white bg-green-800 '
-          : 'rounded-3xl hover:bg-[#71b483] hover:text-white hover:border-[#71b483]'
+          : 'rounded-3xl hover:bg-[#71b483] hover:text-white hover:border-[#71b483] bg-[#f8fbf9]'
       ]"
       @mouseenter="hover = true"
       @mouseleave="hover = false"

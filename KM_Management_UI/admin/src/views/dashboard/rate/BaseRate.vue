@@ -28,6 +28,8 @@ import {
   filterExportExcel
 } from '@/components/pages/dashboard/postExportRateAndFeedback.js'
 
+const hoverFilterDate = ref(false)
+const hoverFilterRating = ref(false)
 const pageLimit = ref(10)
 //calendar
 
@@ -160,10 +162,14 @@ onMounted(async () => {
       <div class="flex items-end space-x-2">
         <Popover class="relative" v-slot="{ open }">
           <PopoverButton
-            class="min-w-fit flex p-2 border border-green-800 text-green-800 items-center justify-center gap-2 focus:outline-none"
+            class="min-w-fit flex pl-4 pr-4 pt-2 pb-2 border border-green-800 text-green-800 items-center justify-center gap-2 focus:outline-none"
             :class="[
-              open ? 'rounded-tr-3xl rounded-tl-3xl text-white bg-green-800 ' : 'rounded-3xl'
+              open
+                ? 'rounded-tr-3xl rounded-tl-3xl text-white bg-green-800 '
+                : 'rounded-3xl hover:bg-[#71b483] hover:text-white hover:border-[#71b483] bg-[#f8fbf9]'
             ]"
+            @mouseenter="hoverFilterDate = true"
+            @mouseleave="hoverFilterDate = false"
           >
             <span>
               <slot name="default" v-if="filteringDate.category != null">{{
@@ -181,7 +187,12 @@ onMounted(async () => {
                 }}</slot
               >
             </span>
-            <IconDropdown :class="[open ? 'fill-white' : 'fill-green-800']" />
+            <IconDropdown
+              :class="[
+                open ? 'fill-white' : 'fill-green-800',
+                hoverFilterDate ? 'fill-white' : 'fill-green-800'
+              ]"
+            />
           </PopoverButton>
 
           <PopoverPanel class="absolute z-10 right-0">
@@ -473,12 +484,23 @@ onMounted(async () => {
       <Popover class="relative" v-slot="{ open }">
         <PopoverButton
           class="min-w-32 flex p-2 border border-green-800 text-green-800 items-center justify-center gap-2 focus:outline-none"
-          :class="[open ? 'rounded-tr-3xl rounded-tl-3xl text-white bg-green-800 ' : 'rounded-3xl']"
+          :class="[
+            open
+              ? 'rounded-tr-3xl rounded-tl-3xl text-white bg-green-800 '
+              : 'rounded-3xl hover:bg-[#71b483] hover:text-white hover:border-[#71b483] bg-[#f8fbf9]'
+          ]"
+          @mouseenter="hoverFilterRating = true"
+          @mouseleave="hoverFilterRating = false"
         >
           <span>
             <slot name="default">Rating</slot>
           </span>
-          <IconDropdown :class="[open ? 'fill-white' : 'fill-green-800']" />
+          <IconDropdown
+            :class="[
+              open ? 'fill-white' : 'fill-green-800',
+              hoverFilterRating ? 'fill-white' : 'fill-green-800'
+            ]"
+          />
         </PopoverButton>
 
         <PopoverPanel class="absolute z-10 right-0">

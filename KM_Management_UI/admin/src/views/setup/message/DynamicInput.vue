@@ -62,7 +62,7 @@
                     v-if="expanded"
                     maxlength="360"
                     @click.stop
-                    class="w-full pt-1 pb-1 pl-2 pr-2 border rounded-xl focus:outline focus:outline-orange-500 border-gray-300"
+                    class="w-full pt-1 pb-1 pl-2 pr-2 border rounded-xl focus:outline focus:outline-[#888888] border-gray-300"
                   ></textarea>
                   <span
                     v-if="editMode[index]"
@@ -199,7 +199,7 @@
                     v-model="addText[index]"
                     v-if="expanded"
                     @click.stop
-                    class="w-full pt-1 pb-1 pl-2 pr-2 border rounded-xl focus:outline focus:outline-orange-500 border-gray-300"
+                    class="w-full pt-1 pb-1 pl-2 pr-2 border rounded-xl focus:outline focus:outline-[#888888] border-gray-300"
                     maxlength="360"
                   ></textarea>
                   <span

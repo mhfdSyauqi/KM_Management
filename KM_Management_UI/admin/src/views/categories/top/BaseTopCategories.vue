@@ -7,7 +7,7 @@ import {
   top_issue_selected,
   filterSelected
 } from '@/components/pages/category/useCategoryTopIssue.js'
-
+import { ToastSwal } from '@/extension/SwalExt.js'
 import {
   HandlePublishSelected,
   newSelected
@@ -18,6 +18,10 @@ import { HandleAllDelete } from '@/components/pages/category/deleteAllCategorySe
 import { HandlePublishAllSelected } from '@/components/pages/category/postAllCategorySelected.js'
 import { HandleRePublish, editSequence } from '@/components/pages/category/patchSequenceSelected.js'
 import { ref, onMounted } from 'vue'
+import IconMoveUp from '@/components/icons/IconMoveUp.vue'
+import IconMoveDown from '@/components/icons/IconMoveDown.vue'
+import IconAddNew from '@/components/icons/IconAddNew.vue'
+import IconDelete from '@/components/icons/IconDeleteItem.vue'
 import { useStore } from '@/stores/topIssueStore.js'
 import Swal from 'sweetalert2'
 import OptionButton from '@/components/buttons/OptionButton.vue'
@@ -37,22 +41,39 @@ const addNewSelected = async (uid_Bot_Category) => {
     newSelected.value.Uid_Bot_Category = uid_Bot_Category
 
     const result = await Swal.fire({
-      icon: 'question',
+      icon: 'info',
       title: 'Are you sure?',
+      text: 'want to add this item?',
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       confirmButtonColor: '#2c7b4b',
-      cancelButtonColor: '#d33'
+      cancelButtonColor: 'white',
+      reverseButtons: true,
+      didOpen: () => {
+        const confirmButton = Swal.getConfirmButton()
+        confirmButton.style.borderRadius = '15px'
+        confirmButton.style.width = '70px'
+        const cancelButton = Swal.getCancelButton()
+        cancelButton.style.borderRadius = '15px'
+        cancelButton.style.width = '70px'
+        cancelButton.style.backgroundColor = 'white'
+        cancelButton.style.color = 'red'
+        cancelButton.addEventListener('mouseover', () => {
+          cancelButton.style.backgroundColor = 'red'
+          cancelButton.style.color = 'white'
+        })
+        cancelButton.addEventListener('mouseout', () => {
+          cancelButton.style.backgroundColor = 'white'
+          cancelButton.style.color = 'red'
+        })
+      }
     })
+
     if (result.isConfirmed) {
       const response = await HandlePublishSelected()
       if (response !== 400) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Add new selected item successful!',
-          confirmButtonColor: '#2c7b4b'
-        })
+        await ToastSwal.fire({ icon: 'success', text: 'Add new selected item successful!' })
         resetSearchItem()
         checkBoxChange()
       } else {
@@ -64,11 +85,7 @@ const addNewSelected = async (uid_Bot_Category) => {
         })
       }
     } else {
-      Swal.fire({
-        icon: 'info',
-        title: 'Add new selected item canceled',
-        confirmButtonColor: '#2c7b4b'
-      })
+      await ToastSwal.fire({ icon: 'error', text: 'Add new selected item canceled' })
       resetSearchItem()
       checkBoxChange()
     }
@@ -80,22 +97,38 @@ const addNewSelected = async (uid_Bot_Category) => {
 const addAllSelected = async () => {
   try {
     const result = await Swal.fire({
-      icon: 'question',
+      icon: 'info',
       title: 'Are you sure?',
+      text: 'want to add all items?',
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       confirmButtonColor: '#2c7b4b',
-      cancelButtonColor: '#d33'
+      cancelButtonColor: 'white',
+      reverseButtons: true,
+      didOpen: () => {
+        const confirmButton = Swal.getConfirmButton()
+        confirmButton.style.borderRadius = '15px'
+        confirmButton.style.width = '70px'
+        const cancelButton = Swal.getCancelButton()
+        cancelButton.style.borderRadius = '15px'
+        cancelButton.style.width = '70px'
+        cancelButton.style.backgroundColor = 'white'
+        cancelButton.style.color = 'red'
+        cancelButton.addEventListener('mouseover', () => {
+          cancelButton.style.backgroundColor = 'red'
+          cancelButton.style.color = 'white'
+        })
+        cancelButton.addEventListener('mouseout', () => {
+          cancelButton.style.backgroundColor = 'white'
+          cancelButton.style.color = 'red'
+        })
+      }
     })
     if (result.isConfirmed) {
       const response = await HandlePublishAllSelected()
       if (response !== 400) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Add all items to new selected item successful!',
-          confirmButtonColor: '#2c7b4b'
-        })
+        await ToastSwal.fire({ icon: 'success', text: 'Add all items successful!' })
         resetSearchItem()
         checkBoxChange()
       } else {
@@ -107,11 +140,7 @@ const addAllSelected = async () => {
         })
       }
     } else {
-      Swal.fire({
-        icon: 'info',
-        title: 'Add all items to new selected item canceled',
-        confirmButtonColor: '#2c7b4b'
-      })
+      await ToastSwal.fire({ icon: 'error', text: 'Add all items canceled' })
       resetSearchItem()
       checkBoxChange()
     }
@@ -125,22 +154,38 @@ const deleteSelectedItem = async (sequence) => {
     deleteSelected.value.Sequence = sequence
 
     const result = await Swal.fire({
-      icon: 'question',
+      icon: 'info',
       title: 'Are you sure?',
+      text: 'want to delete this item?',
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       confirmButtonColor: '#2c7b4b',
-      cancelButtonColor: '#d33'
+      cancelButtonColor: 'white',
+      reverseButtons: true,
+      didOpen: () => {
+        const confirmButton = Swal.getConfirmButton()
+        confirmButton.style.borderRadius = '15px'
+        confirmButton.style.width = '70px'
+        const cancelButton = Swal.getCancelButton()
+        cancelButton.style.borderRadius = '15px'
+        cancelButton.style.width = '70px'
+        cancelButton.style.backgroundColor = 'white'
+        cancelButton.style.color = 'red'
+        cancelButton.addEventListener('mouseover', () => {
+          cancelButton.style.backgroundColor = 'red'
+          cancelButton.style.color = 'white'
+        })
+        cancelButton.addEventListener('mouseout', () => {
+          cancelButton.style.backgroundColor = 'white'
+          cancelButton.style.color = 'red'
+        })
+      }
     })
     if (result.isConfirmed) {
       const response = await HandleDelete()
       if (response !== 400) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Remove item from new selected item successful!',
-          confirmButtonColor: '#2c7b4b'
-        })
+        await ToastSwal.fire({ icon: 'success', text: 'Delete item successful!' })
         resetSearchItem()
         checkBoxChange()
       } else {
@@ -152,11 +197,7 @@ const deleteSelectedItem = async (sequence) => {
         })
       }
     } else {
-      Swal.fire({
-        icon: 'info',
-        title: 'Remove item from new selected item canceled',
-        confirmButtonColor: '#2c7b4b'
-      })
+      await ToastSwal.fire({ icon: 'error', text: 'Delete item canceled' })
       resetSearchItem()
       checkBoxChange()
     }
@@ -168,22 +209,38 @@ const deleteSelectedItem = async (sequence) => {
 const removeAllSelectedItems = async () => {
   try {
     const result = await Swal.fire({
-      icon: 'question',
+      icon: 'info',
       title: 'Are you sure?',
+      text: 'want to remove all items?',
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       confirmButtonColor: '#2c7b4b',
-      cancelButtonColor: '#d33'
+      cancelButtonColor: 'white',
+      reverseButtons: true,
+      didOpen: () => {
+        const confirmButton = Swal.getConfirmButton()
+        confirmButton.style.borderRadius = '15px'
+        confirmButton.style.width = '70px'
+        const cancelButton = Swal.getCancelButton()
+        cancelButton.style.borderRadius = '15px'
+        cancelButton.style.width = '70px'
+        cancelButton.style.backgroundColor = 'white'
+        cancelButton.style.color = 'red'
+        cancelButton.addEventListener('mouseover', () => {
+          cancelButton.style.backgroundColor = 'red'
+          cancelButton.style.color = 'white'
+        })
+        cancelButton.addEventListener('mouseout', () => {
+          cancelButton.style.backgroundColor = 'white'
+          cancelButton.style.color = 'red'
+        })
+      }
     })
     if (result.isConfirmed) {
       const response = await HandleAllDelete()
       if (response !== 400) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Remove all items from new selected item successful!',
-          confirmButtonColor: '#2c7b4b'
-        })
+        await ToastSwal.fire({ icon: 'success', text: 'Remove all items successful!' })
         resetSearchItem()
         checkBoxChange()
       } else {
@@ -195,11 +252,7 @@ const removeAllSelectedItems = async () => {
         })
       }
     } else {
-      Swal.fire({
-        icon: 'info',
-        title: 'Remove all items from new selected item canceled',
-        confirmButtonColor: '#2c7b4b'
-      })
+      await ToastSwal.fire({ icon: 'error', text: 'Remove all items canceled' })
       resetSearchItem()
       checkBoxChange()
     }
@@ -341,14 +394,26 @@ onMounted(() => {
         </OptionButton>
 
         <button
-          class="min-w-36 font-semibold rounded-3xl border text-green-700 bg-white border-green-700 p-2 hover:border-white hover:text-white hover:bg-green-700 active:scale-95"
+          class="min-w-36 rounded-3xl border text-green-700 border-green-700 p-2 active:scale-95"
+          :class="
+            availableItems.length == 0
+              ? 'bg-white'
+              : 'bg-white  hover:border-white hover:text-white hover:bg-green-700 '
+          "
           @click="addAllSelected"
+          :disabled="availableItems.length == 0"
         >
           Add All
         </button>
         <button
-          class="min-w-36 font-semibold rounded-3xl border text-green-700 bg-white border-green-700 p-2 hover:border-white hover:text-white hover:bg-green-700 active:scale-95"
+          class="min-w-36 rounded-3xl border text-green-700 border-green-700 p-2 active:scale-95"
+          :class="
+            selectedItems.length == 0
+              ? 'bg-white'
+              : 'bg-white hover:border-white hover:text-white hover:bg-green-700'
+          "
           @click="removeAllSelectedItems"
+          :disabled="selectedItems.length == 0"
         >
           Remove All
         </button>
@@ -447,25 +512,17 @@ onMounted(() => {
             <!-- Kolom Kiri -->
 
             <div
-              class="flex-grow p-4 min-h-[150px] max-w-[49%] max-h-[250px] overflow-y-auto border border-gray-300 rounded-2xl"
+              class="flex-grow p-4 min-h-[150px] max-w-[49%] max-h-[280px] overflow-y-auto border border-gray-300 rounded-2xl"
             >
               <div v-if="searchQueryAvailableItem.length > 0" class="relative">
                 <div v-for="item in searchAvailableItems" :key="item">
                   <span
-                    class="block text-sm mb-2 rounded-xl text-gray-500 bg-gray-100 hover:bg-green-200 hover:text-[#77a383] pt-1 pb-1 pl-4 pr-4"
+                    class="block text-sm mb-2 rounded-xl text-gray-500 bg-gray-100 hover:bg-[#ffdab3] hover:text-[#2c7b4b] hover:font-semibold pt-1 pb-1 pl-4 pr-4"
                     style="display: flex; justify-content: space-between; align-items: center"
                   >
                     <span :class="{ 'line-through': !item.is_active }">{{ item.name }}</span>
                     <button v-if="item.is_active" @click="addNewSelected(item.uid)">
-                      <svg
-                        class="h-5 w-5 fill-gray-600 hover:fill-[#77a383]"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 -960 960 960"
-                      >
-                        <path
-                          d="M440-280h80v-160h160v-80H520v-160h-80v160H280v80h160v160Zm40 200q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"
-                        />
-                      </svg>
+                      <IconAddNew class="h-5 w-5 fill-gray-600 hover:fill-[#2c7b4b]" />
                     </button>
                   </span>
                 </div>
@@ -473,20 +530,12 @@ onMounted(() => {
               <div v-else class="relative">
                 <div v-for="item in availableItems" :key="item">
                   <span
-                    class="block text-sm mb-2 rounded-xl text-gray-500 bg-gray-100 hover:bg-green-200 hover:text-[#77a383] pt-1 pb-1 pl-4 pr-4"
+                    class="block text-sm mb-2 rounded-xl text-gray-500 bg-gray-100 hover:bg-[#ffdab3] hover:text-[#2c7b4b] hover:font-semibold pt-1 pb-1 pl-4 pr-4"
                     style="display: flex; justify-content: space-between; align-items: center"
                   >
                     <span :class="{ 'line-through': !item.is_active }">{{ item.name }}</span>
                     <button v-if="item.is_active" @click="addNewSelected(item.uid)">
-                      <svg
-                        class="h-5 w-5 fill-gray-600 hover:fill-[#77a383]"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 -960 960 960"
-                      >
-                        <path
-                          d="M440-280h80v-160h160v-80H520v-160h-80v160H280v80h160v160Zm40 200q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"
-                        />
-                      </svg>
+                      <IconAddNew class="h-5 w-5 fill-gray-600 hover:fill-[#2c7b4b]" />
                     </button>
                   </span>
                 </div>
@@ -495,77 +544,53 @@ onMounted(() => {
 
             <!-- Kolom Kanan -->
             <div
-              class="flex-grow p-4 min-h-[150px] max-w-[49%] max-h-[250px] overflow-y-auto border border-gray-300 rounded-2xl"
+              class="flex-grow p-4 min-h-[150px] max-w-[49%] max-h-[280px] overflow-y-auto border border-gray-300 rounded-2xl"
             >
               <div v-if="searchQuerySelectedItem.length > 0" class="relative">
                 <div v-for="item in searchSelectedItems" :key="item">
                   <span
-                    class="block text-sm mb-2 rounded-xl text-gray-500 bg-gray-100 hover:bg-green-200 hover:text-[#77a383] pt-1 pb-1 pl-4 pr-4"
+                    class="block text-sm mb-2 rounded-xl text-gray-500 bg-gray-100 hover:bg-[#ffdab3] hover:text-[#2c7b4b] hover:font-semibold pt-1 pb-1 pl-4 pr-4"
                     style="display: flex; justify-content: space-between; align-items: center"
                   >
                     <span :class="{ 'line-through': !item.is_active }">{{ item.name }}</span>
                     <div class="justify-end flex">
                       <button @click="deleteSelectedItem(item.sequence)">
-                        <svg
+                        <IconDelete
                           class="h-5 w-5 fill-red-700 hover:fill-white hover:bg-red-700 hover:rounded-full"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 -960 960 960"
-                        >
-                          <path
-                            d="M280-440h400v-80H280v80ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"
-                          />
-                        </svg>
+                        />
                       </button>
                     </div>
                   </span>
                 </div>
               </div>
               <div v-else class="relative">
-                <div v-for="item in selectedItems" :key="item">
+                <div v-for="(item, index) in selectedItems" :key="item">
                   <span
-                    class="block text-sm mb-2 rounded-xl text-gray-500 bg-gray-100 hover:bg-green-200 hover:text-[#77a383] pt-1 pb-1 pl-4 pr-4"
+                    class="block text-sm mb-2 rounded-xl text-gray-500 bg-gray-100 hover:bg-[#ffdab3] hover:text-[#2c7b4b] hover:font-semibold pt-1 pb-1 pl-4 pr-4"
                     style="display: flex; justify-content: space-between; align-items: center"
                   >
                     <span :class="{ 'line-through': !item.is_active }">{{ item.name }}</span>
                     <div class="justify-end flex">
                       <button
-                        v-if="item.is_active"
+                        v-if="
+                          item.is_active &&
+                          selectedItems.length > 1 &&
+                          index != selectedItems.length - 1
+                        "
                         @click="updateSequence('down', item.sequence, selectedItems.length)"
                       >
-                        <svg
-                          class="h-5 w-5 fill-gray-600 hover:fill-[#77a383]"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 -960 960 960"
-                        >
-                          <path
-                            d="m480-340 180-180-57-56-123 123-123-123-57 56 180 180Zm0 260q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"
-                          />
-                        </svg>
+                        <IconMoveDown class="w-5 h-5 fill-gray-600 hover:fill-[#2c7b4b]" />
                       </button>
                       <button
-                        v-if="item.is_active"
+                        v-if="item.is_active && selectedItems.length > 1 && index != 0"
                         @click="updateSequence('up', item.sequence, selectedItems.length)"
                       >
-                        <svg
-                          class="h-5 w-5 fill-gray-600 hover:fill-[#77a383]"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 -960 960 960"
-                        >
-                          <path
-                            d="m357-384 123-123 123 123 57-56-180-180-180 180 57 56ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"
-                          />
-                        </svg>
+                        <IconMoveUp class="w-5 h-5 fill-gray-600 hover:fill-[#2c7b4b]" />
                       </button>
                       <button @click="deleteSelectedItem(item.sequence)">
-                        <svg
+                        <IconDelete
                           class="h-5 w-5 fill-red-700 hover:fill-white hover:bg-red-700 hover:rounded-full"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 -960 960 960"
-                        >
-                          <path
-                            d="M280-440h400v-80H280v80ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"
-                          />
-                        </svg>
+                        />
                       </button>
                     </div>
                   </span>
