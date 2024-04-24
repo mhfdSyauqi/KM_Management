@@ -73,9 +73,9 @@ const addNewSelected = async (uid_Bot_Category) => {
     if (result.isConfirmed) {
       const response = await HandlePublishSelected()
       if (response !== 400) {
-        await ToastSwal.fire({ icon: 'success', text: 'Add new selected item successful!' })
         resetSearchItem()
         checkBoxChange()
+        await ToastSwal.fire({ icon: 'success', text: 'Add new selected item successful!' })
       } else {
         Swal.fire({
           icon: 'error',
@@ -85,9 +85,9 @@ const addNewSelected = async (uid_Bot_Category) => {
         })
       }
     } else {
-      await ToastSwal.fire({ icon: 'error', text: 'Add new selected item canceled' })
       resetSearchItem()
       checkBoxChange()
+      await ToastSwal.fire({ icon: 'error', text: 'Add new selected item canceled' })
     }
   } catch (error) {
     console.error('Terjadi Kesalahan :', error)
@@ -128,9 +128,9 @@ const addAllSelected = async () => {
     if (result.isConfirmed) {
       const response = await HandlePublishAllSelected()
       if (response !== 400) {
-        await ToastSwal.fire({ icon: 'success', text: 'Add all items successful!' })
         resetSearchItem()
         checkBoxChange()
+        await ToastSwal.fire({ icon: 'success', text: 'Add all items successful!' })
       } else {
         Swal.fire({
           icon: 'error',
@@ -140,9 +140,9 @@ const addAllSelected = async () => {
         })
       }
     } else {
-      await ToastSwal.fire({ icon: 'error', text: 'Add all items canceled' })
       resetSearchItem()
       checkBoxChange()
+      await ToastSwal.fire({ icon: 'error', text: 'Add all items canceled' })
     }
   } catch (error) {
     console.error('Terjadi Kesalahan :', error)
@@ -185,9 +185,9 @@ const deleteSelectedItem = async (sequence) => {
     if (result.isConfirmed) {
       const response = await HandleDelete()
       if (response !== 400) {
-        await ToastSwal.fire({ icon: 'success', text: 'Delete item successful!' })
         resetSearchItem()
         checkBoxChange()
+        await ToastSwal.fire({ icon: 'success', text: 'Delete item successful!' })
       } else {
         Swal.fire({
           icon: 'error',
@@ -197,9 +197,9 @@ const deleteSelectedItem = async (sequence) => {
         })
       }
     } else {
-      await ToastSwal.fire({ icon: 'error', text: 'Delete item canceled' })
       resetSearchItem()
       checkBoxChange()
+      await ToastSwal.fire({ icon: 'error', text: 'Delete item canceled' })
     }
   } catch (error) {
     console.error('Terjadi Kesalahan :', error)
@@ -240,9 +240,9 @@ const removeAllSelectedItems = async () => {
     if (result.isConfirmed) {
       const response = await HandleAllDelete()
       if (response !== 400) {
-        await ToastSwal.fire({ icon: 'success', text: 'Remove all items successful!' })
         resetSearchItem()
         checkBoxChange()
+        await ToastSwal.fire({ icon: 'success', text: 'Remove all items successful!' })
       } else {
         Swal.fire({
           icon: 'error',
@@ -252,9 +252,9 @@ const removeAllSelectedItems = async () => {
         })
       }
     } else {
-      await ToastSwal.fire({ icon: 'error', text: 'Remove all items canceled' })
       resetSearchItem()
       checkBoxChange()
+      await ToastSwal.fire({ icon: 'error', text: 'Remove all items canceled' })
     }
   } catch (error) {
     console.error('Terjadi Kesalahan :', error)
@@ -374,7 +374,7 @@ onMounted(() => {
           <template #options>
             <label>
               <input
-                v-model="isActiveYesToggle"
+                v-model="isActiveNoToggle"
                 @change="checkBoxChange()"
                 type="checkbox"
                 name="status"
@@ -383,7 +383,7 @@ onMounted(() => {
             </label>
             <label>
               <input
-                v-model="isActiveNoToggle"
+                v-model="isActiveYesToggle"
                 @change="checkBoxChange()"
                 type="checkbox"
                 name="status"
@@ -394,11 +394,11 @@ onMounted(() => {
         </OptionButton>
 
         <button
-          class="min-w-36 rounded-3xl border text-green-700 border-green-700 p-2 active:scale-95"
+          class="min-w-36 rounded-3xl border p-2 active:scale-95"
           :class="
             availableItems.length == 0
-              ? 'bg-white'
-              : 'bg-white  hover:border-white hover:text-white hover:bg-green-700 '
+              ? 'bg-[#f5f5f5] text-[#90958f] border-[#e3e3e3]'
+              : 'bg-white  hover:border-white hover:text-white hover:bg-green-700 text-green-700 border-green-700 '
           "
           @click="addAllSelected"
           :disabled="availableItems.length == 0"
@@ -409,8 +409,8 @@ onMounted(() => {
           class="min-w-36 rounded-3xl border text-green-700 border-green-700 p-2 active:scale-95"
           :class="
             selectedItems.length == 0
-              ? 'bg-white'
-              : 'bg-white hover:border-white hover:text-white hover:bg-green-700'
+              ? 'bg-[#f5f5f5] text-[#90958f] border-[#e3e3e3]'
+              : 'bg-white  hover:border-white hover:text-white hover:bg-green-700 text-green-700 border-green-700 '
           "
           @click="removeAllSelectedItems"
           :disabled="selectedItems.length == 0"

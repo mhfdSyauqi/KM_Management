@@ -477,7 +477,7 @@ onMounted(async () => {
       </button>
       <button
         v-else
-        class="min-w-32 font-semibold rounded-3xl border bg-green-200 border-green-800 text-green-800 p-2 active:scale-95"
+        class="min-w-32 font-semibold rounded-3xl border p-2 active:scale-95 bg-[#f5f5f5] text-[#90958f] border-[#e3e3e3]"
       >
         Export To Excel
       </button>
