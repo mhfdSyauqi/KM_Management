@@ -272,7 +272,7 @@ import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import { deleteMessage, HandleUnPublish } from '@/components/pages/setup/deleteMessage.js'
 
 import { HandleSequence, editSequence } from '@/components/pages/setup/patchSequenceMessage.js'
-
+import { ToastSwal } from '@/extension/SwalExt.js'
 const props = defineProps([
   'nameInput',
   'messageData',
@@ -451,23 +451,39 @@ const updateSetupMessage = async (type, sequence, contents, is_Active, index) =>
     editMessage.value.is_active = is_Active
 
     const result = await Swal.fire({
-      icon: 'question',
+      icon: 'info',
       title: 'Are you sure?',
+      text: 'want to update this message?',
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       confirmButtonColor: '#2c7b4b',
-      cancelButtonColor: '#d33'
+      cancelButtonColor: 'white',
+      reverseButtons: true,
+      didOpen: () => {
+        const confirmButton = Swal.getConfirmButton()
+        confirmButton.style.borderRadius = '15px'
+        confirmButton.style.width = '70px'
+        const cancelButton = Swal.getCancelButton()
+        cancelButton.style.borderRadius = '15px'
+        cancelButton.style.width = '70px'
+        cancelButton.style.backgroundColor = 'white'
+        cancelButton.style.color = 'red'
+        cancelButton.addEventListener('mouseover', () => {
+          cancelButton.style.backgroundColor = 'red'
+          cancelButton.style.color = 'white'
+        })
+        cancelButton.addEventListener('mouseout', () => {
+          cancelButton.style.backgroundColor = 'white'
+          cancelButton.style.color = 'red'
+        })
+      }
     })
     if (result.isConfirmed) {
       const response = await HandleRePublish()
       if (response !== 400) {
         resetUpdateMessage(index)
-        Swal.fire({
-          icon: 'success',
-          title: 'Update message successful!',
-          confirmButtonColor: '#2c7b4b'
-        })
+        await ToastSwal.fire({ icon: 'success', text: 'Update message successful!' })
       } else {
         errorUpdateMessage.value[index] = errorEdit.value.contents.message
         Swal.fire({
@@ -478,11 +494,7 @@ const updateSetupMessage = async (type, sequence, contents, is_Active, index) =>
         })
       }
     } else {
-      Swal.fire({
-        icon: 'info',
-        title: 'Update message canceled',
-        confirmButtonColor: '#2c7b4b'
-      })
+      await ToastSwal.fire({ icon: 'error', text: 'Update message canceled' })
     }
 
     // await storeContent.updateMessage(updateMessage);
@@ -538,23 +550,39 @@ const deleteSetupMessage = async (type, sequence, index) => {
     deleteMessage.value.sequence = sequence
 
     const result = await Swal.fire({
-      icon: 'question',
-      title: 'Are you sure to delete this message?',
+      icon: 'info',
+      title: 'Are you sure?',
+      text: 'want to delete this message?',
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       confirmButtonColor: '#2c7b4b',
-      cancelButtonColor: '#d33'
+      cancelButtonColor: 'white',
+      reverseButtons: true,
+      didOpen: () => {
+        const confirmButton = Swal.getConfirmButton()
+        confirmButton.style.borderRadius = '15px'
+        confirmButton.style.width = '70px'
+        const cancelButton = Swal.getCancelButton()
+        cancelButton.style.borderRadius = '15px'
+        cancelButton.style.width = '70px'
+        cancelButton.style.backgroundColor = 'white'
+        cancelButton.style.color = 'red'
+        cancelButton.addEventListener('mouseover', () => {
+          cancelButton.style.backgroundColor = 'red'
+          cancelButton.style.color = 'white'
+        })
+        cancelButton.addEventListener('mouseout', () => {
+          cancelButton.style.backgroundColor = 'white'
+          cancelButton.style.color = 'red'
+        })
+      }
     })
     if (result.isConfirmed) {
       const response = await HandleUnPublish()
       if (response !== 400) {
         isDropDownOpen.value[index] = false
-        Swal.fire({
-          icon: 'success',
-          title: 'Delete the message successful!',
-          confirmButtonColor: '#2c7b4b'
-        })
+        await ToastSwal.fire({ icon: 'success', text: 'Delete message successful!' })
       } else {
         Swal.fire({
           icon: 'error',
@@ -564,11 +592,7 @@ const deleteSetupMessage = async (type, sequence, index) => {
         })
       }
     } else {
-      Swal.fire({
-        icon: 'info',
-        title: 'Delete the message canceled',
-        confirmButtonColor: '#2c7b4b'
-      })
+      await ToastSwal.fire({ icon: 'error', text: 'Delete message canceled' })
     }
 
     fetchData()
@@ -616,23 +640,39 @@ const addNewMessage = async (type, contents, index) => {
     newMessage.value.type = type
     newMessage.value.contents = contents
     const result = await Swal.fire({
-      icon: 'question',
+      icon: 'info',
       title: 'Are you sure?',
+      text: 'want to add this message?',
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       confirmButtonColor: '#2c7b4b',
-      cancelButtonColor: '#d33'
+      cancelButtonColor: 'white',
+      reverseButtons: true,
+      didOpen: () => {
+        const confirmButton = Swal.getConfirmButton()
+        confirmButton.style.borderRadius = '15px'
+        confirmButton.style.width = '70px'
+        const cancelButton = Swal.getCancelButton()
+        cancelButton.style.borderRadius = '15px'
+        cancelButton.style.width = '70px'
+        cancelButton.style.backgroundColor = 'white'
+        cancelButton.style.color = 'red'
+        cancelButton.addEventListener('mouseover', () => {
+          cancelButton.style.backgroundColor = 'red'
+          cancelButton.style.color = 'white'
+        })
+        cancelButton.addEventListener('mouseout', () => {
+          cancelButton.style.backgroundColor = 'white'
+          cancelButton.style.color = 'red'
+        })
+      }
     })
     if (result.isConfirmed) {
       const response = await HandlePublish()
       if (response !== 400) {
         resetAddMessage(index)
-        Swal.fire({
-          icon: 'success',
-          title: 'Add new message successful!',
-          confirmButtonColor: '#2c7b4b'
-        })
+        await ToastSwal.fire({ icon: 'success', text: 'Add message successful!' })
       } else {
         errorAddMessage.value[index] = errorPost.value.contents.message
         Swal.fire({
@@ -643,11 +683,7 @@ const addNewMessage = async (type, contents, index) => {
         })
       }
     } else {
-      Swal.fire({
-        icon: 'info',
-        title: 'Add new message canceled',
-        confirmButtonColor: '#2c7b4b'
-      })
+      await ToastSwal.fire({ icon: 'error', text: 'Add message canceled' })
     }
 
     fetchData()

@@ -7,6 +7,7 @@ import 'v-calendar/style.css'
 
 import iconChart from '@/components/icons/IconChart.vue'
 import starFull from '@/components/icons/IconStarFull.vue'
+import starHalf from '@/components/icons/IconStarHalf.vue'
 import starEmpty from '@/components/icons/IconStarEmpty.vue'
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import IconDropdown from '@/components/icons/IconDropdown.vue'
@@ -31,6 +32,7 @@ import {
 const hoverFilterDate = ref(false)
 const hoverFilterRating = ref(false)
 const pageLimit = ref(10)
+
 //calendar
 
 const range = ref({})
@@ -69,8 +71,8 @@ const formatDate = (createdAt) => {
     'Dec'
   ]
   const monthIndex = date.getMonth()
-  const year = date.getFullYear()
-  return `${day}-${monthNames[monthIndex]}-${year} `
+  const year = date.getFullYear() % 100
+  return `${day}-${monthNames[monthIndex]}-${year < 10 ? '0' : ''}${year} `
 }
 
 function convertToTitleCase(inputString) {
@@ -83,7 +85,6 @@ function convertToTitleCase(inputString) {
 const fetchRate = async (ratings) => {
   try {
     filter.value.filter_date = filteringDate.value.category
-
     filter.value.start_date = filteringDate.value.start_date
     filter.value.end_date = filteringDate.value.end_date
     filter.value.rating = ratings
@@ -162,37 +163,44 @@ onMounted(async () => {
       <div class="flex items-end space-x-2">
         <Popover class="relative" v-slot="{ open }">
           <PopoverButton
-            class="min-w-fit flex pl-4 pr-4 pt-2 pb-2 border border-green-800 text-green-800 items-center justify-center gap-2 focus:outline-none"
+            class="min-w-fit flex pl-4 pr-4 pt-2 pb-2 border border-green-800 text-green-800 items-center justify-between gap-2 focus:outline-none"
             :class="[
               open
                 ? 'rounded-tr-3xl rounded-tl-3xl text-white bg-green-800 '
                 : 'rounded-3xl hover:bg-[#71b483] hover:text-white hover:border-[#71b483] bg-[#f8fbf9]'
             ]"
+            :style="{ width: '250px' }"
             @mouseenter="hoverFilterDate = true"
             @mouseleave="hoverFilterDate = false"
           >
-            <span>
-              <slot name="default" v-if="filteringDate.category != null">{{
-                convertToTitleCase(filteringDate.category)
-              }}</slot>
-              <slot
-                name="default"
-                v-else-if="
-                  filteringDate.category == null &&
-                  filteringDate.end_date != null &&
-                  filteringDate.start_date != null
-                "
-                >{{
-                  formatDate(filteringDate.start_date) + ' - ' + formatDate(filteringDate.end_date)
-                }}</slot
-              >
-            </span>
-            <IconDropdown
-              :class="[
-                open ? 'fill-white' : 'fill-green-800',
-                hoverFilterDate ? 'fill-white' : 'fill-green-800'
-              ]"
-            />
+            <div class="flex items-start">
+              <span>
+                <slot name="default" v-if="filteringDate.category != null">{{
+                  convertToTitleCase(filteringDate.category)
+                }}</slot>
+                <slot
+                  name="default"
+                  v-else-if="
+                    filteringDate.category == null &&
+                    filteringDate.end_date != null &&
+                    filteringDate.start_date != null
+                  "
+                  >{{
+                    formatDate(filteringDate.start_date) +
+                    ' - ' +
+                    formatDate(filteringDate.end_date)
+                  }}</slot
+                >
+              </span>
+            </div>
+            <div class="items-end">
+              <IconDropdown
+                :class="[
+                  open ? 'fill-white' : 'fill-green-800',
+                  hoverFilterDate ? 'fill-white' : 'fill-green-800'
+                ]"
+              />
+            </div>
           </PopoverButton>
 
           <PopoverPanel class="absolute z-10 right-0">
@@ -271,6 +279,7 @@ onMounted(async () => {
                       transparent
                       borderless
                       v-model.range="range"
+                      :timezone="'UTC'"
                       mode="date"
                       @click="range.start ? (selectedCategoryDate = null) : selectedCategoryDate"
                     >
@@ -353,7 +362,7 @@ onMounted(async () => {
               v-if="
                 !isNaN(summary.overall_rating) &&
                 summary.overall_rating != null &&
-                summary.overall_rating != 0
+                summary.overall_rating >= 0.5 // Batas minimal untuk menampilkan bintang
               "
               class="flex text-amber-400"
               role="img"
@@ -364,15 +373,13 @@ onMounted(async () => {
                   <starFull class="h-5 w-5 fill-yellow-400" />
                 </span>
               </div>
+              <!-- Tambahkan bintang setengah jika nilai rating memiliki desimal -->
+              <span v-if="summary.overall_rating % 1 >= 0.5" aria-hidden="true">
+                <starHalf class="h-5 w-5 fill-yellow-400" />
+              </span>
             </span>
-            <span
-              v-else
-              class="flex text-amber-400"
-              role="img"
-              :aria-label="'Rating: ' + summary.overall_rating + ' out of 4 stars'"
-            >
-              <span aria-hidden="true"> <starFull class="h-5 w-5 fill-yellow-400" /> </span>
-            </span>
+            <!-- Jika rating kurang dari 0.5, maka tidak menampilkan bintang -->
+            <span v-else class="text-[#4a5449]">No Rating</span>
           </div>
         </div>
 
@@ -393,11 +400,14 @@ onMounted(async () => {
                 <!-- Bintang keempat -->
               </div>
               <div
-                :style="{ width: `${(summary.rating_four / summary.total_feedback) * 100}%` }"
-                class="h-3 bg-yellow-400 rounded-full"
-              >
-                <div class="h-3 bg-yellow-400 rounded-full"></div>
-              </div>
+                :style="{
+                  width:
+                    summary.rating_four > 0
+                      ? `${(summary.rating_four / summary.total_feedback) * 100}%`
+                      : '0%'
+                }"
+                class="h-3 bg-yellow-400 rounded-full transition-width duration-1000"
+              ></div>
               <div class="relative text-yellow-400">{{ summary.rating_four }}</div>
             </div>
           </div>
@@ -414,11 +424,14 @@ onMounted(async () => {
                 <!-- Bintang keempat -->
               </div>
               <div
-                :style="{ width: `${(summary.rating_three / summary.total_feedback) * 100}%` }"
-                class="h-3 bg-yellow-400 rounded-full"
-              >
-                <div class="h-3 bg-yellow-400 rounded-full"></div>
-              </div>
+                :style="{
+                  width:
+                    summary.rating_three > 0
+                      ? `${(summary.rating_three / summary.total_feedback) * 100}%`
+                      : '0%'
+                }"
+                class="h-3 bg-yellow-400 rounded-full transition-width duration-1000"
+              ></div>
               <div class="relative text-yellow-400">{{ summary.rating_three }}</div>
             </div>
           </div>
@@ -435,11 +448,14 @@ onMounted(async () => {
                 <!-- Bintang keempat -->
               </div>
               <div
-                :style="{ width: `${(summary.rating_two / summary.total_feedback) * 100}%` }"
-                class="h-3 bg-yellow-400 rounded-full"
-              >
-                <div class="h-3 bg-yellow-400 rounded-full"></div>
-              </div>
+                :style="{
+                  width:
+                    summary.rating_two > 0
+                      ? `${(summary.rating_two / summary.total_feedback) * 100}%`
+                      : '0%'
+                }"
+                class="h-3 bg-yellow-400 rounded-full transition-width duration-1000"
+              ></div>
               <div class="relative text-yellow-400">{{ summary.rating_two }}</div>
             </div>
           </div>
@@ -456,11 +472,14 @@ onMounted(async () => {
                 <!-- Bintang keempat -->
               </div>
               <div
-                :style="{ width: `${(summary.rating_one / summary.total_feedback) * 100}%` }"
-                class="h-3 bg-yellow-400 rounded-full"
-              >
-                <div class="h-3 bg-yellow-400 rounded-full"></div>
-              </div>
+                :style="{
+                  width:
+                    summary.rating_one > 0
+                      ? `${(summary.rating_one / summary.total_feedback) * 100}%`
+                      : '0%'
+                }"
+                class="h-3 bg-yellow-400 rounded-full transition-width duration-1000"
+              ></div>
               <div class="relative text-yellow-400">{{ summary.rating_one }}</div>
             </div>
           </div>

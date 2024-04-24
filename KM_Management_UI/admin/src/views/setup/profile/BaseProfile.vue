@@ -6,7 +6,7 @@ import { profile, GetAssistantProfile } from '@/components/pages/setup/useAssist
 import { HandlePublish, errorInput } from '@/components/pages/setup/postAssistantProfile.js'
 
 import { onMounted, ref } from 'vue'
-
+import { ToastSwal } from '@/extension/SwalExt.js'
 const appName = ref('')
 const appImage = ref('')
 const selectedFile = ref(null)
@@ -31,22 +31,38 @@ async function onPublish() {
   formData.append('Files', selectedFile.value)
   formData.append('AppName', appName.value)
   const result = await Swal.fire({
-    icon: 'question',
+    icon: 'info',
     title: 'Are you sure?',
+    text: 'want to upload a file or change profile name?',
     showCancelButton: true,
     confirmButtonText: 'Yes',
     cancelButtonText: 'No',
     confirmButtonColor: '#2c7b4b',
-    cancelButtonColor: '#d33'
+    cancelButtonColor: 'white',
+    reverseButtons: true,
+    didOpen: () => {
+      const confirmButton = Swal.getConfirmButton()
+      confirmButton.style.borderRadius = '15px'
+      confirmButton.style.width = '70px'
+      const cancelButton = Swal.getCancelButton()
+      cancelButton.style.borderRadius = '15px'
+      cancelButton.style.width = '70px'
+      cancelButton.style.backgroundColor = 'white'
+      cancelButton.style.color = 'red'
+      cancelButton.addEventListener('mouseover', () => {
+        cancelButton.style.backgroundColor = 'red'
+        cancelButton.style.color = 'white'
+      })
+      cancelButton.addEventListener('mouseout', () => {
+        cancelButton.style.backgroundColor = 'white'
+        cancelButton.style.color = 'red'
+      })
+    }
   })
   if (result.isConfirmed) {
     const response = await HandlePublish(formData)
     if (response !== 400) {
-      Swal.fire({
-        icon: 'success',
-        title: 'File upload successful!',
-        confirmButtonColor: '#2c7b4b'
-      })
+      await ToastSwal.fire({ icon: 'success', text: 'Upload or profile change successful!' })
       disabledButton.value = true
       GetAssistantProfile()
     } else {
@@ -59,12 +75,8 @@ async function onPublish() {
       disabledButton.value = false
     }
   } else {
-    Swal.fire({
-      icon: 'info',
-      title: 'File upload canceled',
-      confirmButtonColor: '#2c7b4b'
-    })
     GetAssistantProfile()
+    await ToastSwal.fire({ icon: 'error', text: 'Upload or profile change canceled' })
   }
 }
 
