@@ -187,7 +187,7 @@ onMounted(async () => {
                   "
                   >{{
                     formatDate(filteringDate.start_date) +
-                    ' - ' +
+                    ' to ' +
                     formatDate(filteringDate.end_date)
                   }}</slot
                 >
@@ -374,7 +374,7 @@ onMounted(async () => {
                 </span>
               </div>
               <!-- Tambahkan bintang setengah jika nilai rating memiliki desimal -->
-              <span v-if="summary.overall_rating % 1 >= 0.5" aria-hidden="true">
+              <span v-if="summary.overall_rating % 1 >= 0.1" aria-hidden="true">
                 <starHalf class="h-5 w-5 fill-yellow-400" />
               </span>
             </span>
@@ -488,7 +488,7 @@ onMounted(async () => {
     </div>
     <div class="pr-8 pt-4 pb-4 gap-5 flex justify-end items-end">
       <button
-        class="hover:bg-[#d3eedb] rounded-3xl border font-semibold text-green-800 border-green-800 p-2 active:scale-95"
+        class="hover:bg-[#d3eedb] rounded-3xl border text-green-800 border-green-800 p-2 active:scale-95"
         @click="exportExcel"
         v-if="rate_and_feedback.length > 0"
       >
@@ -496,7 +496,7 @@ onMounted(async () => {
       </button>
       <button
         v-else
-        class="min-w-32 font-semibold rounded-3xl border p-2 active:scale-95 bg-[#f5f5f5] text-[#90958f] border-[#e3e3e3]"
+        class="min-w-32 rounded-3xl border p-2 active:scale-95 bg-[#f5f5f5] text-[#90958f] border-[#e3e3e3]"
       >
         Export To Excel
       </button>
