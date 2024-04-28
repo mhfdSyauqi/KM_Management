@@ -395,18 +395,22 @@ onMounted(() => {
 
         <button
           class="min-w-36 rounded-3xl border p-2 active:scale-95"
-          :class="
-            availableItems.length == 0
-              ? 'bg-[#f5f5f5] text-[#90958f] border-[#e3e3e3]'
-              : 'bg-white  hover:border-white hover:text-white hover:bg-green-700 text-green-700 border-green-700 '
-          "
+          :class="{
+            'bg-[#f5f5f5] text-[#90958f] border-[#e3e3e3]':
+              availableItems.length == 0 ||
+              !availableItems.some((item) => item.is_active !== false),
+            'bg-white hover:border-white hover:text-white hover:bg-green-700 text-green-700 border-green-700':
+              availableItems.length > 0 && availableItems.some((item) => item.is_active !== false)
+          }"
           @click="addAllSelected"
-          :disabled="availableItems.length == 0"
+          :disabled="
+            availableItems.length == 0 || !availableItems.some((item) => item.is_active !== false)
+          "
         >
           Add All
         </button>
         <button
-          class="min-w-36 rounded-3xl border text-green-700 border-green-700 p-2 active:scale-95"
+          class="min-w-36 rounded-3xl border p-2 active:scale-95"
           :class="
             selectedItems.length == 0
               ? 'bg-[#f5f5f5] text-[#90958f] border-[#e3e3e3]'

@@ -121,7 +121,7 @@
                   >
                     <slot name="options">
                       <div
-                        v-show="messageData.length > 1"
+                        v-show="messageData.length > 1 && index != 0"
                         class="py-2 px-4 cursor-pointer rounded-3xl hover:bg-gray-200 flex items-center"
                         @click="
                           updateSequenceSetupMessage(
@@ -138,7 +138,7 @@
                         Move Up
                       </div>
                       <div
-                        v-show="messageData.length > 1"
+                        v-show="messageData.length > 1 && index != messageData.length - 1"
                         class="py-2 px-4 cursor-pointer rounded-3xl hover:bg-gray-200 flex items-center"
                         @click="
                           updateSequenceSetupMessage(
@@ -582,6 +582,7 @@ const deleteSetupMessage = async (type, sequence, index) => {
       const response = await HandleUnPublish()
       if (response !== 400) {
         isDropDownOpen.value[index] = false
+        fetchData()
         await ToastSwal.fire({ icon: 'success', text: 'Delete message successful!' })
       } else {
         Swal.fire({
@@ -594,8 +595,6 @@ const deleteSetupMessage = async (type, sequence, index) => {
     } else {
       await ToastSwal.fire({ icon: 'error', text: 'Delete message canceled' })
     }
-
-    fetchData()
   } catch (error) {
     console.error('Terjadi Kesalahan :', error)
   }
@@ -671,7 +670,9 @@ const addNewMessage = async (type, contents, index) => {
     if (result.isConfirmed) {
       const response = await HandlePublish()
       if (response !== 400) {
+        fetchData()
         resetAddMessage(index)
+
         await ToastSwal.fire({ icon: 'success', text: 'Add message successful!' })
       } else {
         errorAddMessage.value[index] = errorPost.value.contents.message
@@ -685,8 +686,6 @@ const addNewMessage = async (type, contents, index) => {
     } else {
       await ToastSwal.fire({ icon: 'error', text: 'Add message canceled' })
     }
-
-    fetchData()
   } catch (error) {
     console.error('Terjadi Kesalahan :', error)
   }
