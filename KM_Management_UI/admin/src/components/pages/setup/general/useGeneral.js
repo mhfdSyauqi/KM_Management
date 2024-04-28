@@ -185,9 +185,7 @@ async function HandleSave() {
     Helpdesk: {
       ...generalModel.value.helpdesk,
       mail_helpdesk_content: JSON.stringify(generalModel.value.helpdesk.mail_helpdesk_content),
-      mail_helpdesk_content_html: JSON.stringify(
-        generalModel.value.helpdesk.mail_helpdesk_content_html
-      )
+      mail_helpdesk_content_html: generalModel.value.helpdesk.mail_helpdesk_content_html
     },
     Others: {
       ...generalModel.value.others
