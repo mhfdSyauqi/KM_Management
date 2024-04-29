@@ -34,7 +34,7 @@ export async function GetCategoryListAsync(uid_reference, layer, is_active) {
     }
 
   await useRequest
-    .post(`Category/GetCategoryList`, Payload)
+    .post(`List/GetCategoryList`, Payload)
     .then((res) => {
       result.category_list = res.data.data.category_list
     })
@@ -58,7 +58,7 @@ export async function PostCategoryListAsync(name, layer, is_active, uid_referenc
     is_success: true,
     error: null
   }
-  await useRequest.post('Category/AddNewCategory', Payload).catch((err) => {
+  await useRequest.post('List/AddNewCategory', Payload).catch((err) => {
     result.is_success = false
     result.error = err.response.data
   })
@@ -82,7 +82,7 @@ export async function PatchCategoryListAsync(
     error: null
   }
 
-  await useRequest.patch('Category/UpdateCategoryList', Payload).catch((err) => {
+  await useRequest.patch('List/UpdateCategoryList', Payload).catch((err) => {
     result.is_success = false
     result.error = err.response.data
   })
@@ -236,7 +236,7 @@ export async function ExportCategoryLayerOneAsync(request) {
   };
 
   await useRequest
-    .post(`Category/ExportExcelCategoryList`, request, {
+    .post(`List/ExportExcelCategoryList`, request, {
       responseType: 'blob' // Mengatur tipe respons sebagai blob (binary data)
     })
     .then((res) => {
@@ -276,7 +276,7 @@ export async function ExportCategoryLayerOneAsync(request) {
 //   };
 
 //   await useRequest
-//     .post(`Category/ExportCategoryLayerTwo`, request, {
+//     .post(`List/ExportCategoryLayerTwo`, request, {
 //       responseType: 'blob' // Mengatur tipe respons sebagai blob (binary data)
 //     })
 //     .then((res) => {
