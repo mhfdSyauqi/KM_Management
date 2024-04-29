@@ -102,7 +102,7 @@ export async function GetTopIssueSelectedAsync(is_active) {
     }
 
   await useRequest
-    .post(`Category/GetCategoryTopIssueSelected`, Payload)
+    .post(`TopIssue/GetCategoryTopIssueSelected`, Payload)
     .then((res) => {
       result.top_issue_selected = res.data.data.category_top_issue_selected
 
@@ -127,7 +127,7 @@ export async function GetTopIssueAvailableAsync(is_active) {
     }
 
   await useRequest
-    .post(`Category/GetCategoryTopIssueAvailable`, Payload)
+    .post(`TopIssue/GetCategoryTopIssueAvailable`, Payload)
     .then((res) => {
       result.top_issue_available = res.data.data.category_top_issue_available
       
@@ -150,7 +150,7 @@ export async function PostSelectedTopIssueAsync(uid_bot_category) {
     is_success: true,
     error: null
   }
-  await useRequest.post('Category/AddSelectedTopIssue', Payload).catch((err) => {
+  await useRequest.post('TopIssue/AddSelectedTopIssue', Payload).catch((err) => {
     result.is_success = false
     result.error = err.response.data
   })
@@ -163,7 +163,7 @@ export async function PostAllSelectedTopIssueAsync() {
     is_success: true,
     error: null
   }
-  await useRequest.post('Category/AddAllSelectedTopIssue').catch((err) => {
+  await useRequest.post('TopIssue/AddAllSelectedTopIssue').catch((err) => {
     result.is_success = false
     result.error = err.response.data
   })
@@ -183,7 +183,7 @@ export async function DeleteCategoryTopIssueSelectedAsync(
     error: null
   }
 
-  await useRequest.patch('Category/RemoveSelectedTopIssue', Payload).catch((err) => {
+  await useRequest.patch('TopIssue/RemoveSelectedTopIssue', Payload).catch((err) => {
     result.is_success = false
     result.error = err.response.data
   })
@@ -198,7 +198,7 @@ export async function DeleteCategoryTopIssueAllSelectedAsync(
     error: null
   }
 
-  await useRequest.patch('Category/RemoveAllSelectedTopIssue').catch((err) => {
+  await useRequest.patch('TopIssue/RemoveAllSelectedTopIssue').catch((err) => {
     result.is_success = false
     result.error = err.response.data
   })
@@ -220,7 +220,7 @@ export async function PatchSequenceTopIssueSelectedAsync(
     error: null
   }
 
-  await useRequest.patch('Category/PatchSequenceSelectedTopIssue', Payload).catch((err) => {
+  await useRequest.patch('TopIssue/PatchSequenceSelectedTopIssue', Payload).catch((err) => {
     result.is_success = false
     result.error = err.response.data
   })
