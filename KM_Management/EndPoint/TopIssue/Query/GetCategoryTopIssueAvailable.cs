@@ -1,10 +1,11 @@
 ﻿using FluentValidation;
 using KM_Management.Commons.Mediator;
-using KM_Management.EndPoint.Category.Models;
+using KM_Management.EndPoint.TopIssue;
+using KM_Management.EndPoint.TopIssue.Models;
 using KM_Management.Shared;
 using System.Net;
 
-namespace KM_Management.EndPoint.Category.Query;
+namespace KM_Management.EndPoint.TopIssue.Query;
 
 public record GetCategoryTopIssueAvailableQuery(RequestCategoryTopIssueAvailable Argument) : IQuery<List<ResponseCategoryTopIssueAvailable>>;
 
@@ -17,11 +18,11 @@ public class GetCategoryTopIssueAvailableValidator : AbstractValidator<GetCatego
 }
 public class GetCategoryTopIssueAvailableHandler : IQueryHandler<GetCategoryTopIssueAvailableQuery, List<ResponseCategoryTopIssueAvailable>>
 {
-    private readonly ICategoryRepository _categoriesRepository;
+    private readonly ITopIssueRepository _topIssueRepository;
 
-    public GetCategoryTopIssueAvailableHandler(ICategoryRepository categoriesRepository)
+    public GetCategoryTopIssueAvailableHandler(ITopIssueRepository categoriesRepository)
     {
-        _categoriesRepository = categoriesRepository;
+        _topIssueRepository = categoriesRepository;
     }
 
     public async Task<Result<List<ResponseCategoryTopIssueAvailable>>> Handle(GetCategoryTopIssueAvailableQuery request, CancellationToken cancellationToken)
@@ -32,7 +33,7 @@ public class GetCategoryTopIssueAvailableHandler : IQueryHandler<GetCategoryTopI
 
         };
 
-        var categoryTopIssue = await _categoriesRepository.GetCategoryTopIssueAvailableAsync(filter.Is_Active,cancellationToken);
+        var categoryTopIssue = await _topIssueRepository.GetCategoryTopIssueAvailableAsync(filter.Is_Active, cancellationToken);
 
         if (categoryTopIssue == null)
         {

@@ -1,10 +1,11 @@
 ﻿using FluentValidation;
 using KM_Management.Commons.Mediator;
-using KM_Management.EndPoint.Category.Models;
+using KM_Management.EndPoint.TopIssue;
+using KM_Management.EndPoint.TopIssue.Models;
 using KM_Management.Shared;
 using System.Net;
 
-namespace KM_Management.EndPoint.Category.Query;
+namespace KM_Management.EndPoint.TopIssue.Query;
 
 public record GetCategoryTopIssueSelectedQuery(RequestCategoryTopIssueSelected Argument) : IQuery<List<ResponseCategoryTopIssueSelected>>;
 
@@ -17,11 +18,11 @@ public class GetCategoryTopIssueSelectedValidator : AbstractValidator<GetCategor
 }
 public class GetCategoryTopIssueSelectedHandler : IQueryHandler<GetCategoryTopIssueSelectedQuery, List<ResponseCategoryTopIssueSelected>>
 {
-    private readonly ICategoryRepository _categoriesRepository;
+    private readonly ITopIssueRepository _topIssueRepository;
 
-    public GetCategoryTopIssueSelectedHandler(ICategoryRepository categoriesRepository)
+    public GetCategoryTopIssueSelectedHandler(ITopIssueRepository categoriesRepository)
     {
-        _categoriesRepository = categoriesRepository;
+        _topIssueRepository = categoriesRepository;
     }
 
     public async Task<Result<List<ResponseCategoryTopIssueSelected>>> Handle(GetCategoryTopIssueSelectedQuery request, CancellationToken cancellationToken)
@@ -32,7 +33,7 @@ public class GetCategoryTopIssueSelectedHandler : IQueryHandler<GetCategoryTopIs
 
         };
 
-        var categoryTopIssue = await _categoriesRepository.GetCategoryTopIssueSelectedAsync(filter.Is_Active,cancellationToken);
+        var categoryTopIssue = await _topIssueRepository.GetCategoryTopIssueSelectedAsync(filter.Is_Active, cancellationToken);
 
         if (categoryTopIssue == null)
         {

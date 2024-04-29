@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace KM_Management.EndPoint.Category.Models
+namespace KM_Management.EndPoint.TopIssue.Models
 {
     public class RequestPatchCategoryTopIssueSelectedSequence
     {

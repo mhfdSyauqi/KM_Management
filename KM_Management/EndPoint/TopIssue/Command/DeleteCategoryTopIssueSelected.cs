@@ -1,34 +1,34 @@
 ﻿using FluentValidation;
 using KM_Management.Commons.Mediator;
-using KM_Management.EndPoint.Category;
+using KM_Management.EndPoint.TopIssue;
 using KM_Management.EndPoint.Message;
-using KM_Management.EndPoint.Category.Models;
+using KM_Management.EndPoint.TopIssue.Models;
 using KM_Management.Shared;
 using System.Net;
 
-namespace KM_Management.EndPoint.Category.Command;
+namespace KM_Management.EndPoint.TopIssue.Command;
 
 public record DeleteCategoryTopIssueSelectedCommand(RequestDeleteCategoryTopIssueSelected Argument) : ICommand;
 
 public class DeleteCategoryTopIssueSelectedValidator : AbstractValidator<DeleteCategoryTopIssueSelectedCommand>
 {
-    private readonly ICategoryRepository _categoryRepository;
+    private readonly ITopIssueRepository _TopIssueRepository;
 
-    public DeleteCategoryTopIssueSelectedValidator(ICategoryRepository categoryRepository)
+    public DeleteCategoryTopIssueSelectedValidator(ITopIssueRepository TopIssueRepository)
     {
-        _categoryRepository = categoryRepository;
+        _TopIssueRepository = TopIssueRepository;
 
     }
 }
 
 public class DeleteCategoryTopIssueSelectedHandler : ICommandHandler<DeleteCategoryTopIssueSelectedCommand>
 {
-    private readonly ICategoryRepository _categoryRepository;
+    private readonly ITopIssueRepository _TopIssueRepository;
     private readonly IValidator<DeleteCategoryTopIssueSelectedCommand> _validator;
 
-    public DeleteCategoryTopIssueSelectedHandler(ICategoryRepository categoryRepository, IValidator<DeleteCategoryTopIssueSelectedCommand> validator)
+    public DeleteCategoryTopIssueSelectedHandler(ITopIssueRepository TopIssueRepository, IValidator<DeleteCategoryTopIssueSelectedCommand> validator)
     {
-        _categoryRepository = categoryRepository;
+        _TopIssueRepository = TopIssueRepository;
         _validator = validator;
     }
 
@@ -49,7 +49,7 @@ public class DeleteCategoryTopIssueSelectedHandler : ICommandHandler<DeleteCateg
             Modified_At = request.Argument.Modified_At,
         };
 
-        await _categoryRepository.DeleteCategoryTopIssueSelectedAsync(DeleteCategoryTopIssueSelected, cancellationToken);
+        await _TopIssueRepository.DeleteCategoryTopIssueSelectedAsync(DeleteCategoryTopIssueSelected, cancellationToken);
         return Result.Success();
     }
 }

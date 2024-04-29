@@ -1,6 +1,6 @@
-﻿namespace KM_Management.EndPoint.Category.Models
+﻿namespace KM_Management.EndPoint.TopIssue.Models
 {
-    public class RequestDeleteCategoryTopIssueAllSelected
+    public class EntityDeleteCategoryTopIssueAllSelected
     {
         public string? Modified_By { get; set; }
         public DateTime Modified_At { get; set; }

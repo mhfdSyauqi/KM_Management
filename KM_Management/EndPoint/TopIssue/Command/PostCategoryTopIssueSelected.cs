@@ -1,34 +1,34 @@
 ﻿using FluentValidation;
 using KM_Management.Commons.Mediator;
-using KM_Management.EndPoint.Category;
+using KM_Management.EndPoint.TopIssue;
 using KM_Management.EndPoint.Message;
-using KM_Management.EndPoint.Category.Models;
+using KM_Management.EndPoint.TopIssue.Models;
 using KM_Management.Shared;
 using System.Net;
 
-namespace KM_Management.EndPoint.Category.Command;
+namespace KM_Management.EndPoint.TopIssue.Command;
 
 public record PostCategoryTopIssueSelectedCommand(RequestPostCategoryTopIssueSelected Argument) : ICommand;
 
 public class PostCategoryTopIssueSelectedValidator : AbstractValidator<PostCategoryTopIssueSelectedCommand>
 {
-    private readonly ICategoryRepository _categoryRepository;
+    private readonly ITopIssueRepository _TopIssueRepository;
 
-    public PostCategoryTopIssueSelectedValidator(ICategoryRepository categoryRepository)
+    public PostCategoryTopIssueSelectedValidator(ITopIssueRepository TopIssueRepository)
     {
-        _categoryRepository = categoryRepository;
+        _TopIssueRepository = TopIssueRepository;
 
     }
 }
 
 public class PostCategoryTopIssueSelectedHandler : ICommandHandler<PostCategoryTopIssueSelectedCommand>
 {
-    private readonly ICategoryRepository _categoryRepository;
+    private readonly ITopIssueRepository _TopIssueRepository;
     private readonly IValidator<PostCategoryTopIssueSelectedCommand> _validator;
 
-    public PostCategoryTopIssueSelectedHandler(ICategoryRepository categoryRepository, IValidator<PostCategoryTopIssueSelectedCommand> validator)
+    public PostCategoryTopIssueSelectedHandler(ITopIssueRepository TopIssueRepository, IValidator<PostCategoryTopIssueSelectedCommand> validator)
     {
-        _categoryRepository = categoryRepository;
+        _TopIssueRepository = TopIssueRepository;
         _validator = validator;
     }
 
@@ -49,7 +49,7 @@ public class PostCategoryTopIssueSelectedHandler : ICommandHandler<PostCategoryT
             Create_At = request.Argument.Create_At  
         };
 
-        await _categoryRepository.PostCategoryTopIssueSelectedAsync(PostCategoryTopIssueSelected, cancellationToken);
+        await _TopIssueRepository.PostCategoryTopIssueSelectedAsync(PostCategoryTopIssueSelected, cancellationToken);
         return Result.Success();
     }
 }

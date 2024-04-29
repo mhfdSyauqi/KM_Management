@@ -4,6 +4,7 @@ using KM_Management.EndPoint.Content.Models;
 using KM_Management.EndPoint.Message.Models;
 using KM_Management.EndPoint.RateAndFeedback.Models;
 using KM_Management.EndPoint.Roles.Models;
+using KM_Management.EndPoint.TopIssue.Models;
 using System.Text.Json.Serialization;
 
 namespace KM_Management.Shared;
