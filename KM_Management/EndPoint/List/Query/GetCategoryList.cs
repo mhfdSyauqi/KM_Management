@@ -1,10 +1,11 @@
 ﻿using FluentValidation;
 using KM_Management.Commons.Mediator;
-using KM_Management.EndPoint.Category.Models;
+using KM_Management.EndPoint.List;
+using KM_Management.EndPoint.List.Models;
 using KM_Management.Shared;
 using System.Net;
 
-namespace KM_Management.EndPoint.Category.Query;
+namespace KM_Management.EndPoint.List.Query;
 
 public record GetCategoryListQuery(RequestCategoryList Argument) : IQuery<List<ResponseCategoryList>>;
 
@@ -17,9 +18,9 @@ public class GetCategoryListValidator : AbstractValidator<GetCategoryListQuery>
 }
 public class GetCategoryListHandler : IQueryHandler<GetCategoryListQuery, List<ResponseCategoryList>>
 {
-    private readonly ICategoryRepository _categoriesRepository;
+    private readonly IListRepository _categoriesRepository;
 
-    public GetCategoryListHandler(ICategoryRepository categoriesRepository)
+    public GetCategoryListHandler(IListRepository categoriesRepository)
     {
         _categoriesRepository = categoriesRepository;
     }
@@ -28,7 +29,7 @@ public class GetCategoryListHandler : IQueryHandler<GetCategoryListQuery, List<R
     {
         var filter = new FilterCategoryList()
         {
-            Uid_Reference = request.Argument.Uid_Reference, 
+            Uid_Reference = request.Argument.Uid_Reference,
             Is_Active = request.Argument.Is_Active,
             Layer = request.Argument.Layer
 
@@ -36,9 +37,9 @@ public class GetCategoryListHandler : IQueryHandler<GetCategoryListQuery, List<R
 
         Guid? uidReference = !string.IsNullOrEmpty(filter.Uid_Reference)
                          ? Guid.Parse(request.Argument.Uid_Reference)
-                         : (Guid?)null;
+                         : null;
 
-        var categories = await _categoriesRepository.GetCategoryListAsync(uidReference, filter.Layer, filter.Is_Active, cancellationToken);;
+        var categories = await _categoriesRepository.GetCategoryListAsync(uidReference, filter.Layer, filter.Is_Active, cancellationToken); ;
 
         if (categories == null)
         {

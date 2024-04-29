@@ -1,11 +1,10 @@
 ﻿using FluentValidation;
 using KM_Management.Commons.Mediator;
-using KM_Management.EndPoint.Category.Models;
-using KM_Management.EndPoint.RateAndFeedback.Models;
+using KM_Management.EndPoint.List.Models;
 using KM_Management.Shared;
 using System.Net;
 
-namespace KM_Management.EndPoint.Category.Query;
+namespace KM_Management.EndPoint.List.Query;
 
 public record GetExportCategoryListQuery(RequestExportCategoryList Argument) : IQuery<ResponseExportCategoryList>;
 
@@ -18,9 +17,9 @@ public class GetExportCategoryListValidator : AbstractValidator<GetExportCategor
 }
 public class GetExportCategoryListHandler : IQueryHandler<GetExportCategoryListQuery, ResponseExportCategoryList>
 {
-    private readonly ICategoryRepository _categoriesRepository;
+    private readonly IListRepository _categoriesRepository;
 
-    public GetExportCategoryListHandler(ICategoryRepository categoriesRepository)
+    public GetExportCategoryListHandler(IListRepository categoriesRepository)
     {
         _categoriesRepository = categoriesRepository;
     }
@@ -46,7 +45,7 @@ public class GetExportCategoryListHandler : IQueryHandler<GetExportCategoryListQ
             First_Layer = FirstCategories.Select(col => new First_Layers()
             {
                 Layer_One = col.Layer_One,
-                Status = col.Status,    
+                Status = col.Status,
                 Publication = col.Publication,
             }).ToList(),
             Second_Layer = SecondCategories.Select(col => new Second_Layers()

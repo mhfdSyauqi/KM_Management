@@ -1,6 +1,7 @@
 ﻿using KM_Management.EndPoint.AssistantProfile.Models;
 using KM_Management.EndPoint.Category.Models;
 using KM_Management.EndPoint.Content.Models;
+using KM_Management.EndPoint.List.Models;
 using KM_Management.EndPoint.Message.Models;
 using KM_Management.EndPoint.RateAndFeedback.Models;
 using KM_Management.EndPoint.Roles.Models;

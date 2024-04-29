@@ -1,4 +1,4 @@
-﻿namespace KM_Management.EndPoint.Category.Models
+﻿namespace KM_Management.EndPoint.List.Models
 {
     public class ResponseCategoryList
     {
