@@ -206,25 +206,19 @@ const toggleExpand = (index) => {
           <div class="flex items-start space-x-2 pb-8">
             <h1 class="text-2xl font-bold text-green-800">Messages</h1>
           </div>
-          <div class="rounded-tr-3xl bg-red-50 p-4 w-fit">
-            <span class="text-gray-500 flex items-center">
-              Use
-              <span class="font-bold text-orange-500 ml-2"> @username </span>
-              <IconTrending class="ml-2 mr-2" />
-              value of Username in conversation
-            </span>
-            <span class="text-gray-500 flex items-center">
-              Use
-              <span class="font-bold text-orange-500 ml-2"> @fullname </span>
-              <IconTrending class="ml-2 mr-2" />
-              value of Full Name in conversation
-            </span>
-            <span class="text-gray-500 flex items-center">
-              Use
-              <span class="font-bold text-orange-500 ml-2"> @category </span>
-              <IconTrending class="ml-2 mr-2" />
-              value of Category Response in conversation
-            </span>
+          <div class="bg-[#fff3e5] w-fit p-3.5 text-sm xl:text-base rounded-tr-3xl">
+            <p>
+              Use <span class="font-medium text-[#e99300]">@username </span>
+              <span class="ml-0.5">➡️</span> value of Username in conversation
+            </p>
+            <p>
+              Use <span class="font-medium text-[#e99300]">@fullname </span>
+              <span class="ml-2">➡️</span> value of Full Name in conversation
+            </p>
+            <p>
+              Use <span class="font-medium text-[#e99300]">@category </span>
+              <span class="ml-2">➡️</span> value of Category Response in conversation
+            </p>
           </div>
         </div>
       </div>
