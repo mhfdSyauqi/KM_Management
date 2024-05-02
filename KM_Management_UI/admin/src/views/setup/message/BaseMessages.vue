@@ -1,5 +1,4 @@
 <script setup>
-import IconTrending from '@/components/icons/IconTrending.vue'
 import DynamicInput from '@/views/setup/message/DynamicInput.vue'
 import { onMounted, ref } from 'vue'
 import { active_message, GetActiveMessage } from '@/components/pages/setup/useMessage.js'
