@@ -521,7 +521,7 @@ onMounted(() => {
               <div v-if="searchQueryAvailableItem.length > 0" class="relative">
                 <div v-for="item in searchAvailableItems" :key="item">
                   <span
-                    class="block text-sm mb-2 rounded-xl text-gray-500 bg-gray-100 hover:bg-[#ffdab3] hover:text-[#2c7b4b] hover:font-semibold pt-1 pb-1 pl-4 pr-4"
+                    class="block text-sm mb-2 rounded-xl text-gray-500 bg-[#fff3e5] hover:bg-[#ffdab3] hover:text-[#2c7b4b] hover:font-semibold pt-1 pb-1 pl-4 pr-4"
                     style="display: flex; justify-content: space-between; align-items: center"
                   >
                     <span :class="{ 'line-through': !item.is_active }">{{ item.name }}</span>
@@ -534,7 +534,7 @@ onMounted(() => {
               <div v-else class="relative">
                 <div v-for="item in availableItems" :key="item">
                   <span
-                    class="block text-sm mb-2 rounded-xl text-gray-500 bg-gray-100 hover:bg-[#ffdab3] hover:text-[#2c7b4b] hover:font-semibold pt-1 pb-1 pl-4 pr-4"
+                    class="block text-sm mb-2 rounded-xl text-gray-500 bg-[#fff3e5] hover:bg-[#ffdab3] hover:text-[#2c7b4b] hover:font-semibold pt-1 pb-1 pl-4 pr-4"
                     style="display: flex; justify-content: space-between; align-items: center"
                   >
                     <span :class="{ 'line-through': !item.is_active }">{{ item.name }}</span>
@@ -553,7 +553,7 @@ onMounted(() => {
               <div v-if="searchQuerySelectedItem.length > 0" class="relative">
                 <div v-for="item in searchSelectedItems" :key="item">
                   <span
-                    class="block text-sm mb-2 rounded-xl text-gray-500 bg-gray-100 hover:bg-[#ffdab3] hover:text-[#2c7b4b] hover:font-semibold pt-1 pb-1 pl-4 pr-4"
+                    class="block text-sm mb-2 rounded-xl text-gray-500 bg-[#fff3e5] hover:bg-[#ffdab3] hover:text-[#2c7b4b] hover:font-semibold pt-1 pb-1 pl-4 pr-4"
                     style="display: flex; justify-content: space-between; align-items: center"
                   >
                     <span :class="{ 'line-through': !item.is_active }">{{ item.name }}</span>
@@ -570,7 +570,7 @@ onMounted(() => {
               <div v-else class="relative">
                 <div v-for="(item, index) in selectedItems" :key="item">
                   <span
-                    class="block text-sm mb-2 rounded-xl text-gray-500 bg-gray-100 hover:bg-[#ffdab3] hover:text-[#2c7b4b] hover:font-semibold pt-1 pb-1 pl-4 pr-4"
+                    class="block text-sm mb-2 rounded-xl text-gray-500 bg-[#fff3e5] hover:bg-[#ffdab3] hover:text-[#2c7b4b] hover:font-semibold pt-1 pb-1 pl-4 pr-4"
                     style="display: flex; justify-content: space-between; align-items: center"
                   >
                     <span :class="{ 'line-through': !item.is_active }">{{ item.name }}</span>
