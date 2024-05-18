@@ -26,7 +26,9 @@ import {
 
 import {
   HandleExcelExport,
-  filterExportExcel
+  filterExportExcel,
+  HandlePaginationExport,
+  HandlingPageLimitExport
 } from '@/components/pages/dashboard/postExportRateAndFeedback.js'
 
 const hoverFilterDate = ref(false)
@@ -38,7 +40,7 @@ const pageLimit = ref(10)
 const range = ref({})
 
 //calendar
-const selectedRatings = ref([1, 2, 3, 4])
+const selectedRatings = ref([])
 const selectedCategoryDate = ref('today')
 
 const filteringDate = ref({
@@ -49,8 +51,13 @@ const filteringDate = ref({
 
 const checkBoxChange = () => {
   const stringResult = selectedRatings.value.join(',')
-  fetchRate(stringResult)
-  fetchExportExcel(stringResult)
+  if (selectedRatings.value.length == 0) {
+    fetchRate(null)
+    fetchExportExcel(null)
+  } else {
+    fetchRate(stringResult)
+    fetchExportExcel(stringResult)
+  }
 }
 
 const formatDate = (createdAt) => {
@@ -84,6 +91,9 @@ function convertToTitleCase(inputString) {
 
 const fetchRate = async (ratings) => {
   try {
+    if (ratings == null) {
+      ratings = '1,2,3,4'
+    }
     filter.value.filter_date = filteringDate.value.category
     filter.value.start_date = filteringDate.value.start_date
     filter.value.end_date = filteringDate.value.end_date
@@ -98,14 +108,17 @@ const fetchRate = async (ratings) => {
 
 const fetchExportExcel = async (ratings) => {
   try {
+    if (ratings == null) {
+      ratings = '1,2,3,4'
+    }
     filterExportExcel.value.filter_date = filteringDate.value.category
       ? filteringDate.value.category
       : null
     filterExportExcel.value.start_date = filteringDate.value.start_date
     filterExportExcel.value.end_date = filteringDate.value.end_date
     filterExportExcel.value.rating = ratings
-    filterExportExcel.value.page_limit = pageLimit.value
-    filterExportExcel.value.current_page = 1
+    filterExportExcel.value.page_limit = filter.value.page_limit
+    filterExportExcel.value.current_page = filter.value.current_page
   } catch (error) {
     console.error('Error fetching content:', error)
   }
@@ -114,6 +127,24 @@ const fetchExportExcel = async (ratings) => {
 const exportExcel = async () => {
   try {
     await HandleExcelExport()
+  } catch (error) {
+    console.error('Error fetching content:', error)
+  }
+}
+
+const HandleAllPagination = async (page) => {
+  try {
+    HandlePagination(page)
+    HandlePaginationExport(page)
+  } catch (error) {
+    console.error('Error fetching content:', error)
+  }
+}
+
+const HandleAllPageLimit = async (page) => {
+  try {
+    HandlingPageLimit(page)
+    HandlingPageLimitExport(page)
   } catch (error) {
     console.error('Error fetching content:', error)
   }
@@ -621,7 +652,7 @@ onMounted(async () => {
               <select
                 class="border rounded border-gray-500"
                 v-model="pageLimit"
-                @change="HandlingPageLimit(pageLimit)"
+                @change="HandleAllPageLimit(pageLimit)"
               >
                 <option :value="10">10</option>
                 <option :value="20">20</option>
@@ -634,54 +665,41 @@ onMounted(async () => {
             </div>
 
             <ul class="inline-flex items-stretch -space-x-px">
-              <li v-if="navigation.current > 1">
+              <li v-show="navigation.current > 1">
                 <button
-                  @click="HandlePagination(1)"
+                  @click="HandleAllPagination(1)"
                   class="rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-300 h-full"
                 >
                   <IconPrevious class="fill-gray-500" />
                 </button>
               </li>
-              <li v-else>
+
+              <li v-show="navigation.previous !== null">
                 <button
-                  class="rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-300 h-full"
-                >
-                  <IconPrevious class="fill-gray-500" />
-                </button>
-              </li>
-              <li v-show="navigation.previous !== 0">
-                <button
-                  @click="HandlePagination(navigation.previous)"
+                  @click="HandleAllPagination(navigation.previous)"
                   class="px-3.5 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-300"
                 >
                   <span class="text-sm">{{ navigation.previous }}</span>
                 </button>
               </li>
-              <li v-show="navigation.current !== 0">
+              <li v-show="navigation.current !== null">
                 <button
                   class="px-3.5 py-2 bg-gray-500 text-white font-bold ring-1 ring-inset ring-gray-300"
                 >
                   <span class="text-sm">{{ navigation.current }}</span>
                 </button>
               </li>
-              <li v-show="navigation.next !== 0">
+              <li v-show="navigation.next !== null">
                 <button
-                  @click="HandlePagination(navigation.next)"
+                  @click="HandleAllPagination(navigation.next)"
                   class="px-3.5 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-300"
                 >
                   <span class="text-sm">{{ navigation.next }}</span>
                 </button>
               </li>
-              <li v-if="navigation.max !== 0 && navigation.next !== 0">
+              <li v-show="navigation.max !== null && navigation.next !== null">
                 <button
-                  @click="HandlePagination(navigation.max)"
-                  class="rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-300 h-full"
-                >
-                  <IconNext class="fill-gray-500" />
-                </button>
-              </li>
-              <li v-else>
-                <button
+                  @click="HandleAllPagination(navigation.max)"
                   class="rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-300 h-full"
                 >
                   <IconNext class="fill-gray-500" />

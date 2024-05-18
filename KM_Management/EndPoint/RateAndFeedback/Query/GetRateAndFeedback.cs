@@ -54,11 +54,11 @@ public class GetRateAndFeedbackHandler : IQueryHandler<GetRateAndFeedbackQuery, 
         var response = new ResponseRateAndFeedback()
         {
             Periode = feedback?.FirstOrDefault()?.Periode,
-            Summary =  new Summary_User_Feedback()
+            Summary = new Summary_User_Feedback()
             {
                 User_Preview = summary?.User_Preview ?? 0,
                 Total_Feedback = summary?.Total_Feedback ?? 0,
-                Overall_Rating = summary?.Overall_Rating ??0,
+                Overall_Rating = summary?.Overall_Rating ?? 0,
                 Rating_One = summary?.Rating_One ?? 0,
                 Rating_Two = summary?.Rating_Two ?? 0,
                 Rating_Three = summary?.Rating_Three ?? 0,
@@ -66,18 +66,18 @@ public class GetRateAndFeedbackHandler : IQueryHandler<GetRateAndFeedbackQuery, 
             },
             Items = feedback?.Select(col => new User_Feedback()
             {
-                Rating = col?.Rating??0,
-                Remark = col?.Remark??"",
+                Rating = col?.Rating ?? 0,
+                Remark = col?.Remark ?? "",
                 Uid_Session_Header = col?.Uid_Session_Header.ToString() ?? default,
-                Create_By = col?.Create_By??"",
-                Create_At = col?.Create_At??default,
-                Total_Category = col?.Total_Category??0,
+                Create_By = col?.Create_By ?? "",
+                Create_At = col?.Create_At ?? default,
+                Total_Category = col?.Total_Category ?? 0,
             }).ToList(),
-            Total_Row = feedback?.FirstOrDefault()?.Total_Row ?? 0,
-            Curr_Page = feedback?.FirstOrDefault()?.Curr_Page ?? 0,
-            Next_Page = feedback?.FirstOrDefault()?.Next_Page ?? 0,
-            Prev_Page = feedback?.FirstOrDefault()?.Prev_Page ?? 0,
-            Max_Page = feedback?.FirstOrDefault()?.Max_Page ?? 0,
+            Total_Row = feedback?.FirstOrDefault()?.Total_Row,
+            Curr_Page = feedback?.FirstOrDefault()?.Curr_Page,
+            Next_Page = feedback?.FirstOrDefault()?.Next_Page,
+            Prev_Page = feedback?.FirstOrDefault()?.Prev_Page,
+            Max_Page = feedback?.FirstOrDefault()?.Max_Page,
         };
         return Result.Success(response);
     }
