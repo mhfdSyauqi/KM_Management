@@ -73,11 +73,11 @@ public class GetRateAndFeedbackHandler : IQueryHandler<GetRateAndFeedbackQuery, 
                 Create_At = col?.Create_At??default,
                 Total_Category = col?.Total_Category??0,
             }).ToList(),
-            Total_Row = feedback?.FirstOrDefault()?.Total_Row ?? 0,
-            Curr_Page = feedback?.FirstOrDefault()?.Curr_Page ?? 0,
-            Next_Page = feedback?.FirstOrDefault()?.Next_Page ?? 0,
-            Prev_Page = feedback?.FirstOrDefault()?.Prev_Page ?? 0,
-            Max_Page = feedback?.FirstOrDefault()?.Max_Page ?? 0,
+            Total_Row = feedback?.FirstOrDefault()?.Total_Row,
+            Curr_Page = feedback?.FirstOrDefault()?.Curr_Page,
+            Next_Page = feedback?.FirstOrDefault()?.Next_Page,
+            Prev_Page = feedback?.FirstOrDefault()?.Prev_Page,
+            Max_Page = feedback?.FirstOrDefault()?.Max_Page,
         };
         return Result.Success(response);
     }
