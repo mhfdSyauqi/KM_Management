@@ -34,6 +34,7 @@ const filterExportExcel = ref({
   
   async function HandlingPageLimitExport(limit) {
     filterExportExcel.value.page_limit = limit
+    filterExportExcel.value.current_page = 1
   }
 
   export { filterExportExcel, HandleExcelExport, HandlePaginationExport, HandlingPageLimitExport}

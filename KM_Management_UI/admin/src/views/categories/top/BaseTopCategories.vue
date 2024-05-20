@@ -33,8 +33,8 @@ const availableItems = ref([])
 const searchAvailableItems = ref([])
 const searchSelectedItems = ref([])
 const selectedItems = ref([])
-const isActiveYesToggle = ref(true)
-const isActiveNoToggle = ref(true)
+const isActiveYesToggle = ref(false)
+const isActiveNoToggle = ref(false)
 
 const addNewSelected = async (uid_Bot_Category) => {
   try {
@@ -319,8 +319,10 @@ const checkBoxChange = () => {
     fetchAvailableItems(false)
     fetchSelectedItems(false)
   } else {
-    availableItems.value = []
-    selectedItems.value = []
+    // availableItems.value = []
+    // selectedItems.value = []
+    fetchAvailableItems(null)
+    fetchSelectedItems(null)
   }
 }
 

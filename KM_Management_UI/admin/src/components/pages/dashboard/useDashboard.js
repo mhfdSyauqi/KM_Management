@@ -87,6 +87,7 @@ async function HandlePagination(nextPage) {
 
 async function HandlingPageLimit(limit) {
   filter.value.page_limit = limit
+  filter.value.current_page = 1
   return await GetRateAndFeedbackByFilter()
 }
 
@@ -99,5 +100,4 @@ export {
   HandleCheck,
   HandlePagination,
   HandlingPageLimit,
- 
 }
