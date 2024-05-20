@@ -50,8 +50,8 @@ const isToggledEdit = ref(false)
 const isToggledCreate = ref(false)
 const isSearchModalOpen = ref(false)
 const hightLightUid = ref()
-const isActiveYesToggle = ref(true)
-const isActiveNoToggle = ref(true)
+const isActiveYesToggle = ref(false)
+const isActiveNoToggle = ref(false)
 const errorAddCategory = ref('')
 const errorUpdateCategory = ref('')
 
@@ -223,13 +223,14 @@ const getCategoryThirdtLetter = (category) => {
 
 const checkBoxChange = () => {
   if (isActiveYesToggle.value == true && isActiveNoToggle.value == true) {
-    fetchThirdLayer(null) // Both checkboxes are selected, get all categories
+    fetchThirdLayer(null)
   } else if (isActiveYesToggle.value == true) {
     fetchThirdLayer(true) // Only the "Yes" checkbox is selected, get inactive categories
   } else if (isActiveNoToggle.value == true) {
-    fetchThirdLayer(false) // Only the "No" checkbox is selected, get active categories
+    fetchThirdLayer(false)
   } else {
-    thirdLayer.value = []
+    // thirdLayer.value = []
+    fetchThirdLayer(null)
   }
 }
 
@@ -242,6 +243,26 @@ const filterExportExcel = () => {
     filterExportCategories.value = false
   }
 }
+
+// const groupedThirdLayer = computed(() => {
+//   // Group items by the first letter of their names
+//   const groups = {}
+//   for (const third of thirdLayer.value) {
+//     const firstLetter = getCategoryThirdtLetter(third.name)
+//     if (!groups[firstLetter]) {
+//       groups[firstLetter] = []
+//     }
+//     groups[firstLetter].push(third)
+//   }
+
+//   // Convert the groups object into an array of objects
+//   const groupedArray = Object.keys(groups).map((letter) => ({
+//     letter,
+//     items: groups[letter]
+//   }))
+
+//   return groupedArray
+// })
 
 const groupedThirdLayer = computed(() => {
   // Group items by the first letter of their names
@@ -260,30 +281,27 @@ const groupedThirdLayer = computed(() => {
     items: groups[letter]
   }))
 
-  return groupedArray
+  // Create three groups based on the specific index pattern
+  const group1 = []
+  const group2 = []
+  const group3 = []
+
+  groupedArray.forEach((group, index) => {
+    if (index % 3 === 0) {
+      group1.push(group)
+    } else if (index % 3 === 1) {
+      group2.push(group)
+    } else if (index % 3 === 2) {
+      group3.push(group)
+    }
+  })
+
+  return [group1, group2, group3]
 })
 
 const getHightlight = async () => {
   hightLightUid.value = await storeCategories.getHightlightUid
   closeSearchModal()
-}
-
-const getRowSpan = (itemCount) => {
-  if (itemCount > 3) {
-    if (groupedThirdLayer.value.length <= 3) {
-      if (itemCount % 3 === 0) {
-        return itemCount
-      } else {
-        return Math.floor(itemCount) + 1
-      }
-    } else if (groupedThirdLayer.value.length > 3) {
-      if (itemCount % 3 === 0) {
-        return itemCount / 3
-      } else {
-        return Math.floor(itemCount / 3) + 1
-      }
-    }
-  }
 }
 
 const exportExcel = async () => {
@@ -398,7 +416,7 @@ watchEffect(() => {
       </div>
     </div>
 
-    <div class="overflow-y-auto max-h-[80%] grid grid-cols-2 md:grid-cols-3 gap-8 p-10">
+    <!-- <div class="overflow-y-auto max-h-[80%] grid grid-cols-2 md:grid-cols-3 gap-8 p-10">
       <div
         v-show="groupedThirdLayer.length > 0"
         class="bg-[#fef9f2] border border-orange-400 min-h-[180px] w-[100%] p-4 rounded-tr-3xl rounded-bl-3xl grid grid-cols-1"
@@ -442,11 +460,77 @@ watchEffect(() => {
           </div>
         </div>
       </div>
-      <div v-show="groupedThirdLayer.length === 0">
+      <div v-show="thirdLayer.length === 0">
         <div class="relative bg-[#eeeeee] w-[100%] pl-6 pb-4 pt-4 rounded-tr-3xl rounded-bl-3xl">
           <span class="italic mr-2 text-gray-500">Data Not Available</span>
         </div>
       </div>
+    </div> -->
+
+    <div class="overflow-y-auto max-h-[80%] grid grid-cols-2 md:grid-cols-3 gap-5 p-10">
+      <div v-for="(subgroup, groupIndex) in groupedThirdLayer" :key="groupIndex">
+        <div
+          v-for="(group, index) in subgroup"
+          :key="index"
+          class="bg-[#fef9f2] border border-orange-400 min-h-[180px] w-[100%] p-4 rounded-tr-3xl rounded-bl-3xl grid grid-gap-4 mb-5"
+        >
+          <div v-for="(item, itemIndex) in group.items" :key="item.uid">
+            <h1
+              v-if="itemIndex === 0"
+              class="flex text-xl font-semibold italic text-[#2c7b4b] mb-8"
+            >
+              {{ group.letter + '_' }}
+            </h1>
+            <div class="flex items-center pb-1">
+              <button
+                class="mr-2"
+                v-if="secondActive === true"
+                @click="openEditModal(item.uid, item.name, item.is_active)"
+              >
+                <IconEdit class="w-4 h-4 hover:fill-[#2c7b4b] fill-[#888888]" />
+              </button>
+              <div v-else class="mr-2 relative flex flex-col items-center group">
+                <IconEdit class="w-4 h-4 hover:fill-[#2c7b4b] fill-[#888888]" />
+                <div class="absolute w-40 top-0 flex-col items-center hidden mt-5 group-hover:flex">
+                  <span
+                    class="absolute z-10 p-2 text-xs leading-none text-black whitespace-no-wrap bg-blue-200 rounded-r-lg rounded-bl-lg shadow-lg tooltip"
+                  >
+                    First, you must set this parent <br />category to active
+                    <span class="arrow"></span>
+                  </span>
+                </div>
+              </div>
+              <span
+                :class="{
+                  ' mr-2 text-gray-500 hover:font-semibold hover:text-[#2c7b4b]': item.is_active,
+                  ' mr-2 line-through hover:font-semibold text-gray-500 hover:text-[#2c7b4b]':
+                    !item.is_active,
+                  ' mr-2  text-gray-500 hover:font-semibold bg-yellow-300 pl-2 pr-2 rounded-2xl drop-shadow-2xl hover:text-slate-500':
+                    hightLightUid == item.uid
+                }"
+              >
+                {{ item.name }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div v-show="thirdLayer.length === 0">
+        <div class="relative bg-[#eeeeee] w-[100%] pl-6 pb-4 pt-4 rounded-tr-3xl rounded-bl-3xl">
+          <span class="italic mr-2 text-gray-500">Data Not Available</span>
+        </div>
+      </div>
+
+      <!-- masonry grid image -->
+      <!-- <div v-for="(imageGroup, index) in images" :key="index">
+        <div v-for="(image, imgIndex) in imageGroup" :key="imgIndex">
+          <img
+            class="border border-orange-400 h-fit w-[100%] p-4 rounded-tr-3xl rounded-bl-3xl grid grid-gap-4"
+            :src="image"
+            alt=""
+          />
+        </div>
+      </div> -->
     </div>
   </div>
 

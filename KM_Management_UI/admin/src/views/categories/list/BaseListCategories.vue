@@ -44,8 +44,8 @@ const isToggledCreate = ref(false)
 const selectedEditCategory = ref(null)
 const selectedEditUid = ref(null)
 const selectedCreateCategory = ref(null)
-const isActiveYesToggle = ref(true)
-const isActiveNoToggle = ref(true)
+const isActiveYesToggle = ref(false)
+const isActiveNoToggle = ref(false)
 const hightLightUid = ref()
 const errorAddCategory = ref('')
 const errorUpdateCategory = ref('')
@@ -237,9 +237,11 @@ const checkBoxChange = () => {
   } else if (isActiveNoToggle.value == true) {
     fetchFirstLayer(false) // Only the "No" checkbox is selected, get active categories
   } else {
-    firstLayer.value = []
+    // firstLayer.value = []
+    fetchFirstLayer(null)
   }
 }
+
 const groupedFirstLayer = computed(() => {
   // Group items by the first letter of their names
   const groups = {}
@@ -257,9 +259,22 @@ const groupedFirstLayer = computed(() => {
     items: groups[letter]
   }))
 
-  // Split groups with more than 4 items into smaller groups
+  // Create three groups based on the specific index pattern
+  const group1 = []
+  const group2 = []
+  const group3 = []
 
-  return groupedArray
+  groupedArray.forEach((group, index) => {
+    if (index % 3 === 0) {
+      group1.push(group)
+    } else if (index % 3 === 1) {
+      group2.push(group)
+    } else if (index % 3 === 2) {
+      group3.push(group)
+    }
+  })
+
+  return [group1, group2, group3]
 })
 
 const getHightlight = async () => {
@@ -281,24 +296,6 @@ watchEffect(() => {
   getHightlight()
   filterExportExcel()
 })
-
-const getRowSpan = (itemCount) => {
-  if (itemCount > 3) {
-    if (groupedFirstLayer.value.length <= 3) {
-      if (itemCount % 3 === 0) {
-        return itemCount
-      } else {
-        return Math.floor(itemCount) + 1
-      }
-    } else if (groupedFirstLayer.value.length > 3) {
-      if (itemCount % 3 === 0) {
-        return itemCount / 3
-      } else {
-        return Math.floor(itemCount / 3) + 1
-      }
-    }
-  }
-}
 
 onMounted(() => {
   checkBoxChange()
@@ -363,65 +360,65 @@ onMounted(() => {
       </div>
     </div>
 
-    <div class="overflow-y-auto max-h-[80%] grid grid-cols-2 md:grid-cols-3 gap-8 p-10">
-      <div
-        v-show="groupedFirstLayer.length > 0"
-        class="bg-[#fef9f2] border border-orange-400 min-h-[180px] w-[100%] p-4 rounded-tr-3xl rounded-bl-3xl grid grid-cols-1"
-        v-for="(group, index) in groupedFirstLayer"
-        :key="index"
-        :style="{ gridRow: `span ${getRowSpan(group.items.length)}` }"
-      >
-        <div v-for="(item, itemIndex) in group.items" :key="item.uid">
-          <h1 v-if="itemIndex === 0" class="flex text-xl font-semibold italic text-[#2c7b4b] mb-5">
-            {{ group.letter + '_' }}
-          </h1>
-          <div class="flex items-center pb-1">
-            <button class="mr-2" @click="openEditModal(item.uid, item.name, item.is_active)">
-              <!-- <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="14"
-                viewBox="0 -960 960 960"
-                width="14"
-                class="hover:fill-[#2c7b4b] fill-gray-500"
-              >
-                <path
-                  d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h357l-80 80H200v560h560v-278l80-80v358q0 33-23.5 56.5T760-120H200Zm280-360ZM360-360v-170l367-367q12-12 27-18t30-6q16 0 30.5 6t26.5 18l56 57q11 12 17 26.5t6 29.5q0 15-5.5 29.5T897-728L530-360H360Zm481-424-56-56 56 56ZM440-440h56l232-232-28-28-29-28-231 231v57Zm260-260-29-28 29 28 28 28-28-28Z"
-                />
-              </svg> -->
-              <IconEdit class="w-4 h-4 hover:fill-[#2c7b4b] fill-gray-500" />
-            </button>
+    <!-- masonry grid div -->
 
-            <RouterLink
-              class="max-w-[90%] break-words"
-              :to="{ name: 'categories-second-layer', params: { secondLayer: item.name } }"
-              @click="navigateToFirstUid(item.name, item.uid, item.is_active)"
+    <div class="overflow-y-auto max-h-[80%] grid grid-cols-2 md:grid-cols-3 gap-5 p-10">
+      <div v-for="(subgroup, groupIndex) in groupedFirstLayer" :key="groupIndex">
+        <div
+          v-for="(group, index) in subgroup"
+          :key="index"
+          class="bg-[#fef9f2] border border-orange-400 min-h-[180px] w-[100%] p-4 rounded-tr-3xl rounded-bl-3xl grid grid-gap-4 mb-5"
+        >
+          <div v-for="(item, itemIndex) in group.items" :key="item.uid">
+            <h1
+              v-if="itemIndex === 0"
+              class="flex text-xl font-semibold italic text-[#2c7b4b] mb-8"
             >
-              <!-- <router-link
-                    :to="{ path: '/categories/list/' + item.name }"
-                    @click="
-                      navigateToFirstUid(item.name, item.uid, item.is_Active)
-                    "
-                  > -->
-              <span
-                :class="{
-                  ' mr-2 text-gray-500 underline hover:text-[#2c7b4b]': item.is_active,
-                  ' mr-2 line-through text-gray-500 hover:text-[#2c7b4b]': !item.is_active,
-                  ' mr-2  text-gray-500 bg-yellow-300 pl-2 pr-2 rounded-2xl drop-shadow-2xl hover:text-slate-500':
-                    hightLightUid == item.uid
-                }"
+              {{ group.letter + '_' }}
+            </h1>
+            <div class="mb-4 flex items-center">
+              <button class="mr-2" @click="openEditModal(item.uid, item.name, item.is_active)">
+                <IconEdit class="w-4 h-4 hover:fill-[#2c7b4b] fill-[#888888]" />
+              </button>
+
+              <RouterLink
+                class="max-w-[90%] break-words"
+                :to="{ name: 'categories-second-layer', params: { secondLayer: item.name } }"
+                @click="navigateToFirstUid(item.name, item.uid, item.is_active)"
               >
-                {{ item.name }}
-              </span>
-              <!-- </router-link> -->
-            </RouterLink>
+                <span
+                  :class="{
+                    'mr-2 text-gray-500 underline hover:font-semibold hover:text-[#2c7b4b]':
+                      item.is_active,
+                    'mr-2 line-through text-gray-500 hover:font-semibold hover:text-[#2c7b4b]':
+                      !item.is_active,
+                    'mr-2 text-gray-500 hover:font-semibold bg-yellow-300 pl-2 pr-2 rounded-2xl drop-shadow-2xl hover:text-slate-500':
+                      hightLightUid == item.uid
+                  }"
+                >
+                  {{ item.name }}
+                </span>
+              </RouterLink>
+            </div>
           </div>
         </div>
       </div>
-      <div v-show="groupedFirstLayer.length === 0">
+      <div v-show="firstLayer.length === 0">
         <div class="relative bg-[#eeeeee] w-[100%] pl-6 pb-4 pt-4 rounded-tr-3xl rounded-bl-3xl">
           <span class="italic mr-2 text-gray-500">Data Not Available</span>
         </div>
       </div>
+
+      <!-- masonry grid image -->
+      <!-- <div v-for="(imageGroup, index) in images" :key="index">
+        <div v-for="(image, imgIndex) in imageGroup" :key="imgIndex">
+          <img
+            class="border border-orange-400 h-fit w-[100%] p-4 rounded-tr-3xl rounded-bl-3xl grid grid-gap-4"
+            :src="image"
+            alt=""
+          />
+        </div>
+      </div> -->
     </div>
   </div>
 

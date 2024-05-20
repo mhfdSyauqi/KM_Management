@@ -519,7 +519,7 @@ onMounted(async () => {
     </div>
     <div class="pr-8 pt-4 pb-4 gap-5 flex justify-end items-end">
       <button
-        class="hover:bg-[#d3eedb] rounded-3xl border text-green-800 border-green-800 p-2 active:scale-95"
+        class="min-w-36 rounded-3xl border text-green-700 bg-white border-green-700 p-2 hover:border-white hover:bg-[#eeeeee] active:scale-95"
         @click="exportExcel"
         v-if="rate_and_feedback.length > 0"
       >
