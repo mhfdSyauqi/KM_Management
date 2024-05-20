@@ -360,9 +360,9 @@ watchEffect(() => {
 
         <button
           @click="exportExcel"
-          :disabled="isActiveYesToggle == false && isActiveNoToggle == false"
+          :disabled="thirdLayer.length == 0"
           class="min-w-36 rounded-3xl border text-green-700 bg-white border-green-700 p-2 hover:border-white hover:bg-[#eeeeee] active:scale-95"
-          :class="{ 'bg-gray-300': isActiveYesToggle == false && isActiveNoToggle == false }"
+          :class="{ 'bg-gray-300': thirdLayer.length == 0 }"
         >
           Export to Excel
         </button>
