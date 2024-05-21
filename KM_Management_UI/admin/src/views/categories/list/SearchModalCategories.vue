@@ -288,10 +288,7 @@ onMounted(() => {
             </div>
             <div v-for="(thirdLayer, thirdIndex) in thirdResult" :key="thirdIndex">
               <RouterLink
-                v-if="
-                  router.currentRoute.value.params.thirdLayer !== thirdLayer.second_parent_name &&
-                  router.currentRoute.value.params.secondLayer !== thirdLayer.first_parent_name
-                "
+                v-if="router.currentRoute.value.params.thirdLayer !== thirdLayer.second_parent_name"
                 :to="{
                   name: 'categories-third-layer',
                   params: {
