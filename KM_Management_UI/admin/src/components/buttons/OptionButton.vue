@@ -1,6 +1,7 @@
 <script setup>
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import IconDropdown from '@/components/icons/IconDropdown.vue'
+import IconExpand from '@/components/icons/IconExpand.vue'
 import { ref } from 'vue'
 const hover = ref(false)
 </script>
@@ -21,8 +22,11 @@ const hover = ref(false)
         <slot name="default"></slot>
       </span>
       <IconDropdown
+        v-if="open"
         :class="[open ? 'fill-white' : 'fill-green-800', hover ? 'fill-white' : 'fill-green-800']"
       />
+
+      <IconExpand :class="hover ? 'fill-white' : 'fill-green-800'" v-else />
     </PopoverButton>
 
     <PopoverPanel class="absolute z-10">
