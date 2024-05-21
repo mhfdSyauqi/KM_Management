@@ -13,6 +13,7 @@ import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import IconDropdown from '@/components/icons/IconDropdown.vue'
 
 import IconNext from '@/components/icons/IconNext.vue'
+import IconExpand from '@/components/icons/IconExpand.vue'
 import IconPrevious from '@/components/icons/IconPrevious.vue'
 import {
   filter,
@@ -226,11 +227,14 @@ onMounted(async () => {
             </div>
             <div class="items-end">
               <IconDropdown
+                v-if="open"
                 :class="[
                   open ? 'fill-white' : 'fill-green-800',
                   hoverFilterDate ? 'fill-white' : 'fill-green-800'
                 ]"
               />
+
+              <IconExpand :class="hoverFilterDate ? 'fill-white' : 'fill-green-800'" v-else />
             </div>
           </PopoverButton>
 
@@ -545,12 +549,22 @@ onMounted(async () => {
           <span>
             <slot name="default">Rating</slot>
           </span>
+          <!-- <IconDropdown
+            :class="[
+              open ? 'fill-white' : 'fill-green-800',
+              hoverFilterRating ? 'fill-white' : 'fill-green-800'
+            ]"
+          /> -->
+
           <IconDropdown
+            v-if="open"
             :class="[
               open ? 'fill-white' : 'fill-green-800',
               hoverFilterRating ? 'fill-white' : 'fill-green-800'
             ]"
           />
+
+          <IconExpand :class="hoverFilterRating ? 'fill-white' : 'fill-green-800'" v-else />
         </PopoverButton>
 
         <PopoverPanel class="absolute z-10 right-0">
