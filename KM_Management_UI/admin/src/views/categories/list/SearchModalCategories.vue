@@ -21,10 +21,14 @@ const router = useRouter()
 
 const storeCategories = useCategoriesStore()
 const firstLayer = ref([])
-const allLayer = ref([])
-const searchCategories = ref([])
-const secondResult = ref([])
-const thirdResult = ref([])
+const secondLayer = ref([])
+const thirdLayer = ref([])
+// const allLayer = ref([])
+const resultSearch = ref({
+  firstLayer: [],
+  secondLayer: [],
+  thirdLayer: []
+})
 
 const searchQueryCategory = ref('')
 
@@ -51,20 +55,41 @@ const navigateToSearchThird = (
   storeCategories.setHightLight(thirdUid)
 }
 
-const fetchFirstLayer = async (isActive) => {
+const fetchAllLayer = async (isActive) => {
   try {
     // hightLightUid.value = storeContent.getHightlightUid;
     filter.value.Uid_Reference = null
     filter.value.Layer = 1
     filter.value.Is_Active = isActive
-
     await GetCategoryListByFilter()
     firstLayer.value = category_list.value
 
-    for (const item of firstLayer.value) {
-      item.secondLayer = await fetchSecondLayer(item.uid, 2, isActive)
-      for (const secondLayerItem of item.secondLayer) {
-        secondLayerItem.thirdLayer = await fetchThirdLayer(secondLayerItem.uid, 3, isActive)
+    for (const firstLayerItem of firstLayer.value) {
+      const second = await fetchSecondLayer(firstLayerItem.uid, 2, isActive)
+
+      // Add first layer details to each second layer item
+      second.forEach((secondLayerItem) => {
+        secondLayerItem.first_parent_name = firstLayerItem.name
+        secondLayerItem.first_parent_uid = firstLayerItem.uid
+        secondLayerItem.first_parent_active = firstLayerItem.is_active
+      })
+
+      secondLayer.value.push(...second)
+
+      for (const secondLayerItem of second) {
+        const third = await fetchThirdLayer(secondLayerItem.uid, 3, isActive)
+
+        // Add first and second layer details to each third layer item
+        third.forEach((thirdLayerItem) => {
+          thirdLayerItem.first_parent_name = firstLayerItem.name
+          thirdLayerItem.first_parent_uid = firstLayerItem.uid
+          thirdLayerItem.first_parent_active = firstLayerItem.is_active
+          thirdLayerItem.second_parent_name = secondLayerItem.name
+          thirdLayerItem.second_parent_uid = secondLayerItem.uid
+          thirdLayerItem.second_parent_active = secondLayerItem.is_active
+        })
+
+        thirdLayer.value.push(...third)
       }
     }
   } catch (error) {
@@ -97,47 +122,56 @@ const fetchThirdLayer = async (uid, layer, isActive) => {
 }
 const fetchSearchCategories = async (categoryName) => {
   try {
-    secondResult.value = []
-    thirdResult.value = []
-    await storeCategories.allLayer(firstLayer.value)
-    allLayer.value = storeCategories.getAllLayer
-    searchCategories.value = storeCategories.getSearch(categoryName)
+    // secondResult.value = []
+    // thirdResult.value = []
+    // await storeCategories.allLayer(firstLayer.value)
+    await storeCategories.setSearchFirst(firstLayer.value)
+    resultSearch.value.firstLayer = storeCategories.getSearchFirst(categoryName)
+    await storeCategories.setSearchSecond(secondLayer.value)
+    resultSearch.value.secondLayer = storeCategories.getSearchSecond(categoryName)
+    await storeCategories.setSearchThird(thirdLayer.value)
+    resultSearch.value.thirdLayer = storeCategories.getSearchThird(categoryName)
+    // allLayer.value = storeCategories.getAllLayer
+    // searchCategories.value = storeCategories.getSearch(categoryName)
 
     // Mengelompokkan hasil secondLayer dan thirdLayer
-    searchCategories.value.forEach((firstLayer) => {
-      if (firstLayer.secondLayer && firstLayer.secondLayer.length > 0) {
-        const secondLayerWithParent = firstLayer.secondLayer.map((second) => ({
-          ...second,
-          first_parent_name: firstLayer.name,
-          first_parent_uid: firstLayer.uid,
-          first_parent_active: firstLayer.is_active
-        }))
-        secondResult.value.push(...secondLayerWithParent)
-      }
-      if (firstLayer.secondLayer && firstLayer.secondLayer.length > 0) {
-        firstLayer.secondLayer.forEach((second) => {
-          if (second.thirdLayer && second.thirdLayer.length > 0) {
-            const thirdLayerWithParent = second.thirdLayer.map((third) => ({
-              ...third,
-              first_parent_name: firstLayer.name,
-              first_parent_uid: firstLayer.uid,
-              first_parent_active: firstLayer.is_active,
-              second_parent_name: second.name,
-              second_parent_uid: second.uid,
-              second_parent_active: second.is_active
-            }))
-            thirdResult.value.push(...thirdLayerWithParent)
-          }
-        })
-      }
-    })
+    // searchCategories.value.forEach((firstLayer) => {
+    //   if (firstLayer.secondLayer && firstLayer.secondLayer.length > 0) {
+    //     const secondLayerWithParent = firstLayer.secondLayer.map((second) => ({
+    //       ...second,
+    //       first_parent_name: firstLayer.name,
+    //       first_parent_uid: firstLayer.uid,
+    //       first_parent_active: firstLayer.is_active
+    //     }))
+    //     secondResult.value.push(...secondLayerWithParent)
+    //   }
+    //   if (firstLayer.secondLayer && firstLayer.secondLayer.length > 0) {
+    //     firstLayer.secondLayer.forEach((second) => {
+    //       if (second.thirdLayer && second.thirdLayer.length > 0) {
+    //         const thirdLayerWithParent = second.thirdLayer.map((third) => ({
+    //           ...third,
+    //           first_parent_name: firstLayer.name,
+    //           first_parent_uid: firstLayer.uid,
+    //           first_parent_active: firstLayer.is_active,
+    //           second_parent_name: second.name,
+    //           second_parent_uid: second.uid,
+    //           second_parent_active: second.is_active
+    //         }))
+    //         thirdResult.value.push(...thirdLayerWithParent)
+    //       }
+    //     })
+    //   }
+    // })
   } catch (error) {
     console.error('Error fetching content:', error)
     return []
   }
 }
-onMounted(() => {
-  fetchFirstLayer(null)
+onMounted(async () => {
+  await fetchAllLayer(null)
+  // console.log(firstLayer.value)
+  // console.log(secondLayer.value)
+  // console.log(thirdLayer.value)
 })
 </script>
 
@@ -183,14 +217,24 @@ onMounted(() => {
         </div>
 
         <div
-          v-if="searchQueryCategory.length > 0 && searchCategories.length > 0"
+          v-if="
+            searchQueryCategory.length > 0 &&
+            (resultSearch.firstLayer.length > 0 ||
+              resultSearch.secondLayer.length > 0 ||
+              resultSearch.thirdLayer.length > 0)
+          "
           class="relative w-full pb-2 overflow-y-auto max-h-80"
         >
           <div class="mb-4">
-            <div class="pb-4">
-              <span v-if="searchCategories.length > 0" class="text-orange-500"> Layer 1 </span>
+            <div v-show="resultSearch.firstLayer.length > 0" class="pb-4">
+              <span class="text-orange-500"> Layer 1 </span>
             </div>
-            <div v-for="(search, index) in searchCategories" :key="index">
+            <div
+              :class="index == resultSearch.firstLayer.length - 1 ? 'pb-4' : ''"
+              v-show="resultSearch.firstLayer.length > 0"
+              v-for="(search, index) in resultSearch.firstLayer"
+              :key="index"
+            >
               <RouterLink
                 v-if="router.currentRoute.value.name !== 'categories'"
                 :to="{ name: 'categories' }"
@@ -202,7 +246,7 @@ onMounted(() => {
                     search.is_active == true ? ' mr-2 ' : ' mr-2 line-through ',
                     'bg-orange-100 w-full p-1 pl-2 pr-2 text-gray-500 hover:bg-orange-200 hover:text-orange-500',
                     index === 0 ? 'rounded-t-xl' : '',
-                    index === searchCategories.length - 1 ? 'rounded-b-xl' : ''
+                    index === resultSearch.firstLayer.length - 1 ? 'rounded-b-xl' : ''
                   ]"
                 >
                   {{ search.name }}
@@ -219,17 +263,22 @@ onMounted(() => {
                     search.is_active ? ' mr-2 ' : ' mr-2 line-through ',
                     'bg-orange-100 w-full p-1 pl-2 pr-2 text-gray-500 hover:bg-orange-200 hover:text-orange-500',
                     index === 0 ? 'rounded-t-xl' : '',
-                    index === searchCategories.length - 1 ? 'rounded-b-xl' : ''
+                    index === resultSearch.firstLayer.length - 1 ? 'rounded-b-xl' : ''
                   ]"
                 >
                   {{ search.name }}
                 </span>
               </div>
             </div>
-            <div class="pb-4 pt-4">
-              <span v-if="secondResult.length > 0" class="text-orange-500">Layer 2</span>
+            <div v-show="resultSearch.secondLayer.length > 0" class="pb-4">
+              <span class="text-orange-500">Layer 2</span>
             </div>
-            <div v-for="(secondLayer, secondIndex) in secondResult" :key="secondIndex">
+            <div
+              :class="secondIndex == resultSearch.secondLayer.length - 1 ? 'pb-4' : ''"
+              v-show="resultSearch.secondLayer.length > 0"
+              v-for="(secondLayer, secondIndex) in resultSearch.secondLayer"
+              :key="secondIndex"
+            >
               <RouterLink
                 v-if="router.currentRoute.value.params !== secondLayer.first_parent_name"
                 :to="{
@@ -253,7 +302,7 @@ onMounted(() => {
                     secondLayer.is_active == true ? ' mr-2 ' : ' mr-2 line-through ',
                     'bg-orange-100 w-full p-1 pl-2 pr-2 text-gray-500 hover:bg-orange-200 hover:text-orange-500',
                     secondIndex === 0 ? 'rounded-t-xl' : '',
-                    secondIndex === secondResult.length - 1 ? 'rounded-b-xl' : ''
+                    secondIndex === resultSearch.secondLayer.length - 1 ? 'rounded-b-xl' : ''
                   ]"
                 >
                   {{ secondLayer.name }}
@@ -276,17 +325,22 @@ onMounted(() => {
                     secondLayer.is_active == true ? ' mr-2 ' : ' mr-2 line-through ',
                     'bg-orange-100 w-full p-1 pl-2 pr-2 text-gray-500 hover:bg-orange-200 hover:text-orange-500',
                     secondIndex === 0 ? 'rounded-t-xl' : '',
-                    secondIndex === secondResult.length - 1 ? 'rounded-b-xl' : ''
+                    secondIndex === resultSearch.secondLayer.length - 1 ? 'rounded-b-xl' : ''
                   ]"
                 >
                   {{ secondLayer.name }}
                 </span>
               </div>
             </div>
-            <div class="pb-4 pt-4">
-              <span v-if="thirdResult.length > 0" class="text-orange-500">Layer 3</span>
+            <div v-show="resultSearch.thirdLayer.length > 0" class="pb-4">
+              <span class="text-orange-500">Layer 3</span>
             </div>
-            <div v-for="(thirdLayer, thirdIndex) in thirdResult" :key="thirdIndex">
+            <div
+              :class="thirdIndex == resultSearch.thirdLayer.length - 1 ? 'pb-4' : ''"
+              v-show="resultSearch.thirdLayer.length > 0"
+              v-for="(thirdLayer, thirdIndex) in resultSearch.thirdLayer"
+              :key="thirdIndex"
+            >
               <RouterLink
                 v-if="router.currentRoute.value.params.thirdLayer !== thirdLayer.second_parent_name"
                 :to="{
@@ -314,7 +368,7 @@ onMounted(() => {
                     thirdLayer.is_active == true ? ' mr-2 ' : ' mr-2 line-through ',
                     'bg-orange-100 w-full p-1 pl-2 pr-2 text-gray-500 hover:bg-orange-200 hover:text-orange-500',
                     thirdIndex === 0 ? 'rounded-t-xl' : '',
-                    thirdIndex === thirdResult.length - 1 ? 'rounded-b-xl' : ''
+                    thirdIndex === resultSearch.thirdLayer.length - 1 ? 'rounded-b-xl' : ''
                   ]"
                 >
                   {{ thirdLayer.name }}
@@ -340,7 +394,7 @@ onMounted(() => {
                     thirdLayer.is_active == true ? ' mr-2 ' : ' mr-2 line-through ',
                     'bg-orange-100 w-full p-1 pl-2 pr-2 text-gray-500 hover:bg-orange-200 hover:text-orange-500',
                     thirdIndex === 0 ? 'rounded-t-xl' : '',
-                    thirdIndex === thirdResult.length - 1 ? 'rounded-b-xl' : ''
+                    thirdIndex === resultSearch.thirdLayer.length - 1 ? 'rounded-b-xl' : ''
                   ]"
                 >
                   {{ thirdLayer.name }}
@@ -350,7 +404,12 @@ onMounted(() => {
           </div>
         </div>
         <div
-          v-else-if="searchQueryCategory.length > 0 && searchCategories.length === 0"
+          v-else-if="
+            searchQueryCategory.length > 0 &&
+            (resultSearch.firstLayer.length === 0 ||
+              resultSearch.secondLayer.length === 0 ||
+              resultSearch.thirdLayer.length === 0)
+          "
           class="relative w-full overflow-y-auto h-80 flex justify-center items-center"
         >
           <div
