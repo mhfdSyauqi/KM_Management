@@ -416,57 +416,6 @@ watchEffect(() => {
       </div>
     </div>
 
-    <!-- <div class="overflow-y-auto max-h-[80%] grid grid-cols-2 md:grid-cols-3 gap-8 p-10">
-      <div
-        v-show="groupedThirdLayer.length > 0"
-        class="bg-[#fef9f2] border border-orange-400 min-h-[180px] w-[100%] p-4 rounded-tr-3xl rounded-bl-3xl grid grid-cols-1"
-        v-for="(group, index) in groupedThirdLayer"
-        :key="index"
-        :style="{ gridRow: `span ${getRowSpan(group.items.length)}` }"
-      >
-        <div v-for="(item, itemIndex) in group.items" :key="item.uid">
-          <h1 v-if="itemIndex === 0" class="flex text-xl font-semibold italic text-[#2c7b4b] mb-5">
-            {{ group.letter + '_' }}
-          </h1>
-          <div class="flex items-center pb-1">
-            <button
-              class="mr-2"
-              v-if="secondActive === true"
-              @click="openEditModal(item.uid, item.name, item.is_active)"
-            >
-              <IconEdit class="w-4 h-4 hover:fill-[#2c7b4b] fill-gray-500" />
-            </button>
-            <div v-else class="mr-2 relative flex flex-col items-center group">
-              <IconEdit class="w-4 h-4 hover:fill-[#2c7b4b] fill-gray-500" />
-              <div class="absolute w-40 top-0 flex-col items-center hidden mt-5 group-hover:flex">
-                <span
-                  class="absolute z-10 p-2 text-xs leading-none text-black whitespace-no-wrap bg-blue-200 rounded-r-lg rounded-bl-lg shadow-lg tooltip"
-                >
-                  First, you must set this parent <br />category to active
-                  <span class="arrow"></span>
-                </span>
-              </div>
-            </div>
-            <span
-              :class="{
-                ' mr-2 text-gray-500  hover:text-[#2c7b4b]': item.is_active,
-                ' mr-2 line-through text-gray-500 hover:text-[#2c7b4b]': !item.is_active,
-                ' mr-2  text-gray-500 bg-yellow-300 pl-2 pr-2 rounded-2xl drop-shadow-2xl hover:text-slate-500':
-                  hightLightUid == item.uid
-              }"
-            >
-              {{ item.name }}
-            </span>
-          </div>
-        </div>
-      </div>
-      <div v-show="thirdLayer.length === 0">
-        <div class="relative bg-[#eeeeee] w-[100%] pl-6 pb-4 pt-4 rounded-tr-3xl rounded-bl-3xl">
-          <span class="italic mr-2 text-gray-500">Data Not Available</span>
-        </div>
-      </div>
-    </div> -->
-
     <div class="overflow-y-auto max-h-[80%] grid grid-cols-2 md:grid-cols-3 gap-5 p-10">
       <div v-for="(subgroup, groupIndex) in groupedThirdLayer" :key="groupIndex">
         <div
@@ -505,7 +454,7 @@ watchEffect(() => {
                   ' mr-2 text-gray-500 hover:font-semibold hover:text-[#2c7b4b]': item.is_active,
                   ' mr-2 line-through hover:font-semibold text-gray-500 hover:text-[#2c7b4b]':
                     !item.is_active,
-                  ' mr-2  text-gray-500 hover:font-semibold bg-yellow-300 pl-2 pr-2 rounded-2xl drop-shadow-2xl hover:text-slate-500':
+                  'mr-2 text-gray-500 hover:font-semibold bg-yellow-300 pl-2 pr-2 pt-1 pb-1 rounded-md drop-shadow-lg hover:text-slate-500':
                     hightLightUid == item.uid
                 }"
               >
@@ -520,17 +469,6 @@ watchEffect(() => {
           <span class="italic mr-2 text-gray-500">Data Not Available</span>
         </div>
       </div>
-
-      <!-- masonry grid image -->
-      <!-- <div v-for="(imageGroup, index) in images" :key="index">
-        <div v-for="(image, imgIndex) in imageGroup" :key="imgIndex">
-          <img
-            class="border border-orange-400 h-fit w-[100%] p-4 rounded-tr-3xl rounded-bl-3xl grid grid-gap-4"
-            :src="image"
-            alt=""
-          />
-        </div>
-      </div> -->
     </div>
   </div>
 

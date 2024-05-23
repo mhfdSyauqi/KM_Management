@@ -392,7 +392,7 @@ onMounted(() => {
                       item.is_active,
                     'mr-2 line-through text-gray-500 hover:font-semibold hover:text-[#2c7b4b]':
                       !item.is_active,
-                    'mr-2 text-gray-500 hover:font-semibold bg-yellow-300 pl-2 pr-2 rounded-2xl drop-shadow-2xl hover:text-slate-500':
+                    'mr-2 text-gray-500 hover:font-semibold bg-yellow-300 pl-2 pr-2 pt-1 pb-1 rounded-md drop-shadow-lg hover:text-slate-500':
                       hightLightUid == item.uid
                   }"
                 >

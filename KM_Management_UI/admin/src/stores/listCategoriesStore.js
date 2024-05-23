@@ -1,6 +1,5 @@
-import axios from 'axios';
 import { defineStore } from 'pinia';
-import Swal from 'sweetalert2';
+
 
 export const useCategoriesStore = defineStore({
   id: 'categoriesListStore',
@@ -8,7 +7,6 @@ export const useCategoriesStore = defineStore({
     firstLayer: [],
     secondLayer: [],
     thirdLayer: [],
-    allDataLayer:[],
     selectedFirstUid: null,
     selectedSecondUid: null,
     selectedThirdUid: null,
@@ -16,53 +14,62 @@ export const useCategoriesStore = defineStore({
 
   }),
   getters: {
-    getFirstUid: (state) => (name) => {
+    getFirstUid: () => (name) => {
       return localStorage.getItem(`${name}`); 
     },
-    getSecondUid: (state) => (name) => {
+    getSecondUid: () => (name) => {
       return localStorage.getItem(`${name}`); 
     },
-    getThirdUid: (state) => (name) => {
+    getThirdUid: () => (name) => {
       return localStorage.getItem(`${name}`); 
     },
-    getFirstActive: (state) => (name) => {
+    getFirstActive: () => (name) => {
       return localStorage.getItem(`active${name}`);
     },
-    getSecondActive: (state) => (name) => {
+    getSecondActive: () => (name) => {
       return localStorage.getItem(`active${name}`);
     },
-    getThirdActive: (state) => (name) => {
+    getThirdActive: () => (name) => {
       return localStorage.getItem(`active${name}`);
     },
-   
-    getAllLayer(){
-      return this.allDataLayer;
-    },
-    getSearch: (state) => (name) => {
+    getSearchFirst: (state) => (name) => {
       const categoryWords =  name.toLowerCase().split(' ');
   
-      return state.allDataLayer
+      return state.firstLayer
           .filter(content => {
               return categoryWords.every(word => {
                   return content.name.toLowerCase().includes(word);
               });
           })
-   },
-   getHightlightUid(){
-    return this.hightLightUid;
-   },
+      },
+      getSearchSecond: (state) => (name) => {
+        const categoryWords =  name.toLowerCase().split(' ');
+
+        return state.secondLayer
+            .filter(content => {
+                return categoryWords.every(word => {
+                    return content.name.toLowerCase().includes(word);
+                });
+            })
+      },
+      getSearchThird: (state) => (name) => {
+        const categoryWords =  name.toLowerCase().split(' ');
+
+        return state.thirdLayer
+            .filter(content => {
+                return categoryWords.every(word => {
+                    return content.name.toLowerCase().includes(word);
+                });
+            })
+      },
+    
+    getHightlightUid(){
+      return this.hightLightUid;
+    },
  
   },
   actions: {
-    
-      async allLayer(alldata) {
-        try {
-      
-          this.allDataLayer = alldata;
-        } catch (error) {
-          console.error('Terjadi kesalahan:', error);
-        }
-      },
+     
       setSelectedFirstUid(name, uid, is_Active) {
         localStorage.setItem(`${name}`, uid);
         localStorage.setItem(`active${name}`, is_Active);
@@ -78,6 +85,15 @@ export const useCategoriesStore = defineStore({
       },
       setHightLight(uid) {
         this.hightLightUid = uid;
+      },
+      setSearchFirst(data){
+        this.firstLayer = data;
+      },
+      setSearchSecond(data){
+        this.secondLayer = data;
+      },
+      setSearchThird(data){
+        this.thirdLayer = data;
       },
   },
 });
