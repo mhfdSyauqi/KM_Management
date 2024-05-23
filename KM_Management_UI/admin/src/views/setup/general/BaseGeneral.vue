@@ -229,8 +229,8 @@ onMounted(async () => {
               />
               <TextForm
                 :name="'Subject '"
-                :error="generalError.mailing.mail_history_subject"
-                v-model="generalModel.mailing.mail_history_subject"
+                :error="generalError.helpdesk.mail_helpdesk_subject"
+                v-model="generalModel.helpdesk.mail_helpdesk_subject"
                 required
                 @input="HandleEmptyHelpdesk"
               />

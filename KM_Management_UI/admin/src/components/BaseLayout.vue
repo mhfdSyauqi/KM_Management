@@ -26,8 +26,10 @@ const userInfo = route.meta.userInfo
     </section>
   </main>
 
-  <section class="lg:hidden">
-    <p>Please open Management App In Laptop or wide screen</p>
+  <section class="lg:hidden flex justify-center items-center h-screen">
+    <p class="basis-full text-xl font-medium italic text-green-800 text-center">
+      Please open Management App in laptop or wider screen...
+    </p>
   </section>
 </template>
 
