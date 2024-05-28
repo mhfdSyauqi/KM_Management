@@ -76,30 +76,12 @@ const options = ref({
 
       data.value = result
       fullScreen.value.isDetail = true
-
-      console.log(dataPopular.value)
     }
   }
 })
 
 onBeforeMount(() => {
   data.value = dataPopular.value.chart
-
-  // data.value = {
-  //   labels: ['VPN', 'Email', 'SAP', 'Map', 'Kain', 'Orange'],
-  //   datasets: [
-  //     {
-  //       backgroundColor: ['#9195F6', '#E99497', '#DBCC95', '#638889', '#A4907C', '#D2AEE9'],
-  //       data: [5, 4, 1, 0, 0, 0],
-  //       total: 10
-  //     },
-  //     {
-  //       backgroundColor: ['#9195F6', '#E99497', '#DBCC95', '#638889', '#A4907C', '#D2AEE9'],
-  //       data: [0, 0, 0, 5, 4, 1],
-  //       total: 10
-  //     }
-  //   ]
-  // }
 })
 
 function onBack() {
@@ -118,7 +100,7 @@ function onClose() {
 </script>
 
 <template>
-  <div class="fixed top-0 left-0 w-full h-full bg-gray-50 z-50 flex flex-col flex-nowrap gap-3">
+  <div class="fixed top-0 left-0 w-full h-full bg-gray-50 z-50 flex flex-col flex-nowrap gap-3 p-2">
     <button
       class="fixed right-20 top-7 bg-gray-200 p-2 rounded-lg hover:drop-shadow-lg hover:scale-105"
       title="Back"
@@ -136,7 +118,7 @@ function onClose() {
       <IconMinimize class="w-5 h-5" />
     </button>
 
-    <div class="mx-10 mt-16">
+    <div class="basis-[10%] px-10 pt-14">
       <div class="w-full text-lg border-b-2 border-green-800 pb-3 space-x-2">
         <span class="text-orange-400" :class="{ '!text-gray-500': fullScreen.isDetail }">
           Popular Categories
@@ -146,14 +128,14 @@ function onClose() {
       </div>
     </div>
 
-    <div class="mx-10 mt-16 flex flex-col">
-      <div class="basis-[40%]">
+    <div class="basis-[85%] px-10 pt-6 flex flex-col gap-2">
+      <div class="basis-[35%]">
         <Pie ref="chartEl" :data="data" :options="options" />
       </div>
 
-      <div class="basis-[55%]">
-        <table class="w-full text-sm text-left my-3" v-show="reference !== null">
-          <thead>
+      <div class="basis-[65%] max-h-[33%] overflow-y-auto" v-show="reference !== null">
+        <table class="w-full table-fixed text-sm text-left my-3">
+          <thead class="sticky top-0">
             <tr class="text-amber-600 bg-orange-100">
               <th colspan="w-[10%]"></th>
               <th class="w-[15%]">
@@ -210,4 +192,23 @@ function onClose() {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+::-webkit-scrollbar {
+  width: 0.15rem;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgba(94, 109, 92, 0.6);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(94, 109, 92, 1);
+}
+</style>
