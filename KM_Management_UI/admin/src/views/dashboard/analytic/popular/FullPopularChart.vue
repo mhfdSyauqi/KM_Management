@@ -178,7 +178,7 @@ function onClose() {
               </td>
 
               <td>
-                <p>{{ detail.percent }}%</p>
+                <p>{{ parseInt(detail.percent).toFixed(2) }}%</p>
               </td>
 
               <td>
