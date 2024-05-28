@@ -1,18 +1,32 @@
 <script setup>
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import IconDropdown from '@/components/icons/IconDropdown.vue'
+import { ref } from 'vue'
+
+const hoverFilter = ref(false)
 </script>
 
 <template>
   <Popover class="relative" v-slot="{ open }">
     <PopoverButton
       class="min-w-32 flex p-2 border border-green-800 text-green-800 items-center justify-center gap-2 focus:outline-none"
-      :class="[open ? 'rounded-tr-3xl rounded-tl-3xl text-white bg-green-800 ' : 'rounded-3xl']"
+      :class="[
+        open
+          ? 'rounded-tr-3xl rounded-tl-3xl text-white bg-green-800 '
+          : 'rounded-3xl hover:bg-[#71b483] hover:text-white hover:border-[#71b483] bg-[#f8fbf9]'
+      ]"
+      @mouseenter="hoverFilter = true"
+      @mouseleave="hoverFilter = false"
     >
       <span>
         <slot name="default"></slot>
       </span>
-      <IconDropdown :class="[open ? 'fill-white' : 'fill-green-800']" />
+      <IconDropdown
+        :class="[
+          open ? 'fill-white' : 'fill-green-800',
+          hoverFilter ? 'fill-white' : 'fill-green-800'
+        ]"
+      />
     </PopoverButton>
 
     <PopoverPanel class="absolute z-10">

@@ -36,7 +36,7 @@ async function onEdit() {
 <template>
   <Dialog :open="isOpen" @close="setIsOpen" class="relative z-50 select-none">
     <div class="fixed inset-0 bg-black bg-opacity-75 flex w-screen items-center justify-center p-4">
-      <DialogPanel class="w-full max-w-md rounded bg-white">
+      <DialogPanel class="w-full max-w-md rounded-xl bg-white">
         <DialogTitle as="div" class="flex items-center gap-1 border-b-2 px-6 py-3.5">
           <h3 class="basis-[70%] text-green-700 font-bold text-xl">Edit Account</h3>
 
@@ -45,7 +45,7 @@ async function onEdit() {
         </DialogTitle>
 
         <DialogDescription as="div" class="px-6 py-3.5 space-y-2 text-sm">
-          <TextForm name="Full Name" v-model="editedUser.full_name" readonly />
+          <TextForm name="Full Name" v-model="editedUser.full_name" disabled />
 
           <div class="flex flex-col w-full gap-1">
             <label for="role" class="text-gray-400">

@@ -9,6 +9,10 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
+  disabled: {
+    type: Boolean,
+    default: false
+  },
   error: {
     type: Object,
     default(rawProp) {
@@ -35,6 +39,7 @@ const props = defineProps({
       type="text"
       :id="props.name"
       :readonly="props.readonly"
+      :disabled="props.disabled"
       class="p-2 border rounded-xl focus:outline focus:outline-green-500"
     />
   </div>

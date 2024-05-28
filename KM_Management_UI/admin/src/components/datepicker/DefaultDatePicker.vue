@@ -70,7 +70,7 @@ onBeforeUnmount(() => {
       <div class="items-end">
         <IconDropdown
           :class="[
-            open ? 'fill-white' : 'fill-green-800',
+            open ? 'fill-white rotate-180' : 'fill-green-800',
             hoverFilterDate ? 'fill-white' : 'fill-green-800'
           ]"
         />
