@@ -128,14 +128,14 @@ function onClose() {
       </div>
     </div>
 
-    <div class="basis-[85%] px-10 pt-6 flex flex-col gap-2">
+    <div class="basis-[85%] px-10 py-6 flex flex-col gap-2 overflow-y-auto">
       <div class="basis-[35%]">
         <Pie ref="chartEl" :data="data" :options="options" />
       </div>
 
-      <div class="basis-[65%] max-h-[33%] overflow-y-auto" v-show="reference !== null">
+      <div class="basis-[65%]" v-show="reference !== null">
         <table class="w-full table-fixed text-sm text-left my-3">
-          <thead class="sticky top-0">
+          <thead>
             <tr class="text-amber-600 bg-orange-100">
               <th colspan="w-[10%]"></th>
               <th class="w-[15%]">
@@ -199,16 +199,16 @@ function onClose() {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px grey;
+  box-shadow: inset 0 0 5px transparent;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rgba(94, 109, 92, 0.6);
+  background: transparent;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(94, 109, 92, 1);
+  background: transparent;
 }
 </style>

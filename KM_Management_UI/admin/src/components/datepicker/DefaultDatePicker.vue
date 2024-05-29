@@ -45,7 +45,7 @@ function ApplyFilterDate(closeFilter) {
 }
 
 onBeforeUnmount(() => {
-  dateModel.value.filterType = 'Today'
+  dateModel.value.filterType = 'Last 30 Days'
   dateModel.value.filterStart = null
   dateModel.value.filterEnd = null
 })

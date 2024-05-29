@@ -65,10 +65,10 @@ function onClose() {
       </div>
     </div>
 
-    <div class="basis-[90%] px-20 pt-5 flex flex-col flex-nowrap gap-1.5">
+    <div class="basis-[90%] px-20 py-5 flex flex-col flex-nowrap gap-1.5 overflow-y-auto">
       <div class="basis-[12%] flex w-full justify-center items-center">
         <div
-          class="h-full bg-orange-500 rounded-l-xl cursor-pointer"
+          class="h-20 bg-orange-500 rounded-l-xl cursor-pointer"
           :class="{ '!bg-gray-200': reference === 'No Match Categories' }"
           :style="{ 'flex-basis': `${dataHit.match_percentage}%` }"
           @click="onChoseRef('Match Categories')"
@@ -76,7 +76,7 @@ function onClose() {
           &nbsp;
         </div>
         <div
-          class="h-full bg-orange-300 rounded-r-xl cursor-pointer"
+          class="h-20 bg-orange-300 rounded-r-xl cursor-pointer"
           :class="{ '!bg-gray-200': reference === 'Match Categories' }"
           :style="{ 'flex-basis': `${dataHit.unmatch_percentage}%` }"
           @click="onChoseRef('No Match Categories')"
@@ -110,7 +110,7 @@ function onClose() {
         </div>
       </div>
 
-      <div class="basis-[75%] max-h-[55%] overflow-y-auto">
+      <div class="basis-[75%]">
         <table class="w-full table-fixed text-sm text-left my-3" v-show="reference !== null">
           <thead class="sticky top-0">
             <tr class="text-amber-600 bg-orange-100">
@@ -167,16 +167,16 @@ function onClose() {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px grey;
+  box-shadow: inset 0 0 5px transparent;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rgba(94, 109, 92, 0.6);
+  background: transparent;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(94, 109, 92, 1);
+  background: transparent;
 }
 </style>
