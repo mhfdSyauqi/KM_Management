@@ -153,44 +153,6 @@ function onClose() {
                 <p>{{ detail.count }}</p>
               </td>
             </tr>
-            <tr
-              class="text-sm border-b-2 hover:bg-orange-50"
-              v-for="(detail, index) in data?.categories"
-              :key="index"
-            >
-              <td>&nbsp;</td>
-
-              <td class="py-2.5">
-                {{ index + 1 }}
-              </td>
-
-              <td>
-                <p>{{ detail.category }}</p>
-              </td>
-
-              <td>
-                <p>{{ detail.count }}</p>
-              </td>
-            </tr>
-            <tr
-              class="text-sm border-b-2 hover:bg-orange-50"
-              v-for="(detail, index) in data?.categories"
-              :key="index"
-            >
-              <td>&nbsp;</td>
-
-              <td class="py-2.5">
-                {{ index + 1 }}
-              </td>
-
-              <td>
-                <p>{{ detail.category }}</p>
-              </td>
-
-              <td>
-                <p>{{ detail.count }}</p>
-              </td>
-            </tr>
           </tbody>
         </table>
       </div>

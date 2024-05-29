@@ -50,6 +50,7 @@ public class GetConfigGeneralHandler : IQueryHandler<GetConfigGeneralQuery, Resp
                 MAIL_HELPDESK_TO = generalCfg.MAIL_HELPDESK_TO,
                 MAIL_HELPDESK_SUBJECT = generalCfg.MAIL_HELPDESK_SUBJECT,
                 MAIL_HELPDESK_CONTENT = generalCfg.MAIL_HELPDESK_CONTENT,
+                MAIL_HELPDESK_CONTENT_HTML = generalCfg.MAIL_HELPDESK_CONTENT_HTML
             },
             Others = new()
             {

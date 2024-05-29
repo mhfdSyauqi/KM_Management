@@ -170,7 +170,7 @@ onMounted(async () => {
       <Disclosure v-slot="{ open }">
         <div class="border px-5 rounded-2xl select-none" :class="open && 'border-orange-400 pb-7'">
           <DisclosureButton class="py-2 flex justify-between w-full">
-            <span class="font-medium">Send Mail To Helpdesk</span>
+            <span class="font-medium">Send Email To Helpdesk</span>
             <IconExpand :class="open && 'rotate-90 transform'" />
           </DisclosureButton>
           <DisclosurePanel>

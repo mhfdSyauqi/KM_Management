@@ -16,4 +16,5 @@ public class EntityConfigGeneral
     public string MAIL_HELPDESK_TO { get; init; }
     public string MAIL_HELPDESK_SUBJECT { get; init; }
     public string MAIL_HELPDESK_CONTENT { get; init; }
+    public string MAIL_HELPDESK_CONTENT_HTML { get; init; }
 }

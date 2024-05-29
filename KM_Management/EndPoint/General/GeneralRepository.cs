@@ -33,6 +33,7 @@ public class GeneralRepository : IGeneralRepository
                 ,[MAIL_HELPDESK_TO]
                 ,[MAIL_HELPDESK_SUBJECT]
                 ,[MAIL_HELPDESK_CONTENT]
+                ,[MAIL_HELPDESK_CONTENT_HTML]
               FROM [dbo].[View_Configuration_General]
         ";
         var command = new CommandDefinition(query, cancellationToken: cancellationToken);

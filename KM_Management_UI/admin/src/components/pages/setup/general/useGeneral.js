@@ -192,6 +192,8 @@ async function HandleSave() {
     }
   }
 
+  console.log(modelPayload)
+
   const patchGeneral = await PatchSetupGeneralAsync(modelPayload)
   if (!patchGeneral.is_success) {
     return await ToastSwal.fire({
