@@ -42,10 +42,10 @@ const range = ref({})
 
 //calendar
 const selectedRatings = ref([])
-const selectedCategoryDate = ref('today')
+const selectedCategoryDate = ref('last_30_days')
 
 const filteringDate = ref({
-  category: 'today',
+  category: 'last_30_days',
   start_date: null,
   end_date: null
 })
