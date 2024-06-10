@@ -20,49 +20,10 @@ public class PatchMessageValidator : AbstractValidator<PatchMessageCommand>
         _messageRepository = MessageRepository;
 
         RuleFor(key => key.Argument.Contents).NotEmpty().WithMessage("Message must not be empty.");
-        When(key => key.Argument.Contents.Length > 0, () =>
-        {
-            RuleFor(key => key.Argument.Contents).MinimumLength(5).WithMessage("Message must be at least 5 characters.")
-                .MaximumLength(360).WithMessage("Message cannot exceed 360 characters.");
-            RuleFor(key => key.Argument.Contents)
-                .Must(ValidateInput).WithMessage("Invalid Format! Please use the following format: '@username @fullname @category");
-        });
+        
     }
 
-    private bool ValidateInput(string contents)
-    {
-        // Rule 1: Check if '@' is present
-        if (contents.Contains("@"))
-        {
-            // Rule 2: Check if valid tags are present after '@'
-            var validTags = new[] { "@fullname", "@username", "@category" };
-            var tags = contents.Split(' ');
-
-            foreach (var tag in tags)
-            {
-                var tagTrimmed = tag.Trim();
-
-                if (tagTrimmed.StartsWith("@") && validTags.Any(validTag => tagTrimmed == validTag))
-                {
-                    continue;
-                }
-                else if (!tagTrimmed.Contains("@"))
-                {
-
-                    continue;
-                }
-                else
-                {
-
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        return true;
-    }
+    
 
 }
 
