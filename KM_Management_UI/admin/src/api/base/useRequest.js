@@ -6,4 +6,6 @@ const useRequest = axios.create({
   headers: { 'Content-Type': 'application/json' }
 })
 
-export { useRequest }
+const BASE_URL = 'https://localhost:44362/api'
+
+export { useRequest, BASE_URL }

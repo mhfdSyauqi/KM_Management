@@ -211,10 +211,6 @@ const toggleExpand = (index) => {
               <span class="ml-0.5">➡️</span> value of Username in conversation
             </p>
             <p>
-              Use <span class="font-medium text-[#e99300]">@fullname </span>
-              <span class="ml-2">➡️</span> value of Full Name in conversation
-            </p>
-            <p>
               Use <span class="font-medium text-[#e99300]">@category </span>
               <span class="ml-2">➡️</span> value of Category Response in conversation
             </p>

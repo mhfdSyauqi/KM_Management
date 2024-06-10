@@ -192,7 +192,7 @@ async function onCheck(e) {
     >
       <div class="space-x-2">
         <select
-          class="border rounded border-orange-500"
+          class="border rounded border-gray-500"
           v-model="pageLimit"
           @change="HandlingPageLimit(pageLimit)"
         >
@@ -201,7 +201,7 @@ async function onCheck(e) {
           <option :value="50">50</option>
         </select>
 
-        <span class="text-sm text-orange-500">
+        <span class="text-sm text-gray-500">
           {{ navigation.show }}
         </span>
       </div>
@@ -213,14 +213,14 @@ async function onCheck(e) {
         <li v-show="navigation.previous !== null">
           <button
             @click="HandlePagination(navigation.previous)"
-            class="px-3.5 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-orange-100"
+            class="px-3.5 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-300"
           >
             <span class="text-sm">{{ navigation.previous }}</span>
           </button>
         </li>
         <li v-show="navigation.current !== null">
           <button
-            class="px-3.5 py-2 bg-orange-500 text-white font-bold ring-1 ring-inset ring-gray-300"
+            class="px-3.5 py-2 bg-gray-500 text-white font-bold ring-1 ring-inset ring-gray-300"
           >
             <span class="text-sm">{{ navigation.current }}</span>
           </button>
@@ -228,7 +228,7 @@ async function onCheck(e) {
         <li v-show="navigation.next !== null">
           <button
             @click="HandlePagination(navigation.next)"
-            class="px-3.5 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-orange-100"
+            class="px-3.5 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-300"
           >
             <span class="text-sm">{{ navigation.next }}</span>
           </button>

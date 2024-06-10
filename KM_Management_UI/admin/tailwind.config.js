@@ -9,7 +9,8 @@ export default {
     extend: {
       backgroundColor: {
         'side-bar': 'rgba(113, 180, 131, 0.4)',
-        'head-bar': 'rgba(113, 180, 131, 0.1)'
+        'head-bar': 'rgba(113, 180, 131, 0.1)',
+        'chart-item': 'rgba(113, 180, 131, 0.02)'
       },
       colors: {
         primary: 'rgba(94, 109, 92, 1)'
