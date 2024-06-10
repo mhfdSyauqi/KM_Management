@@ -43,6 +43,8 @@ public class TopIssueController : MyAPIController
         string computerName = User.Identity?.Name ?? "Error\\NotAuthUser";
         request.Create_By = computerName.Split("\\")[1];
         request.Create_At = DateTime.Now;
+        request.Modified_By = computerName.Split("\\")[1];
+        request.Modified_At = DateTime.Now;
         var command = new PostCategoryTopIssueSelectedCommand(request);
         var result = await _Mediator.Send(command, cancellationToken);
         return result.MapResponse();
@@ -56,6 +58,8 @@ public class TopIssueController : MyAPIController
         string computerName = User.Identity?.Name ?? "Error\\NotAuthUser";
         request.Create_By = computerName.Split("\\")[1];
         request.Create_At = DateTime.Now;
+        request.Modified_By = computerName.Split("\\")[1];
+        request.Modified_At = DateTime.Now;
         var command = new PostCategoryTopIssueAllSelectedCommand(request);
         var result = await _Mediator.Send(command, cancellationToken);
         return result.MapResponse();
