@@ -46,7 +46,9 @@ public class PostCategoryTopIssueSelectedHandler : ICommandHandler<PostCategoryT
         {
             Uid = Guid.Parse(request.Argument.Uid_Bot_Category),
             Create_By = request.Argument.Create_By,
-            Create_At = request.Argument.Create_At  
+            Create_At = request.Argument.Create_At,
+            Modified_By = request.Argument.Modified_By,
+            Modified_At = request.Argument.Modified_At,
         };
 
         await _TopIssueRepository.PostCategoryTopIssueSelectedAsync(PostCategoryTopIssueSelected, cancellationToken);

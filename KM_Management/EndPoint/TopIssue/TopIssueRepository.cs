@@ -72,7 +72,9 @@ public class TopIssueRepository : ITopIssueRepository
         {
             Uid_Bot_Category = postCategory.Uid,
             Create_By = postCategory.Create_By,
-            Create_At = postCategory.Create_At
+            Create_At = postCategory.Create_At,
+            Modified_By = postCategory.Modified_By,
+            Modified_At = postCategory.Modified_At,
         };
         var storeProcedureName = "[dbo].[Add_New_Selected_Top_Issue]";
         var command = new CommandDefinition(storeProcedureName, postNewSelected, commandType: System.Data.CommandType.StoredProcedure, cancellationToken: cancellationToken);

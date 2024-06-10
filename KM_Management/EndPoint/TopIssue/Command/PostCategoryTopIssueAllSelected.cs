@@ -45,7 +45,9 @@ public class PostCategoryTopIssueAllSelectedHandler : ICommandHandler<PostCatego
         var PostCategoryTopIssueAllSelected = new EntityPostCategoryTopIssueAllSelected()
         {
             Create_By = request.Argument.Create_By,
-            Create_At = request.Argument.Create_At  
+            Create_At = request.Argument.Create_At,
+            Modified_By = request.Argument.Modified_By,
+            Modified_At = request.Argument.Modified_At,
         };
 
         await _TopIssueRepository.PostCategoryTopIssueAllSelectedAsync(PostCategoryTopIssueAllSelected, cancellationToken);

@@ -433,7 +433,7 @@ watchEffect(() => {
             <div class="flex items-center pb-1">
               <button
                 class="mr-2"
-                v-if="secondActive === true"
+                v-if="firstActive === true && secondActive === true"
                 @click="openEditModal(item.uid, item.name, item.is_active)"
               >
                 <IconEdit class="w-4 h-4 hover:fill-[#2c7b4b] fill-[#888888]" />
