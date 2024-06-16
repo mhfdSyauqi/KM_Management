@@ -303,13 +303,7 @@ const groupedSecondLayer = computed(() => {
 })
 
 const filterExportExcel = () => {
-  if (isActiveYesToggle.value == true && isActiveNoToggle.value == true) {
-    filterExportCategories.value = null
-  } else if (isActiveYesToggle.value == true) {
-    filterExportCategories.value = true
-  } else if (isActiveNoToggle.value == true) {
-    filterExportCategories.value = false
-  }
+  filterExportCategories.value = null
 }
 
 onMounted(() => {
