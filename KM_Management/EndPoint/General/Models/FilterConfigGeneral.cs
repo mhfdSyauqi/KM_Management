@@ -16,4 +16,8 @@ public class FilterConfigGeneral
     public string Helpdesk_Content { get; set; }
     public string Helpdesk_Content_Html { get; set; }
     public int Keywords { get; set; }
+    public string Mailbot_Email { get; set; }
+    public string Mailbot_Password { get; set; }
+    public string Mailbot_Server { get; set; }
+    public int Mailbot_Port { get; set; }
 }

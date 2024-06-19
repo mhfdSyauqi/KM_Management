@@ -1,9 +1,12 @@
 <script setup>
 import Swal from 'sweetalert2'
 
-import { profile, GetAssistantProfile } from '@/components/pages/setup/useAssistantProfile.js'
+import {
+  profile,
+  GetAssistantProfile
+} from '@/components/pages/setup/profile/useAssistantProfile.js'
 
-import { HandlePublish, errorInput } from '@/components/pages/setup/postAssistantProfile.js'
+import { HandlePublish, errorInput } from '@/components/pages/setup/profile/postAssistantProfile.js'
 
 import { onMounted, ref } from 'vue'
 import { ToastSwal } from '@/extension/SwalExt.js'

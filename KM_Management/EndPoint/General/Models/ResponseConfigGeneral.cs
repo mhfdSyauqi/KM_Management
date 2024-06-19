@@ -7,4 +7,5 @@ public class ResponseConfigGeneral
     public ConfigMail Mailing { get; set; }
     public ConfigHelpdesk Helpdesk { get; set; }
     public ConfigOthers Others { get; set; }
+    public ConfigMailbot Mailbot { get; set; }
 }

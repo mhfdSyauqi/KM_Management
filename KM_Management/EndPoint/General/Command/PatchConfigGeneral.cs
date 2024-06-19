@@ -33,6 +33,11 @@ public class PatchConfigGeneralValidator : AbstractValidator<PatchConfigGeneralC
         RuleFor(key => key.Argument.Helpdesk.MAIL_HELPDESK_CONTENT_HTML).NotEmpty();
 
         RuleFor(key => key.Argument.Others.KEYWORDS).NotEmpty().GreaterThanOrEqualTo(3).WithMessage("Value cannot less than 3");
+
+        RuleFor(key => key.Argument.Mailbot.EMAIL).NotEmpty().EmailAddress();
+        RuleFor(key => key.Argument.Mailbot.PASSWORD).NotEmpty();
+        RuleFor(key => key.Argument.Mailbot.SERVER).NotEmpty();
+        RuleFor(key => key.Argument.Mailbot.PORT).NotEmpty();
     }
 }
 
@@ -57,6 +62,8 @@ public class PatchConfigGeneralHandler : ICommandHandler<PatchConfigGeneralComma
             return Result.Failure(new(HttpStatusCode.BadRequest, errorMsg));
         }
 
+        var defaultPassword = await _generalRepository.GetDefaultMailbotPassword(cancellationToken);
+
         var filterPatchConfig = new FilterConfigGeneral()
         {
             First_Layer = request.Argument.Category.LAYER_ONE_LIMIT,
@@ -76,7 +83,12 @@ public class PatchConfigGeneralHandler : ICommandHandler<PatchConfigGeneralComma
             Helpdesk_Content = request.Argument.Helpdesk.MAIL_HELPDESK_CONTENT,
             Helpdesk_Content_Html = request.Argument.Helpdesk.MAIL_HELPDESK_CONTENT_HTML,
 
-            Keywords = request.Argument.Others.KEYWORDS
+            Keywords = request.Argument.Others.KEYWORDS,
+
+            Mailbot_Email = request.Argument.Mailbot.EMAIL,
+            Mailbot_Password = request.Argument.Mailbot.PASSWORD == "Use Default" ? defaultPassword : request.Argument.Mailbot.PASSWORD,
+            Mailbot_Server = request.Argument.Mailbot.SERVER,
+            Mailbot_Port = request.Argument.Mailbot.PORT
         };
 
         await _generalRepository.PatchConfigurationGeneralAsync(filterPatchConfig, cancellationToken);

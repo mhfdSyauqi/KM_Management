@@ -1,5 +1,4 @@
-﻿using KM_Management.Helper;
-using KM_Management.Controllers;
+﻿using KM_Management.Controllers;
 using KM_Management.EndPoint.RateAndFeedback.Models;
 using KM_Management.EndPoint.RateAndFeedback.Query;
 using KM_Management.Helper;
@@ -44,9 +43,9 @@ public class RateAndFeedbackController : MyAPIController
             Remark = item?.Remark,
         }).ToList();
 
-        var columns = new List<string> { "Time", "Name", "Total Category", "Rating", "Feedback"};
+        var columns = new List<string> { "Time", "Name", "Total Category", "Rating", "Feedback" };
 
-        byte[] fileBytes = ExcelExportHelper.ExportExcelRateAndFeedback(newData, periode ,columns);
+        byte[] fileBytes = ExcelExportHelper.ExportExcelRateAndFeedback(newData, periode, columns);
 
         return File(fileBytes, ExcelExportHelper.ExcelContentType, "RateAndFeedback.xlsx");
 

@@ -27,6 +27,12 @@ const generalModel = ref({
   },
   others: {
     keywords: null
+  },
+  mailbot: {
+    email: null,
+    password: null,
+    server: null,
+    port: null
   }
 })
 
@@ -53,6 +59,12 @@ const generalError = ref({
   },
   others: {
     keywords: { isError: false, message: '' }
+  },
+  mailbot: {
+    email: { isError: false, message: '' },
+    password: { isError: false, message: '' },
+    server: { isError: false, message: '' },
+    port: { isError: false, message: '' }
   }
 })
 
@@ -160,6 +172,29 @@ async function HandleEmptyHelpdesk() {
   }
 }
 
+async function HandleMailBotEmpty() {
+  for (const key in generalModel.value.mailbot) {
+    const keyValue = generalModel.value.mailbot[key]
+    if (keyValue === '' || keyValue === null) {
+      generalError.value.mailbot[key].isError = true
+      generalError.value.mailbot[key].message = 'required'
+    } else {
+      generalError.value.mailbot[key].isError = false
+      generalError.value.mailbot[key].message = ''
+    }
+  }
+
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  const validEmail = regex.test(generalModel.value.mailbot.email)
+  if (!validEmail) {
+    generalError.value.mailbot.email.isError = true
+    generalError.value.mailbot.email.message = 'email address invalid'
+  } else {
+    generalError.value.mailbot.email.isError = false
+    generalError.value.mailbot.email.message = ''
+  }
+}
+
 async function HandleSave() {
   const isValid = ValidateEmptyOrError()
   if (!isValid) {
@@ -189,10 +224,11 @@ async function HandleSave() {
     },
     Others: {
       ...generalModel.value.others
+    },
+    Mailbot: {
+      ...generalModel.value.mailbot
     }
   }
-
-  console.log(modelPayload)
 
   const patchGeneral = await PatchSetupGeneralAsync(modelPayload)
   if (!patchGeneral.is_success) {
@@ -247,5 +283,6 @@ export {
   HandleOthersLimit,
   HandleEmptyMailing,
   HandleEmptyHelpdesk,
+  HandleMailBotEmpty,
   HandleSave
 }

@@ -17,9 +17,12 @@ import {
   HandleOthersLimit,
   HandleEmptyMailing,
   HandleEmptyHelpdesk,
-  HandleSave
+  HandleSave,
+  HandleMailBotEmpty
 } from '@/components/pages/setup/general/useGeneral.js'
 import { onMounted } from 'vue'
+import EmailForm from '@/components/forms/EmailForm.vue'
+import PasswordForm from '@/components/forms/PasswordForm.vue'
 
 onMounted(async () => {
   await GetSetupGeneral()
@@ -261,6 +264,49 @@ onMounted(async () => {
                 :error="generalError.others.keywords"
                 v-model="generalModel.others.keywords"
                 @input="HandleOthersLimit"
+              />
+            </section>
+          </DisclosurePanel>
+        </div>
+      </Disclosure>
+      <!-- Email Config -->
+      <Disclosure v-slot="{ open }">
+        <div class="border px-5 rounded-2xl select-none" :class="open && 'border-orange-400 pb-7'">
+          <DisclosureButton class="py-2 flex justify-between w-full">
+            <span class="font-medium">Mail Bot Configuration</span>
+            <IconExpand :class="open && 'rotate-90 transform'" />
+          </DisclosureButton>
+          <DisclosurePanel class="space-y-2.5">
+            <section class="flex gap-10 w-full">
+              <EmailForm
+                :name="'Email'"
+                required
+                v-model="generalModel.mailbot.email"
+                :error="generalError.mailbot.email"
+                @input="HandleMailBotEmpty"
+              />
+              <PasswordForm
+                :name="'Password'"
+                required
+                v-model="generalModel.mailbot.password"
+                :error="generalError.mailbot.password"
+                @input="HandleMailBotEmpty"
+              />
+            </section>
+            <section class="flex gap-10 w-full">
+              <TextForm
+                :name="'Server'"
+                required
+                v-model="generalModel.mailbot.server"
+                :error="generalError.mailbot.server"
+                @input="HandleMailBotEmpty"
+              />
+              <NumberForm
+                :name="'Port'"
+                required
+                :error="generalError.mailbot.port"
+                v-model="generalModel.mailbot.port"
+                @input="HandleMailBotEmpty"
               />
             </section>
           </DisclosurePanel>

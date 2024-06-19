@@ -7,7 +7,7 @@ import {
   GetCategoryListByFilter,
   category_list,
   filter
-} from '@/components/pages/category/useCategoryList.js'
+} from '@/components/pages/category/list/useCategoryList.js'
 import { useCategoriesStore } from '@/stores/listCategoriesStore.js'
 import SearchModalCategories from '@/views/categories/list/SearchModalCategories.vue'
 import ContainerModal from '@/components/modal/ContainerModal.vue'
@@ -20,18 +20,18 @@ import {
   ResetPostInput,
   errorInput,
   newCategory
-} from '@/components/pages/category/postCategoryList.js'
+} from '@/components/pages/category/list/postCategoryList.js'
 import {
   HandleExcelExport,
   filterExportCategories
-} from '@/components/pages/category/postExportExcelCategoryList.js'
+} from '@/components/pages/category/list/postExportExcelCategoryList.js'
 
 import {
   HandleRePublish,
   ResetEditInput,
   errorEdit,
   editCategory
-} from '@/components/pages/category/patchCategoryList.js'
+} from '@/components/pages/category/list/patchCategoryList.js'
 
 const storeCategories = useCategoriesStore()
 const firstLayer = ref([])

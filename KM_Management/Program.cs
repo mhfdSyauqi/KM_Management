@@ -18,7 +18,7 @@ Log.Logger = new LoggerConfiguration()
 
 // Add services to the container.
 builder.Services
-    .AddControllersWithViews()
+    .AddControllers()
     .AddJsonOptions(opt =>
     {
         opt.JsonSerializerOptions.PropertyNamingPolicy = new JsonLowerCaseKeyPolicy();
@@ -76,13 +76,20 @@ app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-app.UseRouting();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+//# Use This For Release Only
+app.MapControllers();
+app.MapFallbackToFile("/index.html");
+//#
+
+////# Use This For Dev Only
+//app.UseRouting();
+//app.MapControllerRoute(
+//    name: "default",
+//    pattern: "{controller=Home}/{action=Index}/{id?}");
+////
 
 app.Run();

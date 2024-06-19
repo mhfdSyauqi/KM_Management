@@ -3,7 +3,7 @@ import {
   GetCategoryListByFilter,
   category_list,
   filter
-} from '@/components/pages/category/useCategoryList.js'
+} from '@/components/pages/category/list/useCategoryList.js'
 import { useCategoriesStore } from '@/stores/listCategoriesStore.js'
 import { ref, onMounted } from 'vue'
 import { defineEmits } from 'vue'

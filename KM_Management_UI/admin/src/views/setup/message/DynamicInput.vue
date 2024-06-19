@@ -265,13 +265,24 @@
 <script setup>
 import { ref, defineProps, defineEmits, watch } from 'vue'
 import Swal from 'sweetalert2'
-import { newMessage, errorPost, HandlePublish } from '@/components/pages/setup/postMessage.js'
+import {
+  newMessage,
+  errorPost,
+  HandlePublish
+} from '@/components/pages/setup/message/postMessage.js'
 
-import { errorEdit, editMessage, HandleRePublish } from '@/components/pages/setup/patchMessage.js'
+import {
+  errorEdit,
+  editMessage,
+  HandleRePublish
+} from '@/components/pages/setup/message/patchMessage.js'
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
-import { deleteMessage, HandleUnPublish } from '@/components/pages/setup/deleteMessage.js'
+import { deleteMessage, HandleUnPublish } from '@/components/pages/setup/message/deleteMessage.js'
 
-import { HandleSequence, editSequence } from '@/components/pages/setup/patchSequenceMessage.js'
+import {
+  HandleSequence,
+  editSequence
+} from '@/components/pages/setup/message/patchSequenceMessage.js'
 import { ToastSwal } from '@/extension/SwalExt.js'
 const props = defineProps([
   'nameInput',

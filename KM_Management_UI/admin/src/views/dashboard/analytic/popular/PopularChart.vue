@@ -50,7 +50,7 @@ const options = ref({
           let label = ' '
 
           if (count && total) {
-            const percent = ((count / total) * 100).toFixed(1)
+            const percent = ((count / total) * 100).toFixed(2)
 
             label += `${count} of ${total} (${percent}%)`
           }

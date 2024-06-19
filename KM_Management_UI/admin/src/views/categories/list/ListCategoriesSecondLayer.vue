@@ -5,7 +5,7 @@ import {
   GetCategoryListByFilter,
   category_list,
   filter
-} from '@/components/pages/category/useCategoryList.js'
+} from '@/components/pages/category/list/useCategoryList.js'
 import { ToastSwal } from '@/extension/SwalExt.js'
 import { ref, onMounted, computed, watchEffect } from 'vue'
 import SearchModalCategories from '@/views/categories/list/SearchModalCategories.vue'
@@ -18,20 +18,20 @@ import IconSearch from '@/components/icons/IconSearch.vue'
 import {
   HandleExcelExport,
   filterExportCategories
-} from '@/components/pages/category/postExportExcelCategoryList.js'
+} from '@/components/pages/category/list/postExportExcelCategoryList.js'
 
 import {
   HandlePublish,
   ResetPostInput,
   errorInput,
   newCategory
-} from '@/components/pages/category/postCategoryList.js'
+} from '@/components/pages/category/list/postCategoryList.js'
 import {
   HandleRePublish,
   ResetEditInput,
   errorEdit,
   editCategory
-} from '@/components/pages/category/patchCategoryList.js'
+} from '@/components/pages/category/list/patchCategoryList.js'
 const router = useRouter()
 const storeCategories = useCategoriesStore()
 

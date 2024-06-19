@@ -48,15 +48,21 @@ public class AnalyticRepository : IAnalyticRepository
         return result;
     }
 
-    public async Task<IEnumerable<EntityExcelLeadAnalytic>> GetLeadExcelAsync(FilterLeadAnalytic filter, CancellationToken cancellationToken)
+    public async Task<EntityExcelLeadAnalytic> GetLeadExcelAsync(FilterLeadAnalytic filter, CancellationToken cancellationToken)
     {
         await using var connection = await _connection.CreateConnectionAsync();
 
         var storeProcedureName = "[dbo].[Get_Analytic_Leaderboard_Excel]";
         var command = new CommandDefinition(storeProcedureName, filter, commandType: System.Data.CommandType.StoredProcedure, cancellationToken: cancellationToken);
-        var result = await connection.QueryAsync<EntityExcelLeadAnalytic>(command);
+        var result = await SqlMapper.QueryMultipleAsync(connection, storeProcedureName, filter, commandType: System.Data.CommandType.StoredProcedure);
 
-        return result;
+
+        var excelData = new EntityExcelLeadAnalytic();
+        excelData.General = result.Read<EntityExcelGeneralLead>().ToList();
+        excelData.Detail = result.Read<EntityExcelDetailLead>().ToList();
+        excelData.Period = $"{filter.Start_Date:dd-MMM-yyyy} s/d {filter.End_Date:dd-MMM-yyyy}";
+
+        return excelData;
     }
 
     public async Task<IEnumerable<EntityGeneralLeadAnalytic>> GetLeadGeneralAsync(FilterLeadAnalytic filter, CancellationToken cancellationToken)
@@ -124,5 +130,5 @@ public interface IAnalyticRepository
 
     Task<IEnumerable<EntityGeneralLeadAnalytic>> GetLeadGeneralAsync(FilterLeadAnalytic filter, CancellationToken cancellationToken);
     Task<IEnumerable<EntityDetailLeadAnalytic>> GetLeadDetailAsync(FilterLeadAnalytic filter, CancellationToken cancellationToken);
-    Task<IEnumerable<EntityExcelLeadAnalytic>> GetLeadExcelAsync(FilterLeadAnalytic filter, CancellationToken cancellationToken);
+    Task<EntityExcelLeadAnalytic> GetLeadExcelAsync(FilterLeadAnalytic filter, CancellationToken cancellationToken);
 }

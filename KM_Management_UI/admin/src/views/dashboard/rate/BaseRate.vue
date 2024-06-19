@@ -23,14 +23,14 @@ import {
   HandlePagination,
   navigation,
   HandlingPageLimit
-} from '@/components/pages/dashboard/useDashboard.js'
+} from '@/components/pages/dashboard/rate/useDashboard.js'
 
 import {
   HandleExcelExport,
   filterExportExcel,
   HandlePaginationExport,
   HandlingPageLimitExport
-} from '@/components/pages/dashboard/postExportRateAndFeedback.js'
+} from '@/components/pages/dashboard/rate/postExportRateAndFeedback.js'
 
 const hoverFilterDate = ref(false)
 const hoverFilterRating = ref(false)

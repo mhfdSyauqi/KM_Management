@@ -1,7 +1,7 @@
 <script setup>
 import DynamicInput from '@/views/setup/message/DynamicInput.vue'
 import { onMounted, ref } from 'vue'
-import { active_message, GetActiveMessage } from '@/components/pages/setup/useMessage.js'
+import { active_message, GetActiveMessage } from '@/components/pages/setup/message/useMessage.js'
 
 const length = 10
 const expanded = ref(Array.from({ length }, () => false))

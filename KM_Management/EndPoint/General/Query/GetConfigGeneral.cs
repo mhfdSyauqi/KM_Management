@@ -55,6 +55,13 @@ public class GetConfigGeneralHandler : IQueryHandler<GetConfigGeneralQuery, Resp
             Others = new()
             {
                 KEYWORDS = generalCfg.KEYWORDS
+            },
+            Mailbot = new()
+            {
+                EMAIL = generalCfg.MAIL_CONFIG_USERNAME,
+                PASSWORD = "Use Default",
+                SERVER = generalCfg.MAIL_CONFIG_SERVER,
+                PORT = generalCfg.MAIL_CONFIG_PORT,
             }
         };
 

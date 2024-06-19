@@ -36,8 +36,9 @@ public class GetLeadExcelHandler : IQueryHandler<GetLeadExcelQuery, ResponseExce
 
         var response = new ResponseExcelLeadAnalytic()
         {
-            Lead_Data = result.ToList(),
-            Period = $"{filteredDate.StartDate:dd-MMM-yyyy} s/d {filteredDate.EndDate:dd-MMM-yyyy}"
+            General_Data = result.General,
+            Detail_Data = result.Detail,
+            Period = result.Period,
         };
 
         return Result.Success(response);

@@ -6,17 +6,23 @@ import {
   GetTopIssueSelectedByFilter,
   top_issue_selected,
   filterSelected
-} from '@/components/pages/category/useCategoryTopIssue.js'
+} from '@/components/pages/category/top/useCategoryTopIssue.js'
 import { ToastSwal } from '@/extension/SwalExt.js'
 import {
   HandlePublishSelected,
   newSelected
-} from '@/components/pages/category/postCategoryTopIssue.js'
+} from '@/components/pages/category/top/postCategoryTopIssue.js'
 
-import { HandleDelete, deleteSelected } from '@/components/pages/category/deleteCategorySelected.js'
-import { HandleAllDelete } from '@/components/pages/category/deleteAllCategorySelected.js'
-import { HandlePublishAllSelected } from '@/components/pages/category/postAllCategorySelected.js'
-import { HandleRePublish, editSequence } from '@/components/pages/category/patchSequenceSelected.js'
+import {
+  HandleDelete,
+  deleteSelected
+} from '@/components/pages/category/top/deleteCategorySelected.js'
+import { HandleAllDelete } from '@/components/pages/category/top/deleteAllCategorySelected.js'
+import { HandlePublishAllSelected } from '@/components/pages/category/top/postAllCategorySelected.js'
+import {
+  HandleRePublish,
+  editSequence
+} from '@/components/pages/category/top/patchSequenceSelected.js'
 import { ref, onMounted } from 'vue'
 import IconMoveUp from '@/components/icons/IconMoveUp.vue'
 import IconMoveDown from '@/components/icons/IconMoveDown.vue'

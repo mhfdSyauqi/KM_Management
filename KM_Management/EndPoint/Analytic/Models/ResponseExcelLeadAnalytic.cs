@@ -2,6 +2,9 @@
 
 public class ResponseExcelLeadAnalytic
 {
-    public List<EntityExcelLeadAnalytic> Lead_Data { get; set; }
+    public List<EntityExcelGeneralLead> General_Data { get; set; }
+
+    public List<EntityExcelDetailLead> Detail_Data { get; set; }
+
     public string Period { get; set; }
 }

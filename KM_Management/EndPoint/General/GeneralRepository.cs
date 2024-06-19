@@ -34,10 +34,25 @@ public class GeneralRepository : IGeneralRepository
                 ,[MAIL_HELPDESK_SUBJECT]
                 ,[MAIL_HELPDESK_CONTENT]
                 ,[MAIL_HELPDESK_CONTENT_HTML]
+                ,[MAIL_CONFIG_USERNAME]
+                ,[MAIL_CONFIG_SERVER]
+                ,[MAIL_CONFIG_PORT]
               FROM [dbo].[View_Configuration_General]
         ";
         var command = new CommandDefinition(query, cancellationToken: cancellationToken);
         var result = connection.QueryFirstOrDefault<EntityConfigGeneral?>(command);
+
+        return result;
+    }
+
+    public async Task<string> GetDefaultMailbotPassword(CancellationToken cancellationToken)
+    {
+        await using var connection = await _connection.CreateConnectionAsync();
+        var query = @"
+            SELECT [MAIL_CONFIG_PASSWORD] FROM [dbo].[View_Configuration_General]
+        ";
+        var command = new CommandDefinition(query, cancellationToken: cancellationToken);
+        var result = connection.QueryFirst<string>(command);
 
         return result;
     }
@@ -58,4 +73,6 @@ public interface IGeneralRepository
     Task<EntityConfigGeneral?> GetConfigurationGeneralAsync(CancellationToken cancellationToken);
 
     Task<int> PatchConfigurationGeneralAsync(FilterConfigGeneral filter, CancellationToken cancellationToken);
+
+    Task<string> GetDefaultMailbotPassword(CancellationToken cancellationToken);
 }
