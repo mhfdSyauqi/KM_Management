@@ -219,7 +219,10 @@ async function HandleSave() {
     },
     Helpdesk: {
       ...generalModel.value.helpdesk,
-      mail_helpdesk_content: JSON.stringify(generalModel.value.helpdesk.mail_helpdesk_content),
+      mail_helpdesk_content:
+        typeof generalModel.value.helpdesk.mail_helpdesk_content === 'string'
+          ? generalModel.value.helpdesk.mail_helpdesk_content
+          : JSON.stringify(generalModel.value.helpdesk.mail_helpdesk_content),
       mail_helpdesk_content_html: generalModel.value.helpdesk.mail_helpdesk_content_html
     },
     Others: {
