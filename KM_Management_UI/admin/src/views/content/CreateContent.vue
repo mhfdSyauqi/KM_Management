@@ -1,6 +1,7 @@
 <script setup>
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import AbortButton from '@/components/buttons/AbortButton.vue'
+import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import TextForm from '@/components/forms/TextForm.vue'
 import DropdownForm from '@/components/forms/DropdownForm.vue'
 import ArticleEditor from '@/components/editors/ArticleEditor.vue'
@@ -20,7 +21,6 @@ import { useRoute, useRouter } from 'vue-router'
 
 import { ConfirmSwal, ToastSwal } from '@/extension/SwalExt.js'
 import { useNotificationStore } from '@/stores/useNotification.js'
-import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 
 const router = useRouter()
 const route = useRoute()

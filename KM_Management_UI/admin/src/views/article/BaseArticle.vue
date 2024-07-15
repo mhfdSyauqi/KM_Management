@@ -38,7 +38,7 @@ function useFormat(dateStr) {
 
       <ReaderEditor :article="article.article" />
 
-      <div v-if="article.additional_link !== ''">
+      <div v-if="article.additional_link?.length > 0">
         <p>
           untuk informasi lebih lengkap anda dapat mengunjungi link :
           <a

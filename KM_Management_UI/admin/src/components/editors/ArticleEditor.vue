@@ -1,11 +1,10 @@
 <script setup>
 import { QuillEditor, Quill } from '@vueup/vue-quill'
-import BlotFormatter, {
-  AlignAction,
-  DeleteAction,
-  ResizeAction,
-  ImageSpec
-} from 'quill-blot-formatter'
+import BlotFormatter from 'quill-blot-formatter/dist/BlotFormatter.js'
+import ImageSpec from 'quill-blot-formatter/dist/specs/ImageSpec.js'
+import DeleteAction from 'quill-blot-formatter/dist/actions/DeleteAction.js'
+import AlignAction from 'quill-blot-formatter/dist/actions/align/AlignAction.js'
+import ResizeAction from 'quill-blot-formatter/dist/actions/ResizeAction.js'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import { onBeforeUnmount, ref, watchEffect } from 'vue'
 

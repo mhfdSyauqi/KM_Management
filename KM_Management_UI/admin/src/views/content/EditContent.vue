@@ -2,6 +2,7 @@
 import TextForm from '@/components/forms/TextForm.vue'
 import ArticleEditor from '@/components/editors/ArticleEditor.vue'
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
+import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import DropdownForm from '@/components/forms/DropdownForm.vue'
 import AbortButton from '@/components/buttons/AbortButton.vue'
 import DescriptionEditor from '@/components/editors/DescriptionEditor.vue'
@@ -22,7 +23,6 @@ import { useNotificationStore } from '@/stores/useNotification.js'
 import { onMounted, onUnmounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useDateFormat } from '@vueuse/core'
-import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 
 const route = useRoute()
 const router = useRouter()
