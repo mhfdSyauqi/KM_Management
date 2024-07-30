@@ -103,7 +103,7 @@
                   <div v-html="removeIcon"></div>
                 </button>
               </div>
-              <Popover class="relative" v-slot="{ open }">
+              <Popover v-if="!editMode[index]" class="relative" v-slot="{ open }">
                 <PopoverButton
                   class="border px-2 py-2 ml-2 mr-2 bg-[#888888] hover:bg-[#2C7B4B] text-green-800 items-center justify-center focus:outline-none"
                   :class="[
