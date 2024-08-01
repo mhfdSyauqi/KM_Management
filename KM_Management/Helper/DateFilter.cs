@@ -27,7 +27,7 @@ public class DateFilter
                 startDate = startDate.AddDays(-29);
                 break;
             case "Last 3 Months":
-                startDate = startDate.AddMonths(-3);
+                startDate = startDate.AddMonths(-3).AddDays(1);
                 break;
             case "Last 1 Year":
                 startDate = startDate.AddYears(-1).AddDays(1);

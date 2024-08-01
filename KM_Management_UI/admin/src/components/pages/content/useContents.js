@@ -85,6 +85,7 @@ async function HandlingSort(column) {
 }
 
 async function HandlingPageLimit(limit) {
+  filter.value.page = 1
   filter.value.limit = limit
   return await GetContentsByFilter()
 }
