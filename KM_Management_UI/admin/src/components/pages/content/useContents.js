@@ -90,10 +90,20 @@ async function HandlingPageLimit(limit) {
   return await GetContentsByFilter()
 }
 
+async function ResetFilter() {
+  filter.value.status = []
+  filter.value.search = null
+  filter.value.page = 1
+  filter.value.limit = 10
+  filter.value.sort_order = null
+  filter.value.sort_col = null
+}
+
 export {
   contents,
   navigation,
   GetContentsByFilter,
+  ResetFilter,
   HandleSearch,
   HandleCheck,
   HandlePagination,

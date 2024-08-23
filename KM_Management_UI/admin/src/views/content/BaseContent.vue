@@ -11,6 +11,7 @@ import {
   contents,
   navigation,
   GetContentsByFilter,
+  ResetFilter,
   HandleSearch,
   HandleCheck,
   HandlePagination,
@@ -25,6 +26,7 @@ import { useNotificationStore } from '@/stores/useNotification.js'
 const notificationStore = useNotificationStore()
 
 onMounted(async () => {
+  await ResetFilter()
   await GetContentsByFilter()
 
   if (notificationStore.status === 'add') {
