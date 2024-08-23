@@ -377,7 +377,11 @@ onMounted(() => {
               {{ group.letter + '_' }}
             </h1>
             <div class="mb-4 flex items-center">
-              <button class="mr-2" @click="openEditModal(item.uid, item.name, item.is_active)">
+              <button
+                title="Edit"
+                class="mr-2"
+                @click="openEditModal(item.uid, item.name, item.is_active)"
+              >
                 <IconEdit class="w-4 h-4 hover:fill-[#2c7b4b] fill-[#888888]" />
               </button>
 

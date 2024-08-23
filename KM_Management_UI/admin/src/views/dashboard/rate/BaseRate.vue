@@ -27,9 +27,7 @@ import {
 
 import {
   HandleExcelExport,
-  filterExportExcel,
-  HandlePaginationExport,
-  HandlingPageLimitExport
+  filterExportExcel
 } from '@/components/pages/dashboard/rate/postExportRateAndFeedback.js'
 
 const hoverFilterDate = ref(false)
@@ -136,7 +134,6 @@ const exportExcel = async () => {
 const HandleAllPagination = async (page) => {
   try {
     HandlePagination(page)
-    HandlePaginationExport(page)
   } catch (error) {
     console.error('Error fetching content:', error)
   }
@@ -145,7 +142,6 @@ const HandleAllPagination = async (page) => {
 const HandleAllPageLimit = async (page) => {
   try {
     HandlingPageLimit(page)
-    HandlingPageLimitExport(page)
   } catch (error) {
     console.error('Error fetching content:', error)
   }
@@ -613,9 +609,12 @@ onMounted(async () => {
                     </span>
                   </span>
                 </label>
-                <button @click="checkBoxChange" class="mt-4 bg-green-800 text-white rounded-lg">
+                <PopoverButton
+                  @click="checkBoxChange"
+                  class="mt-4 bg-green-800 text-white rounded-lg"
+                >
                   Ok
-                </button>
+                </PopoverButton>
               </div>
             </slot>
           </div>

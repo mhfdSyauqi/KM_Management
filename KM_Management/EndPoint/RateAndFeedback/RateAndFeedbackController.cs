@@ -25,14 +25,14 @@ public class RateAndFeedbackController : MyAPIController
 
     [HttpPost]
     [Route("ExportRateAndFeedbackToExcel")]
-    public async Task<IActionResult> ExportRateAndFeedbackToExcel([FromBody] RequestRateAndFeedback request, CancellationToken cancellationToken)
+    public async Task<IActionResult> ExportRateAndFeedbackToExcel([FromBody] RequestExcelRateAndFeedback request, CancellationToken cancellationToken)
     {
-        var query = new GetRateAndFeedbackQuery(request);
+        
+        var query = new GetExcelRateAndFeedbackQuery(request);
         var result = await _Mediator.Send(query, cancellationToken);
-
-
-        var data = result?.Value.Items;
-        var periode = result?.Value.Periode;
+        
+        var data = result?.Value;
+        var periode = result?.Value.FirstOrDefault().Periode;
         var newData = data?.Select(item => new
         {
 

@@ -24,8 +24,8 @@
         </div>
 
         <div class="flex items-end space-x-2">
-          <div v-if="expanded" v-html="arrowRightIcon"></div>
-          <div v-else v-html="arrowBottomIcon"></div>
+          <div title="Collapse" v-if="expanded" v-html="arrowRightIcon"></div>
+          <div title="Expand" v-else v-html="arrowBottomIcon"></div>
         </div>
       </div>
     </div>
@@ -77,6 +77,7 @@
               </div>
               <div class="relative">
                 <button
+                  title="Edit"
                   v-if="!editMode[index]"
                   class="px-2 py-2 ml-2 mr-2 bg-[#888888] text-white rounded-xl hover:bg-[#2C7B4B]"
                   @click="editModeMessage(index)"
@@ -85,6 +86,7 @@
                   <div v-html="editIcon"></div>
                 </button>
                 <button
+                  title="Save"
                   v-if="editMode[index]"
                   class="px-2 py-2 ml-2 mr-2 bg-[#56956f] text-white rounded-xl hover:bg-[#2C7B4B]"
                   @click.stop
@@ -95,6 +97,7 @@
                   <div v-html="saveIcon"></div>
                 </button>
                 <button
+                  title="Cancel"
                   v-if="editMode[index]"
                   class="px-2 py-2 ml-2 mr-2 bg-red-500 text-white rounded-xl hover:bg-red-600"
                   @click="cancelMessage(index)"
@@ -105,6 +108,7 @@
               </div>
               <Popover v-if="!editMode[index]" class="relative" v-slot="{ open }">
                 <PopoverButton
+                  title="More"
                   class="border px-2 py-2 ml-2 mr-2 bg-[#888888] hover:bg-[#2C7B4B] text-green-800 items-center justify-center focus:outline-none"
                   :class="[
                     open ? 'rounded-tr-xl rounded-tl-xl text-white bg-green-800 ' : 'rounded-xl'

@@ -488,6 +488,7 @@ watchEffect(() => {
             </h1>
             <div class="mb-4 flex items-center">
               <button
+                title="Edit"
                 class="mr-2"
                 v-if="firstActive === true"
                 @click="openEditModal(item.uid, item.name, item.is_active)"

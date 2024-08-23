@@ -533,7 +533,7 @@ onMounted(() => {
                     style="display: flex; justify-content: space-between; align-items: center"
                   >
                     <span :class="{ 'line-through': !item.is_active }">{{ item.name }}</span>
-                    <button v-if="item.is_active" @click="addNewSelected(item.uid)">
+                    <button title="Add" v-if="item.is_active" @click="addNewSelected(item.uid)">
                       <IconAddNew class="h-5 w-5 fill-gray-600 hover:fill-[#2c7b4b]" />
                     </button>
                   </span>
@@ -546,7 +546,7 @@ onMounted(() => {
                     style="display: flex; justify-content: space-between; align-items: center"
                   >
                     <span :class="{ 'line-through': !item.is_active }">{{ item.name }}</span>
-                    <button v-if="item.is_active" @click="addNewSelected(item.uid)">
+                    <button title="Add" v-if="item.is_active" @click="addNewSelected(item.uid)">
                       <IconAddNew class="h-5 w-5 fill-gray-600 hover:fill-[#2c7b4b]" />
                     </button>
                   </span>
@@ -566,7 +566,7 @@ onMounted(() => {
                   >
                     <span :class="{ 'line-through': !item.is_active }">{{ item.name }}</span>
                     <div class="justify-end flex">
-                      <button @click="deleteSelectedItem(item.sequence)">
+                      <button title="Delete" @click="deleteSelectedItem(item.sequence)">
                         <IconDelete
                           class="h-5 w-5 fill-red-700 hover:fill-white hover:bg-red-700 hover:rounded-full"
                         />
@@ -584,6 +584,7 @@ onMounted(() => {
                     <span :class="{ 'line-through': !item.is_active }">{{ item.name }}</span>
                     <div class="justify-end flex">
                       <button
+                        title="Move Down"
                         v-if="
                           item.is_active &&
                           selectedItems.length > 1 &&
@@ -594,12 +595,13 @@ onMounted(() => {
                         <IconMoveDown class="w-5 h-5 fill-gray-600 hover:fill-[#2c7b4b]" />
                       </button>
                       <button
+                        title="Move Up"
                         v-if="item.is_active && selectedItems.length > 1 && index != 0"
                         @click="updateSequence('up', item.sequence, selectedItems.length)"
                       >
                         <IconMoveUp class="w-5 h-5 fill-gray-600 hover:fill-[#2c7b4b]" />
                       </button>
-                      <button @click="deleteSelectedItem(item.sequence)">
+                      <button title="Delete" @click="deleteSelectedItem(item.sequence)">
                         <IconDelete
                           class="h-5 w-5 fill-red-700 hover:fill-white hover:bg-red-700 hover:rounded-full"
                         />

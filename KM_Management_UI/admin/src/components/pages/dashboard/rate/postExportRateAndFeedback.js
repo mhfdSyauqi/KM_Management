@@ -16,9 +16,7 @@ const filterExportExcel = ref({
         Filter_Date:filterExportExcel.value.filter_date,
         Start_Date:filterExportExcel.value.start_date,
         End_Date:filterExportExcel.value.end_date,
-        Rating:filterExportExcel.value.rating,
-        Page_Limit:filterExportExcel.value.page_limit,
-        Current_Page:filterExportExcel.value.current_page,
+        Rating:filterExportExcel.value.rating
     })
   
     if (!exportResult.is_success) {
@@ -28,13 +26,5 @@ const filterExportExcel = ref({
     }
   }
 
-  async function HandlePaginationExport(nextPage) {
-    filterExportExcel.value.current_page = nextPage
-  }
-  
-  async function HandlingPageLimitExport(limit) {
-    filterExportExcel.value.page_limit = limit
-    filterExportExcel.value.current_page = 1
-  }
 
-  export { filterExportExcel, HandleExcelExport, HandlePaginationExport, HandlingPageLimitExport}
+  export { filterExportExcel, HandleExcelExport}
