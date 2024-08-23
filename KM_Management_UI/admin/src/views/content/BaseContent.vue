@@ -143,7 +143,7 @@ async function onCheck(e) {
           :key="content.id"
         >
           <td class="py-2.5 text-center">
-            <button>
+            <button title="Edit">
               <RouterLink :to="{ name: 'edit-content', params: { id: content.id } }">
                 <IconEdit class="w-5 h-5 hover:fill-green-800" />
               </RouterLink>

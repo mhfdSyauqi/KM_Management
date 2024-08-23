@@ -38,7 +38,7 @@ watch(
               : 'bg-gray-100 hover:drop-shadow-lg hover:scale-105'
           "
           @click="GetExcelHit"
-          title="Export Excel"
+          title="Export to Excel"
           :disabled="data === null"
         >
           <IconSave class="w-5 h-5" />
@@ -50,7 +50,7 @@ watch(
               ? 'bg-gray-400 drop-shadow'
               : 'bg-gray-100 hover:drop-shadow-lg hover:scale-105'
           "
-          title="Fullscreen"
+          title="Full Screen"
           :disabled="data === null"
           @click="fullScreen.stats = 'Hit'"
         >

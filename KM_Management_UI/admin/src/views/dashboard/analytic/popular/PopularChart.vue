@@ -87,7 +87,7 @@ watch(
               ? 'bg-gray-400 drop-shadow'
               : 'bg-gray-100 hover:drop-shadow-lg hover:scale-105'
           "
-          title="Export Excel"
+          title="Export to Excel"
           @click="GetExcelPopular"
           :disabled="data === null"
         >
@@ -100,7 +100,7 @@ watch(
               ? 'bg-gray-400 drop-shadow'
               : 'bg-gray-100 hover:drop-shadow-lg hover:scale-105'
           "
-          title="Fullscreen"
+          title="Full Screen"
           :disabled="data === null"
           @click="fullScreen.stats = 'Popular'"
         >

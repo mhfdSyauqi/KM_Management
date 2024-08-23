@@ -28,6 +28,7 @@ const route = useRoute()
 const router = useRouter()
 const onLoad = ref(true)
 const notificationStore = useNotificationStore()
+const userRole = route?.meta.userInfo.role
 
 onMounted(async () => {
   await GetCategoryReference()
@@ -108,7 +109,9 @@ function FormatDate(dateStr) {
         <AbortButton>Cancel</AbortButton>
       </RouterLink>
       <SecondaryButton @click="onEdit('Draft')"> Save as Draft </SecondaryButton>
-      <PrimaryButton @click="onEdit('Publish')"> Publish </PrimaryButton>
+      <PrimaryButton @click="onEdit('Publish')" v-if="userRole === 'super'">
+        Publish
+      </PrimaryButton>
     </div>
 
     <div class="overflow-y-auto max-h-[80%]">

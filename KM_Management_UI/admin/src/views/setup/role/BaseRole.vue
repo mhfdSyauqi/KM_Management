@@ -110,10 +110,14 @@ watchEffect(async () => {
       <tbody>
         <tr class="text-sm border-b-2 hover:bg-orange-50" v-for="(user, i) in usersRole" :key="i">
           <td class="p-2.5 space-x-1">
-            <button @click.prevent="onEdit(user)">
+            <button @click.prevent="onEdit(user)" title="Edit">
               <IconEdit class="w-5 h-5 hover:fill-green-800" />
             </button>
-            <button @click.prevent="HandleDelete(user)" :disabled="usersRole.length <= 1">
+            <button
+              @click.prevent="HandleDelete(user)"
+              title="Delete"
+              :disabled="usersRole.length <= 1"
+            >
               <IconDelete class="w-5 h-5 hover:fill-green-800" />
             </button>
           </td>
