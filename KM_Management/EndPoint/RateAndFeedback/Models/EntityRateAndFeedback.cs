@@ -7,7 +7,6 @@
         public Guid? Uid_Session_Header { get; init; }
         public string? Create_By { get; init; }
         public DateTime? Create_At { get; init; }
-        public int? Total_Category { get; init; }
         public int? User_Preview { get; set; }
         public int? Total_Feedback { get; set; }
         public float? Overall_Rating { get; set; }
