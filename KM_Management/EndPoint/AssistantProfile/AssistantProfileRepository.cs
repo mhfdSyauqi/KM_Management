@@ -19,7 +19,7 @@ public class AssistantProfileRepository : IAssistantProfileRepository
     public AssistantProfileRepository(ISQLConnectionFactory connnection, IWebHostEnvironment webHostEnvironment)
     {
         _connection = connnection;
-        _uploadFolderPath = Path.Combine(webHostEnvironment.WebRootPath, "upload");
+        _uploadFolderPath = Path.Combine(webHostEnvironment.WebRootPath, "Upload");
         //_uploadPathUrl = $"{""}/upload";
     }
 
@@ -69,7 +69,7 @@ public class AssistantProfileRepository : IAssistantProfileRepository
             var firstFileNameWithoutExtension = Path.GetFileNameWithoutExtension(firstFileName);
             var firstFileNameWithTimestamp = $"{firstFileNameWithoutExtension}_{DateTime.Now:dd-MM-yyyy-HH-mm-ss}";
             var firstFileNameFullFormat = $"{firstFileNameWithTimestamp}{Path.GetExtension(firstFileName)}";
-            postAssistantProfile.AppImage = $"{httpContext.Request.Scheme}://{httpContext.Request.Host}{cntx}/upload/{firstFileNameFullFormat}";
+            postAssistantProfile.AppImage = $"{httpContext.Request.Scheme}://{httpContext.Request.Host}{cntx}/Upload/{firstFileNameFullFormat}";
         }
 
         var storeProcedureName = "[dbo].[Update_Assistant_Profile]";
