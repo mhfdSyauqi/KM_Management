@@ -7,7 +7,7 @@ using System.Net;
 
 namespace KM_Management.EndPoint.AssistantProfile.Command;
 
-public record PostAssistantProfileCommand(RequestPostAssistantProfile Argument, string Host) : ICommand;
+public record PostAssistantProfileCommand(RequestPostAssistantProfile Argument, HttpContext HttpContext) : ICommand;
 
 public class PostAssistantProfileValidator : AbstractValidator<PostAssistantProfileCommand>
 {
@@ -54,7 +54,7 @@ public class PostAssistantProfileHandler : ICommandHandler<PostAssistantProfileC
         _validator = validator;
     }
 
-    public async Task<Result> Handle(PostAssistantProfileCommand request,  CancellationToken cancellationToken)
+    public async Task<Result> Handle(PostAssistantProfileCommand request, CancellationToken cancellationToken)
     {
         var validation = await _validator.ValidateAsync(request, cancellationToken);
 
@@ -68,10 +68,15 @@ public class PostAssistantProfileHandler : ICommandHandler<PostAssistantProfileC
         {
             AppImage = request?.Argument?.AppImage,
             AppName = request.Argument.AppName,
-            Files = request?.Argument?.Files?.ToList() 
+            Files = request?.Argument?.Files?.ToList()
         };
 
-        await _assistantProfileRepository.PostAssistantProfileAsync(postAssistantProfile, request.Host, cancellationToken);
+        // Use HttpContext from the request
+        var httpContext = request.HttpContext; // You may need to update your command to include HttpContext or pass it another way.
+
+        await _assistantProfileRepository.PostAssistantProfileAsync(postAssistantProfile, httpContext, cancellationToken);
         return Result.Success();
     }
 }
+
+

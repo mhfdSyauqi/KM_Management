@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using Azure.Core;
+using Dapper;
 using KM_Management.Commons.Connection;
 using KM_Management.EndPoint.AssistantProfile.Models;
 using KM_Management.EndPoint.Category.Models;
@@ -12,14 +13,14 @@ public class AssistantProfileRepository : IAssistantProfileRepository
 {
     private readonly ISQLConnectionFactory _connection;
     private readonly string _uploadFolderPath;
-    private readonly string _uploadPathUrl;
+    //private readonly string _uploadPathUrl;
 
 
     public AssistantProfileRepository(ISQLConnectionFactory connnection, IWebHostEnvironment webHostEnvironment)
     {
         _connection = connnection;
         _uploadFolderPath = Path.Combine(webHostEnvironment.WebRootPath, "upload");
-        _uploadPathUrl = $"{""}/upload";
+        //_uploadPathUrl = $"{""}/upload";
     }
 
     public async Task<EntityAssistantProfile?> GetAssistantProfileAsync(CancellationToken cancellationToken)
@@ -35,44 +36,40 @@ public class AssistantProfileRepository : IAssistantProfileRepository
         return result;
     }
 
-    public async Task<int> PostAssistantProfileAsync(EntityPostAssistantProfile postAssistantProfile, string host, CancellationToken cancellationToken)
+    public async Task<int> PostAssistantProfileAsync(EntityPostAssistantProfile postAssistantProfile, HttpContext httpContext, CancellationToken cancellationToken)
     {
         await using var connection = await _connection.CreateConnectionAsync();
 
-        int validFile = 0;
+        int validFile = postAssistantProfile.Files?.Count ?? 0;
 
-        if (postAssistantProfile.Files == null || postAssistantProfile.Files.Count == 0)
+       
+        if (!Directory.Exists(_uploadFolderPath))
         {
-            validFile = 0;
-        }
-        else {
-            validFile = postAssistantProfile.Files.Count();
-        }
-
-        if (validFile>0) {
-        
-
-        foreach (var file in postAssistantProfile.Files)
-        {
-            var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(file.FileName);
-            var fileNameWithTimestamp = $"{fileNameWithoutExtension}_{DateTime.Now:dd-MM-yyyy-HH-mm-ss}";
-            var fileNameFullFormat = $"{fileNameWithTimestamp}{Path.GetExtension(file.FileName)}";
-
-            var filePath = Path.Combine(_uploadFolderPath, fileNameFullFormat);
-
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                file.CopyTo(stream);
-            }
-        }
+            Directory.CreateDirectory(_uploadFolderPath); 
         }
 
         if (validFile > 0)
         {
-            var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(postAssistantProfile.Files[0].FileName);
-            var fileNameWithTimestamp = $"{fileNameWithoutExtension}_{DateTime.Now:dd-MM-yyyy-HH-mm-ss}";
-            var fileNameFullFormat = $"{fileNameWithTimestamp}{Path.GetExtension(postAssistantProfile.Files[0].FileName)}";
-            postAssistantProfile.AppImage = $"{host}/Upload/{fileNameFullFormat}";
+            foreach (var file in postAssistantProfile.Files)
+            {
+                var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(file.FileName);
+                var fileNameWithTimestamp = $"{fileNameWithoutExtension}_{DateTime.Now:dd-MM-yyyy-HH-mm-ss}";
+                var fileNameFullFormat = $"{fileNameWithTimestamp}{Path.GetExtension(file.FileName)}";
+
+                var filePath = Path.Combine(_uploadFolderPath, fileNameFullFormat);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream); 
+                }
+            }
+
+            var firstFileName = postAssistantProfile.Files[0].FileName;
+            var cntx = httpContext.Request.PathBase;
+            var firstFileNameWithoutExtension = Path.GetFileNameWithoutExtension(firstFileName);
+            var firstFileNameWithTimestamp = $"{firstFileNameWithoutExtension}_{DateTime.Now:dd-MM-yyyy-HH-mm-ss}";
+            var firstFileNameFullFormat = $"{firstFileNameWithTimestamp}{Path.GetExtension(firstFileName)}";
+            postAssistantProfile.AppImage = $"{httpContext.Request.Scheme}://{httpContext.Request.Host}{cntx}/upload/{firstFileNameFullFormat}";
         }
 
         var storeProcedureName = "[dbo].[Update_Assistant_Profile]";
@@ -81,6 +78,10 @@ public class AssistantProfileRepository : IAssistantProfileRepository
         var result = await connection.ExecuteAsync(command);
         return result;
     }
+
+
+
+
 
     public bool VerifyAvailableName(string app_name)
     {
@@ -104,7 +105,7 @@ public interface IAssistantProfileRepository
 {
     // Async Fn
     Task<EntityAssistantProfile?> GetAssistantProfileAsync(CancellationToken cancellationToken);
-    Task<int> PostAssistantProfileAsync(EntityPostAssistantProfile postAssistantProfile, string host, CancellationToken cancellationToken);
+    Task<int> PostAssistantProfileAsync(EntityPostAssistantProfile postAssistantProfile, HttpContext httpContext, CancellationToken cancellationToken);
     // Sync Fn
     public bool VerifyAvailableName(string name);
 }

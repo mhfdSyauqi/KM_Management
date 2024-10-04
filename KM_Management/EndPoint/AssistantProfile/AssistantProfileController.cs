@@ -29,10 +29,13 @@ public class AssistantProfileController : MyAPIController
     [Route("AddAssistantProfile")]
     public async Task<IActionResult> PostContent([FromForm] RequestPostAssistantProfile request, CancellationToken cancellationToken)
     {
-        var host = $"{Request.Scheme}://{Request.Host}";
-        var command = new PostAssistantProfileCommand(request, host);
+        var httpContext = HttpContext; 
+
+        var command = new PostAssistantProfileCommand(request, httpContext);
+
         var result = await _Mediator.Send(command, cancellationToken);
 
         return result.MapResponse();
     }
+
 }
